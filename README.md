@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🏆 Bull Wave Games — Premium User Panel
 
 Welcome to the **Bull Wave Games User Panel**, a high-fidelity, luxury-themed online gaming portal replicating the Daman Games experience. Engineered with a premium **Maroon & Gold** visual identity, this application provides an immersive, mobile-first gaming lobby, comprehensive wallet administration, multi-level affiliate marketing systems, and gamified reward loyalty programs.
@@ -148,3 +149,6 @@ npm run start
 *   **Client Verification:** Always check authorization statuses (`isAuthenticated`) before rendering authenticated UI routes in `/lobby`, `/wallet`, `/rewards`, `/referrals`, `/profile`.
 *   **Visual Optimization:** Images are heavily compressed and lazy-loaded via Next.js optimizations to minimize First Contentful Paint (FCP) durations on standard 3G/4G connections.
 *   **State Integrity:** Operations affecting user cash flows (Betting, Deposits, Withdrawals) update state using atomic transactions via the global state manager to protect balance accuracy.
+=======
+# Bull-Wave-Games
+>>>>>>> origin/frontend-UAT
