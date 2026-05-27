@@ -10,11 +10,10 @@ import {
 import { MOCK_GAMES } from "@/constants/mockData";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const { isAuthenticated } = useAuthStore();
+
   const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
@@ -95,31 +94,20 @@ export default function Dashboard() {
             </nav>
 
             <div className="hidden md:flex items-center gap-4">
-              {isAuthenticated ? (
-                <button 
-                  onClick={() => router.push("/lobby")}
-                  className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
-                >
-                  Enter Lobby
-                </button>
-              ) : (
-                <>
-                  <button 
-                    onClick={() => router.push("/auth/login")}
-                    className={`text-sm font-black uppercase tracking-wider transition-colors ${
-                      scrolled ? "text-[#800000]" : "text-white/90 hover:text-[#D4AF37]"
-                    }`}
-                  >
-                    Log In
-                  </button>
-                  <button 
-                    onClick={() => router.push("/auth/signup")}
-                    className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
-                  >
-                    Join Now
-                  </button>
-                </>
-              )}
+              <button 
+                onClick={() => router.push("/auth/login")}
+                className={`text-sm font-black uppercase tracking-wider transition-colors ${
+                  scrolled ? "text-[#800000]" : "text-white/90 hover:text-[#D4AF37]"
+                }`}
+              >
+                Log In
+              </button>
+              <button 
+                onClick={() => router.push("/auth/signup")}
+                className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+              >
+                Join Now
+              </button>
             </div>
 
             {/* Mobile Nav Button */}
@@ -156,29 +144,18 @@ export default function Dashboard() {
                 ))}
                 <hr className="border-slate-100" />
                 <div className="flex gap-4">
-                  {isAuthenticated ? (
-                    <button 
-                      onClick={() => { setMenuOpen(false); router.push("/lobby"); }}
-                      className="flex-1 bg-gradient-to-r from-[#800000] to-[#b30000] text-white font-extrabold py-3 rounded-xl shadow-md text-center"
-                    >
-                      Enter Lobby
-                    </button>
-                  ) : (
-                    <>
-                      <button 
-                        onClick={() => { setMenuOpen(false); router.push("/auth/login"); }}
-                        className="flex-1 border border-slate-200 text-slate-800 font-extrabold py-3 rounded-xl"
-                      >
-                        Log In
-                      </button>
-                      <button 
-                        onClick={() => { setMenuOpen(false); router.push("/auth/signup"); }}
-                        className="flex-1 bg-gradient-to-r from-[#800000] to-[#b30000] text-white font-extrabold py-3 rounded-xl shadow-md"
-                      >
-                        Join Now
-                      </button>
-                    </>
-                  )}
+                  <button 
+                    onClick={() => { setMenuOpen(false); router.push("/auth/login"); }}
+                    className="flex-1 border border-slate-200 text-slate-800 font-extrabold py-3 rounded-xl"
+                  >
+                    Log In
+                  </button>
+                  <button 
+                    onClick={() => { setMenuOpen(false); router.push("/auth/signup"); }}
+                    className="flex-1 bg-gradient-to-r from-[#800000] to-[#b30000] text-white font-extrabold py-3 rounded-xl shadow-md"
+                  >
+                    Join Now
+                  </button>
                 </div>
               </motion.div>
             )}
@@ -214,29 +191,18 @@ export default function Dashboard() {
                 Welcome to India's most trusted elite gaming destination. We provide a sophisticated environment for strategic gaming, high-stakes color prediction, and premium rewards.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                {isAuthenticated ? (
-                  <button 
-                    onClick={() => router.push("/lobby")}
-                    className="bg-gradient-to-r from-[#800000] to-[#D4AF37] text-white hover:from-[#D4AF37] hover:to-[#800000] px-12 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all text-center"
-                  >
-                    Enter Wingo Lobby
-                  </button>
-                ) : (
-                  <>
-                    <button 
-                      onClick={() => router.push("/auth/signup")}
-                      className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all text-center"
-                    >
-                      Create Account
-                    </button>
-                    <button 
-                      onClick={() => router.push("/auth/login")}
-                      className="bg-white/10 hover:bg-white/15 border border-white/20 px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest hover:-translate-y-0.5 active:translate-y-0 transition-all text-center"
-                    >
-                      Member Login
-                    </button>
-                  </>
-                )}
+                <button 
+                  onClick={() => router.push("/auth/signup")}
+                  className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all text-center"
+                >
+                  Create Account
+                </button>
+                <button 
+                  onClick={() => router.push("/auth/login")}
+                  className="bg-white/10 hover:bg-white/15 border border-white/20 px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest hover:-translate-y-0.5 active:translate-y-0 transition-all text-center"
+                >
+                  Member Login
+                </button>
               </div>
             </div>
 
