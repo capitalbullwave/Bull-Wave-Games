@@ -71,52 +71,30 @@ export const useAuthStore = create<AuthState>()(
         const cleanIdentity = identity.trim().toLowerCase();
         const cleanPassword = password.trim();
 
-        try {
-          // 1. Post credentials to Auth controller
-          const tokenResp = await apiRequest("/auth/login", {
-            method: "POST",
-            body: JSON.stringify({
-              username_or_mobile: identity,
-              password: password,
-            }),
-          });
+        // Hardcoded frontend-only login for testing
+        const mockUser: User = {
+          id: "u_mock_1",
+          username: cleanIdentity.split("@")[0] || "User",
+          email: cleanIdentity.includes("@") ? cleanIdentity : "",
+          mobile: !cleanIdentity.includes("@") ? cleanIdentity : "8102133992",
+          fullName: "Rohit",
+          dob: "1990-01-01",
+          gender: "male",
+          address: "Mock Address",
+          avatarUrl: `https://api.dicebear.com/7.x/adventurer/svg?seed=${cleanIdentity}`,
+          kycStatus: "verified",
+          walletBalance: 10000,
+          winningsBalance: 5000,
+          bonusBalance: 500,
+        };
 
-          const token = tokenResp.access_token;
-
-          // Temporary save token so /users/me request is authenticated
-          set({ token });
-
-          // 2. Fetch authenticated profile detail
-          const profile = await apiRequest("/users/me");
-
-          // 3. Map details to User interface
-          const mappedUser: User = {
-            id: String(profile.id || "u_7721"),
-            username: profile.username,
-            email: profile.email,
-            mobile: profile.mobile,
-            fullName: profile.profile?.full_name || profile.username,
-            dob: profile.profile?.dob || "",
-            gender: profile.profile?.gender || "male",
-            address: profile.profile?.address || "",
-            avatarUrl: profile.profile?.avatar_url || `https://api.dicebear.com/7.x/adventurer/svg?seed=${profile.username}`,
-            kycStatus: profile.kyc?.status || "unverified",
-            walletBalance: (profile.wallet?.main_balance || 0) + (profile.wallet?.winning_balance || 0) + (profile.wallet?.bonus_balance || 0),
-            winningsBalance: profile.wallet?.winning_balance || 0,
-            bonusBalance: profile.wallet?.bonus_balance || 0,
-          };
-
-          set({
-            isAuthenticated: true,
-            user: mappedUser,
-            token: token,
-            isLoading: false,
-          });
-          return true;
-        } catch (err: any) {
-          set({ error: err.message, isLoading: false, token: null, user: null, isAuthenticated: false });
-          return false;
-        }
+        set({
+          isAuthenticated: true,
+          user: mockUser,
+          token: "mock-jwt-token-12345",
+          isLoading: false,
+        });
+        return true;
       },
 
       signup: async (username, email, mobile, fullName, password) => {

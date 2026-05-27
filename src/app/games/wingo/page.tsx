@@ -27,7 +27,7 @@ const NUMBERS = [
 ];
 
 export default function WingoGamePage() {
-  const { user, updateBalance } = useAuthStore();
+  const { user, deductEntryFee } = useAuthStore();
   const [activeTab, setActiveTab] = useState("1min");
   const [timeLeft, setTimeLeft] = useState(60);
   const [period, setPeriod] = useState(202605271000);
@@ -83,15 +83,19 @@ export default function WingoGamePage() {
     setIsModalOpen(true);
   };
 
-  const handleConfirmBet = () => {
+  const handleConfirmBet = async () => {
     const totalBet = betAmount * multiplier;
-    if (user && user.balance < totalBet) {
+    if (user && user.walletBalance < totalBet) {
       toast.error("Insufficient balance!");
       return;
     }
     // Deduct balance
-    updateBalance(user ? user.balance - totalBet : 0);
-    toast.success(`Bet placed successfully! ₹${totalBet} deducted.`);
+    const success = await deductEntryFee(totalBet);
+    if (success) {
+      toast.success(`Bet placed successfully! ₹${totalBet} deducted.`);
+    } else {
+      toast.error("Failed to place bet. Please try again.");
+    }
     setIsModalOpen(false);
   };
 
@@ -123,7 +127,7 @@ export default function WingoGamePage() {
             <Wallet size={14} /> Available Balance
           </p>
           <h2 className="text-4xl font-black text-[#D4AF37] tracking-tight">
-            ₹{user?.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
+            ₹{user?.walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
           </h2>
           <div className="flex justify-center gap-4 mt-5">
             <button className="bg-[#D4AF37] text-[#800000] px-8 py-2.5 rounded-full font-black text-sm uppercase tracking-wider shadow-md active:scale-95 transition-transform">
@@ -300,7 +304,7 @@ export default function WingoGamePage() {
                 {/* Balance Info */}
                 <div className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
                   <span className="text-xs font-bold text-slate-500">Balance</span>
-                  <span className="text-sm font-black text-slate-800">₹{user?.balance.toFixed(2) || "0.00"}</span>
+                  <span className="text-sm font-black text-slate-800">₹{user?.walletBalance.toFixed(2) || "0.00"}</span>
                 </div>
 
                 {/* Amount Selection */}
