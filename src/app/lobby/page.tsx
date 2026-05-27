@@ -383,10 +383,8 @@ export default function LobbyPage() {
         <div className="flex items-center justify-between border-b border-slate-200/60 pb-4 mb-4">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#800000] to-[#ff4757] flex items-center justify-center text-white font-black shadow-md">
-                B
-              </div>
-              <span className="font-black text-slate-800 text-lg tracking-tight">
+              <img src="/logo.png" alt="Bull Wave Logo" className="w-16 h-16 rounded-2xl object-cover shadow-md" />
+              <span className="font-black text-slate-800 text-2xl tracking-tight">
                 <span className="text-[#800000]">Bull</span>{" "}
                 <span className="text-[#ff4757]">Wave</span>
               </span>

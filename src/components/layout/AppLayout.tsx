@@ -79,9 +79,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         {pathname !== "/about" && (
           <header className="h-14 bg-white flex items-center justify-between px-4 flex-shrink-0 z-30 border-b border-glass-border shadow-sm">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/lobby")}>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#800000] to-[#D4AF37] flex items-center justify-center shadow-md">
-              <Gamepad2 className="text-white" size={18} />
-            </div>
+            <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
             <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave</span>
           </div>
 

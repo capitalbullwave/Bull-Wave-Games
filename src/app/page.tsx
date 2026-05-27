@@ -70,9 +70,7 @@ export default function Dashboard() {
         }`}>
           <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#800000] to-[#D4AF37] flex items-center justify-center shadow-md">
-                <Gamepad2 className="text-white" size={18} />
-              </div>
+              <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
               <span className={`text-xl font-black uppercase tracking-wider transition-colors duration-300 ${
                 scrolled ? "text-[#800000]" : "text-white"
               }`}>Bull Wave Games</span>
@@ -391,10 +389,8 @@ export default function Dashboard() {
               
               <div className="md:col-span-2 space-y-6">
                 <Link href="/" className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#800000] to-[#D4AF37] flex items-center justify-center shadow-md">
-                    <Gamepad2 className="text-white" size={18} />
-                  </div>
-                  <span className="text-xl font-black uppercase tracking-wider text-white">Bull Wave Games</span>
+                  <img src="/logo.png" alt="Bull Wave Logo" className="w-16 h-16 rounded-2xl object-cover shadow-md" />
+                  <span className="text-3xl font-black uppercase tracking-wider text-white">Bull Wave Games</span>
                 </Link>
                 <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
                   India's premier destination for strategic online gaming. We provide a secure, transparent, and high-reward environment for players who demand the absolute best in entertainment excellence.
