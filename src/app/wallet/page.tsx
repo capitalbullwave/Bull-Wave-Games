@@ -28,10 +28,12 @@ interface QuickStats {
 }
 
 export default function WalletPage() {
-  const { user, depositFunds, withdrawFunds } = useAuthStore();
+  const { user, depositFunds, withdrawFunds, transferFunds } = useAuthStore();
   const [activeTab, setActiveTab] = useState("deposit");
   const [depositAmount, setDepositAmount] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [transferAmount, setTransferAmount] = useState("");
+  const [transferSource, setTransferSource] = useState<"winning" | "bonus">("winning");
   const [upiId, setUpiId] = useState("");
   const [bankAccount, setBankAccount] = useState("");
   const [txFilter, setTxFilter] = useState("all");
@@ -149,6 +151,26 @@ export default function WalletPage() {
     }
   };
 
+  const handleTransfer = async () => {
+    if (!transferAmount || isNaN(Number(transferAmount))) {
+      toast.error("Please enter a valid transfer amount.");
+      return;
+    }
+    const amt = Number(transferAmount);
+    if (amt <= 0) {
+      toast.error("Invalid transfer amount.");
+      return;
+    }
+    const success = await transferFunds(amt, transferSource);
+    if (success) {
+      toast.success(`₹${amt} successfully transferred to main balance!`);
+      setTransferAmount("");
+      fetchTransactions();
+    } else {
+      toast.error(`Insufficient ${transferSource} balance.`);
+    }
+  };
+
   const filteredTransactions = transactions.filter((tx) => {
     if (txFilter === "all") return true;
     return tx.type === txFilter;
@@ -223,9 +245,10 @@ export default function WalletPage() {
       <section className="flex flex-col gap-6 w-full">
         <div className="w-full">
           <Tabs defaultValue="deposit" className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 bg-slate-100 border border-slate-200 rounded-xl h-11 p-1">
-              <TabsTrigger value="deposit" className="rounded-lg data-[state=active]:bg-[#800000] data-[state=active]:text-white text-xs py-1">Deposit Money</TabsTrigger>
-              <TabsTrigger value="withdraw" className="rounded-lg data-[state=active]:bg-[#800000] data-[state=active]:text-white text-xs py-1">Withdrawal</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 bg-slate-100 border border-slate-200 rounded-xl h-11 p-1">
+              <TabsTrigger value="deposit" className="rounded-lg data-[state=active]:bg-[#800000] data-[state=active]:text-white text-xs py-1">Deposit</TabsTrigger>
+              <TabsTrigger value="withdraw" className="rounded-lg data-[state=active]:bg-[#800000] data-[state=active]:text-white text-xs py-1">Withdraw</TabsTrigger>
+              <TabsTrigger value="transfer" className="rounded-lg data-[state=active]:bg-[#800000] data-[state=active]:text-white text-xs py-1">Transfer</TabsTrigger>
             </TabsList>
 
             <TabsContent value="deposit" className="mt-4">
@@ -329,6 +352,44 @@ export default function WalletPage() {
                     className="w-full bg-[#800000] hover:bg-[#800000]/90 text-white font-bold py-6 rounded-xl shadow-sm"
                   >
                     Submit Withdrawal
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="transfer" className="mt-4">
+              <Card className="bg-gradient-to-r from-amber-50 to-orange-50/50 border border-amber-200/50 shadow-sm rounded-2xl">
+                <CardHeader>
+                  <CardTitle className="text-amber-950">Transfer to Main Balance</CardTitle>
+                  <CardDescription className="text-xs text-amber-800">Move your Winnings or Bonus to your Main Balance to play more games.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <Label className="text-amber-900 text-xs font-semibold">Transfer From</Label>
+                    <Tabs defaultValue="winning" className="w-full" onValueChange={(v) => setTransferSource(v as "winning" | "bonus")}>
+                      <TabsList className="grid w-full grid-cols-2 bg-slate-100 border border-slate-200 rounded-xl mb-4 p-1">
+                        <TabsTrigger value="winning" className="rounded-lg data-[state=active]:bg-[#800000] data-[state=active]:text-white text-xs">Winnings</TabsTrigger>
+                        <TabsTrigger value="bonus" className="rounded-lg data-[state=active]:bg-[#800000] data-[state=active]:text-white text-xs">Bonus</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="transfer-amount" className="text-amber-900 text-xs font-semibold">Amount to Transfer</Label>
+                    <Input
+                      id="transfer-amount"
+                      placeholder={`Max: ₹${transferSource === "winning" ? (user?.winningsBalance ?? 0) : (user?.bonusBalance ?? 0)}`}
+                      value={transferAmount}
+                      onChange={(e) => setTransferAmount(e.target.value)}
+                      className="bg-white border-amber-200/80 rounded-xl text-slate-800 py-6 shadow-sm"
+                    />
+                  </div>
+
+                  <Button
+                    onClick={handleTransfer}
+                    className="w-full bg-[#800000] hover:bg-[#800000]/90 text-white font-bold py-6 rounded-xl shadow-sm"
+                  >
+                    Transfer Funds
                   </Button>
                 </CardContent>
               </Card>

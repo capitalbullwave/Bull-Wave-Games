@@ -11,14 +11,16 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
+import { FirstDepositPopup } from "@/components/FirstDepositPopup";
 
 export default function LobbyPage() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user, language } = useAuthStore();
   const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("original");
+  const [activeCategory, setActiveCategory] = useState("");
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showDepositPopup, setShowDepositPopup] = useState(false);
 
   const banners = [
     "/banner1.jpg",
@@ -42,8 +44,24 @@ export default function LobbyPage() {
     if (mounted && !isAuthenticated) {
       toast.error("Please log in to access the gaming lobby.");
       router.push("/auth/login");
+    } else if (mounted && isAuthenticated && user) {
+      // Check if wallet balance is 0 and popup hasn't been suppressed today
+      if (user.walletBalance === 0) {
+        const suppressDate = localStorage.getItem("suppressFirstDepositDate");
+        const today = new Date().toDateString();
+        if (suppressDate !== today) {
+          setShowDepositPopup(true);
+        }
+      }
     }
-  }, [mounted, isAuthenticated, router]);
+  }, [mounted, isAuthenticated, user, router]);
+
+  const handleCloseDepositPopup = (dontShowToday: boolean) => {
+    if (dontShowToday) {
+      localStorage.setItem("suppressFirstDepositDate", new Date().toDateString());
+    }
+    setShowDepositPopup(false);
+  };
 
   if (!mounted || !isAuthenticated) {
     return (
@@ -55,20 +73,56 @@ export default function LobbyPage() {
 
 
 
+  // Translations
+  const t = {
+    popular: language === "hi" ? "लोकप्रिय" : "Popular",
+    lottery: language === "hi" ? "लॉटरी" : "Lottery",
+    casino: language === "hi" ? "कैसीनो" : "Casino",
+    slots: language === "hi" ? "स्लॉट्स" : "Slots",
+    sports: language === "hi" ? "खेल" : "Sports",
+    rummy: language === "hi" ? "रम्मी" : "Rummy",
+    fishing: language === "hi" ? "मछली पकड़ना" : "Fishing",
+    original: language === "hi" ? "मूल" : "Original",
+    dailyTask: language === "hi" ? "दैनिक कार्य" : "Daily Task",
+    activity: language === "hi" ? "गतिविधि" : "Activity",
+    invitation: language === "hi" ? "आमंत्रण" : "Invitation",
+    seeAll: language === "hi" ? "सभी देखें" : "See All",
+    highestBonus: language === "hi" ? "इतिहास में सबसे बड़ा बोनस" : "The highest bonus in history",
+    allGames: language === "hi" ? "सभी खेल" : "All Games",
+    winningInfo: language === "hi" ? "विजेता जानकारी" : "Winning Information",
+    received: language === "hi" ? "प्राप्त हुआ" : "Received",
+    earningsChart: language === "hi" ? "आज की कमाई का चार्ट" : "Today's earnings chart",
+    noticeText: language === "hi" ? "कृपया आधिकारिक बुल वेव गेम्स डोमेन नाम याद रखें। कभी भी अनधिकृत स्रोतों पर भरोसा न करें।" : "Please remember the official Bull Wave Games domain name. Never trust unauthorized sources.",
+    detail: language === "hi" ? "विवरण" : "Detail",
+    menu: {
+      language: language === "hi" ? "भाषा" : "Language",
+      announcement: language === "hi" ? "घोषणा" : "Announcement",
+      customerService: language === "hi" ? "24/7 ग्राहक सेवा" : "24/7 Customer service",
+      guide: language === "hi" ? "शुरुआती गाइड" : "Beginner's Guide",
+      about: language === "hi" ? "हमारे बारे में" : "About us",
+      downloadApp: language === "hi" ? "ऐप डाउनलोड करें" : "Download APP"
+    },
+    warning1: language === "hi" ? "मंच निष्पक्षता, न्याय और खुलेपन की वकालत करता है। हम मुख्य रूप से निष्पक्ष लॉटरी, ब्लॉकचेन गेम्स, लाइव कैसीनो और स्लॉट मशीन गेम संचालित करते हैं।" : "The platform advocates fairness, justice, and openness. We mainly operate fair lottery, blockchain games, live casinos, and slot machine games.",
+    warning2: language === "hi" ? "बुल वेव गेम्स में आपका स्वागत है, जो 10,000 से अधिक ऑनलाइन लाइव गेम डीलरों और स्लॉट गेम्स के साथ काम करता है, जो सभी सत्यापित निष्पक्ष गेम हैं।" : "Welcome to Bull Wave Games works with more than 10,000 online live game dealers and slot games, all of which are verified fair games.",
+    warning3: language === "hi" ? "बुल वेव गेम्स तेज जमा और निकासी का समर्थन करता है, और आपकी यात्रा की प्रतीक्षा कर रहा है।" : "Welcome to Bull Wave Games supports fast deposit and withdrawal, and looks forward to your visit.",
+    warning4: language === "hi" ? "जुआ खेलने की लत लग सकती है, कृपया समझदारी से खेलें।" : "Gambling can be addictive, please play rationally.",
+    warning5: language === "hi" ? "बुल वेव गेम्स केवल 18 वर्ष से अधिक आयु के ग्राहकों को स्वीकार करता है।" : "Welcome to Bull Wave Games only accepts customers above the age of 18."
+  };
+
   const categories = [
-    { id: "popular", name: "Popular", image: "/assets/categories/popular.png", span: "col-span-3 aspect-[2/1]" },
-    { id: "lottery", name: "Lottery", image: "/assets/categories/lottery.png", span: "col-span-3 aspect-[2/1]" },
-    { id: "casino", name: "Casino", image: "/assets/categories/casino.png", span: "col-span-2 aspect-[4/3]" },
-    { id: "slots", name: "Slots", image: "/assets/categories/slots.png", span: "col-span-2 aspect-[4/3]" },
-    { id: "sports", name: "Sports", image: "/assets/categories/sports.png", span: "col-span-2 aspect-[4/3]" },
-    { id: "rummy", name: "Rummy", image: "/assets/categories/rummy.png", span: "col-span-2 aspect-[4/3]" },
-    { id: "fishing", name: "Fishing", image: "/assets/categories/fishing.png", span: "col-span-2 aspect-[4/3]" },
-    { id: "original", name: "Original", image: "/assets/categories/original.png", span: "col-span-2 aspect-[4/3]" },
+    { id: "popular", name: t.popular, image: "/assets/categories/popular.png", span: "col-span-3 aspect-[2/1]" },
+    { id: "lottery", name: t.lottery, image: "/assets/categories/lottery.png", span: "col-span-3 aspect-[2/1]" },
+    { id: "casino", name: t.casino, image: "/assets/categories/casino.png", span: "col-span-2 aspect-[4/3]" },
+    { id: "slots", name: t.slots, image: "/assets/categories/slots.png", span: "col-span-2 aspect-[4/3]" },
+    { id: "sports", name: t.sports, image: "/assets/categories/sports.png", span: "col-span-2 aspect-[4/3]" },
+    { id: "rummy", name: t.rummy, image: "/assets/categories/rummy.png", span: "col-span-2 aspect-[4/3]" },
+    { id: "fishing", name: t.fishing, image: "/assets/categories/fishing.png", span: "col-span-2 aspect-[4/3]" },
+    { id: "original", name: t.original, image: "/assets/categories/original.png", span: "col-span-2 aspect-[4/3]" },
   ];
 
   return (
     <div 
-      className="space-y-4 animate-in fade-in duration-500 min-h-screen pb-6"
+      className="space-y-4 animate-in fade-in duration-500 min-h-screen pb-48"
       style={{
         backgroundImage: "linear-gradient(to bottom, rgba(248, 250, 252, 0.94), rgba(248, 250, 252, 0.97)), url('/hero-banner.png')",
         backgroundAttachment: "fixed",
@@ -76,7 +130,11 @@ export default function LobbyPage() {
         backgroundPosition: "center",
       }}
     >
-      
+      <FirstDepositPopup 
+        isOpen={showDepositPopup} 
+        onClose={handleCloseDepositPopup} 
+      />
+
       {/* 1. Carousel Banner Slider */}
       <section className="relative w-full rounded-2xl overflow-hidden mx-auto px-4 mt-2 select-none">
         <div 
@@ -123,34 +181,31 @@ export default function LobbyPage() {
             transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
             className="text-[11px] font-semibold text-slate-700 whitespace-nowrap absolute"
           >
-            Please remember the official Bull Wave Games domain name. Never trust unauthorized sources.
+            {t.noticeText}
           </motion.div>
         </div>
         <button className="bg-[#800000] text-white text-[10px] font-bold px-3 py-1 rounded-full shrink-0 flex items-center gap-1">
-          Detail
+          {t.detail}
         </button>
       </section>
 
-      {/* 3. Quick Actions */}
-      <section className="mx-4 grid grid-cols-3 gap-2">
-        {[
-          { title: "Daily Task", icon: Gift, bg: "bg-orange-100", text: "text-orange-600" },
-          { title: "Activity", icon: Trophy, bg: "bg-rose-100", text: "text-rose-600" },
-          { title: "Invitation", icon: Gamepad2, bg: "bg-blue-100", text: "text-blue-600" }
-        ].map((item, idx) => (
-          <div key={idx} className={`${item.bg} rounded-xl p-2.5 flex flex-col items-center justify-center gap-1 hover:scale-[1.02] active:scale-95 transition-all shadow-sm cursor-pointer`}>
-            <item.icon size={22} className={item.text} />
-            <span className="text-[10px] font-bold text-slate-800">{item.title}</span>
-          </div>
-        ))}
-      </section>
+
 
       {/* 4. Category Grid Navigation */}
       <section className="mx-4 grid grid-cols-6 gap-2">
         {categories.map((cat) => (
           <button
             key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
+            onClick={() => {
+              setActiveCategory(cat.id);
+              // Wait for React to render the new category section, then scroll to it
+              setTimeout(() => {
+                const el = document.getElementById(`category-${cat.id}`);
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }, 150);
+            }}
             className={`relative overflow-hidden rounded-xl shadow-sm transition-transform active:scale-95 ${cat.span} ${activeCategory === cat.id ? 'ring-2 ring-slate-800 ring-offset-1' : ''}`}
           >
             <img src={cat.image} alt={cat.name} className="absolute inset-0 w-full h-full object-cover" />
@@ -163,9 +218,10 @@ export default function LobbyPage() {
 
 
       {/* Category Sections Builder */}
-      {categories.filter(c => c.id === activeCategory).map(category => {
+      {categories.map(category => {
         const fetchId = category.id === "popular" ? "original" : category.id === "rummy" ? "rummy" : category.id;
-        const games = MOCK_GAMES.filter(g => g.category === fetchId);
+        // Show all games if this is the active category, otherwise limit to 6
+        const games = MOCK_GAMES.filter(g => g.category === fetchId).slice(0, activeCategory === category.id ? undefined : 6); 
         if (games.length === 0) return null;
 
         return (
@@ -175,7 +231,7 @@ export default function LobbyPage() {
                 <h3 className="text-sm font-black text-slate-800 capitalize">{category.name}</h3>
               </div>
               <button className="text-[10px] text-slate-500 font-bold flex items-center hover:text-[#800000]">
-                See All <ArrowRight size={10} className="ml-0.5" />
+                {t.seeAll} <ArrowRight size={10} className="ml-0.5" />
               </button>
             </div>
 
@@ -202,7 +258,7 @@ export default function LobbyPage() {
 
                       {/* Highest Bonus */}
                       <div className="bg-slate-50 rounded-md px-2 py-2 flex items-center justify-between mt-2 border border-slate-100">
-                        <span className="text-[10px] text-slate-500 font-medium">The highest bonus in history</span>
+                        <span className="text-[10px] text-slate-500 font-medium">{t.highestBonus}</span>
                         <div className="w-px h-3 bg-slate-200 mx-2" />
                         <span className="text-[11px] font-black text-[#ff8e3c]">
                           {(game as any).highestBonus || "₹0.00"}
@@ -258,7 +314,7 @@ export default function LobbyPage() {
 
                     <div className="flex justify-center mt-1">
                       <button className="bg-white border border-[#ff4757] text-[#ff4757] text-xs font-bold px-8 py-2 rounded-full shadow-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 w-3/4 max-w-[250px]">
-                        <Gamepad2 size={14} className="text-[#ff4757]" /> All Games
+                        <Gamepad2 size={14} className="text-[#ff4757]" /> {t.allGames}
                       </button>
                     </div>
                   </div>
@@ -288,7 +344,7 @@ export default function LobbyPage() {
       {/* 6. Winning Information */}
       <section className="px-4 space-y-3">
         <div className="flex items-center gap-1.5 border-l-4 border-[#800000] pl-2">
-          <h3 className="text-sm font-black text-slate-800">Winning Information</h3>
+          <h3 className="text-sm font-black text-slate-800">{t.winningInfo}</h3>
         </div>
         <div className="bg-white rounded-xl shadow-sm h-48 overflow-hidden relative">
           <motion.div 
@@ -303,7 +359,7 @@ export default function LobbyPage() {
                   <img src={winner.avatar} className="w-8 h-8 rounded-full bg-amber-100" />
                   <div>
                     <p className="text-[10px] font-bold text-slate-700">{winner.name}</p>
-                    <p className="text-[9px] text-slate-500">Received ₹{winner.amount.toLocaleString()}</p>
+                    <p className="text-[9px] text-slate-500">{t.received} ₹{winner.amount.toLocaleString()}</p>
                   </div>
                 </div>
                 <div className="w-8 h-8 rounded bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white shrink-0">
@@ -318,7 +374,7 @@ export default function LobbyPage() {
       {/* 7. Leaderboard / Today's earnings chart */}
       <section className="px-4 space-y-3 pt-4">
         <div className="flex items-center gap-1.5 border-l-4 border-[#800000] pl-2">
-          <h3 className="text-sm font-black text-slate-800">Today's earnings chart</h3>
+          <h3 className="text-sm font-black text-slate-800">{t.earningsChart}</h3>
         </div>
         
         {/* Podium */}
@@ -428,28 +484,28 @@ export default function LobbyPage() {
           <div className="flex items-start gap-1.5">
             <span className="text-[#ff4757] text-[10px] mt-0.5 shrink-0">◆</span>
             <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">
-              The platform advocates fairness, justice, and openness. We mainly operate fair lottery, blockchain games, live casinos, and slot machine games.
+              {t.warning1}
             </p>
           </div>
           <div className="flex items-start gap-1.5">
             <span className="text-[#ff4757] text-[10px] mt-0.5 shrink-0">◆</span>
             <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">
-              Welcome to Bull Wave Games works with more than 10,000 online live game dealers and slot games, all of which are verified fair games.
+              {t.warning2}
             </p>
           </div>
           <div className="flex items-start gap-1.5">
             <span className="text-[#ff4757] text-[10px] mt-0.5 shrink-0">◆</span>
             <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">
-              Welcome to Bull Wave Games supports fast deposit and withdrawal, and looks forward to your visit.
+              {t.warning3}
             </p>
           </div>
           
           <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 bg-rose-50/50 p-3 rounded-xl border-l-2 border-rose-500">
             <p className="text-[10px] text-rose-600 leading-relaxed font-bold">
-              Gambling can be addictive, please play rationally.
+              {t.warning4}
             </p>
             <p className="text-[10px] text-rose-600 leading-relaxed font-bold">
-              Welcome to Bull Wave Games only accepts customers above the age of 18.
+              {t.warning5}
             </p>
           </div>
         </div>
@@ -459,17 +515,23 @@ export default function LobbyPage() {
         {/* Menu List */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden divide-y divide-slate-100 mb-6">
           {[
-            { name: "Language", icon: Globe, color: "text-blue-500", path: "/language" },
-            { name: "Announcement", icon: Volume2, color: "text-rose-500", path: "/announcement" },
-            { name: "24/7 Customer service", icon: Headphones, color: "text-emerald-500", path: "/support" },
-            { name: "Beginner's Guide", icon: BookOpen, color: "text-amber-500", path: "/guide" },
-            { name: "About us", icon: Info, color: "text-indigo-500", path: "/about" },
-            { name: "Download APP", icon: Download, color: "text-purple-500", path: "/download" }
+            { name: t.menu.language, icon: Globe, color: "text-blue-500", path: "/language" },
+            { name: t.menu.announcement, icon: Volume2, color: "text-rose-500", path: "/announcement" },
+            { name: t.menu.customerService, icon: Headphones, color: "text-emerald-500", path: "/support" },
+            { name: t.menu.guide, icon: BookOpen, color: "text-amber-500", path: "/guide" },
+            { name: t.menu.about, icon: Info, color: "text-indigo-500", path: "/about" },
+            { name: t.menu.downloadApp, icon: Download, color: "text-purple-500", path: "/download" }
           ].map((item) => (
             <button
               key={item.name}
               onClick={() => {
-                if (item.path === "/about") {
+                if (item.path === "/language") {
+                  router.push(item.path);
+                } else if (item.path === "/announcement") {
+                  router.push(item.path);
+                } else if (item.path === "/guide") {
+                  router.push(item.path);
+                } else if (item.path === "/about") {
                   router.push(item.path);
                 } else if (item.path === "/support") {
                   router.push(item.path);

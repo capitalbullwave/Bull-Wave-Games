@@ -70,28 +70,28 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen w-full bg-white flex justify-center items-center overflow-hidden font-sans">
+    <div className="min-h-screen w-full bg-[#8b919e] flex justify-center items-center overflow-hidden font-sans">
       
       {/* Centered Phone Wrapper */}
-      <div className="w-full max-w-[450px] h-screen bg-[#fafafb] text-slate-800 flex flex-col relative shadow-[0_0_50px_rgba(0,0,0,0.15)] border-x border-glass-border overflow-hidden">
+      <div className="w-full sm:w-[400px] h-screen bg-[#fafafb] text-slate-800 flex flex-col relative shadow-[0_0_50px_rgba(0,0,0,0.25)] border-x border-slate-300/30 overflow-hidden">
         
         {/* Top Navbar */}
-        {pathname !== "/about" && (
+        {pathname !== "/about" && pathname !== "/tournaments" && (
           <header className="h-14 bg-white flex items-center justify-between px-4 flex-shrink-0 z-30 border-b border-glass-border shadow-sm">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/lobby")}>
-            <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
-            <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave</span>
-          </div>
+            <Link href="/lobby" className="flex items-center gap-2 cursor-pointer">
+              <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
+              <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave</span>
+            </Link>
 
           <div className="flex items-center gap-3">
             {/* Wallet balance */}
-            <div 
-              onClick={() => router.push("/wallet")}
+            <Link 
+              href="/wallet"
               className="flex items-center gap-1.5 bg-[#800000]/10 border border-[#800000]/20 px-3 py-1 rounded-full cursor-pointer hover:bg-[#800000]/20 transition-all"
             >
               <Wallet size={14} className="text-[#800000]" />
               <span className="text-xs font-bold text-[#800000]">₹{(user?.walletBalance ?? 14500).toLocaleString()}</span>
-            </div>
+            </Link>
 
             <button 
               onClick={() => {
@@ -109,7 +109,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Dynamic Page Content */}
         <main className={`flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${pathname === "/about" ? "pb-6" : "pb-24"}`}>
-          <div className="p-4 space-y-6">
+          <div className={pathname === "/tournaments" ? "" : "p-4 space-y-6"}>
             {children}
           </div>
         </main>
@@ -118,25 +118,25 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         {pathname !== "/about" && (
           <nav className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-glass-border z-40 px-2 flex items-center justify-between shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
             
-            <button
-              onClick={() => router.push("/lobby")}
+            <Link
+              href="/lobby"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
                 pathname === "/lobby" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <Gamepad2 size={20} />
               <span className="text-[10px] font-bold">Home</span>
-            </button>
+            </Link>
 
-            <button
-              onClick={() => router.push("/tournaments")}
+            <Link
+              href="/tournaments"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
                 pathname === "/tournaments" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <Trophy size={20} />
               <span className="text-[10px] font-bold">Activity</span>
-            </button>
+            </Link>
 
             {/* Central Popping Get ₹500 Action */}
             <div className="relative -top-5 flex flex-col items-center">
@@ -167,25 +167,25 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </span>
             </div>
 
-            <button
-              onClick={() => router.push("/referrals")}
+            <Link
+              href="/referrals"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
                 pathname === "/referrals" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <Users size={20} />
               <span className="text-[10px] font-bold">Promotion</span>
-            </button>
+            </Link>
 
-            <button
-              onClick={() => router.push("/profile")}
+            <Link
+              href="/profile"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
                 pathname === "/profile" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <UserCircle size={20} />
               <span className="text-[10px] font-bold">Account</span>
-            </button>
+            </Link>
 
           </nav>
         )}

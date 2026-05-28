@@ -13,6 +13,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Gamepad2, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const resetPasswordSchema = zod.object({
   code: zod.string().min(6, "Verification code must be 6 digits"),
@@ -26,14 +29,25 @@ const resetPasswordSchema = zod.object({
 type ResetPasswordSchemaType = zod.infer<typeof resetPasswordSchema>;
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-amber-50 flex items-center justify-center">Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+function ResetPasswordContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const emailParam = searchParams.get("email") || "";
+  const { resetPassword, isLoading } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ResetPasswordSchemaType>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -44,10 +58,18 @@ export default function ResetPasswordPage() {
   });
 
   const onSubmit = async (data: ResetPasswordSchemaType) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSuccess(true);
-    toast.success("Password reset completed!");
+    if (!emailParam) {
+      toast.error("Missing email context. Please start forgot password flow again.");
+      router.push("/auth/forgot-password");
+      return;
+    }
+    const success = await resetPassword(emailParam, data.code, data.password);
+    if (success) {
+      setIsSuccess(true);
+      toast.success("Password reset completed!");
+    } else {
+      toast.error("Failed to reset password. Please check your verification code.");
+    }
   };
 
   if (isSuccess) {
@@ -159,10 +181,10 @@ export default function ResetPasswordPage() {
 
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isLoading}
                 className="w-full bg-[#800000] hover:bg-[#800000]/90 text-white font-bold transition-all py-6 rounded-xl text-xs shadow-sm mt-2"
               >
-                {isSubmitting ? "Resetting..." : "Reset Password"}
+                {isLoading ? "Resetting..." : "Reset Password"}
               </Button>
             </form>
           </CardContent>

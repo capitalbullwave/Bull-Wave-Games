@@ -41,6 +41,8 @@ interface AuthState {
   otpSentTo: string | null;
   isLoading: boolean;
   error: string | null;
+  language: string;
+  setLanguage: (lang: string) => void;
   login: (identity: string, password: string) => Promise<boolean>;
   signup: (username: string, email: string, mobile: string, fullName: string, password: string) => Promise<boolean>;
   sendOTP: (mobile: string) => Promise<boolean>;
@@ -49,8 +51,11 @@ interface AuthState {
   updateProfile: (updates: Partial<User>) => Promise<void>;
   depositFunds: (amount: number) => Promise<void>;
   withdrawFunds: (amount: number) => Promise<boolean>;
+  transferFunds: (amount: number, source: "winning" | "bonus") => Promise<boolean>;
   deductEntryFee: (amount: number) => Promise<boolean>;
   setPassword: (password: string) => Promise<boolean>;
+  forgotPassword: (mobileOrEmail: string) => Promise<boolean>;
+  resetPassword: (mobileOrEmail: string, otp: string, newPassword: string) => Promise<boolean>;
   clearError: () => void;
 }
 
@@ -63,38 +68,54 @@ export const useAuthStore = create<AuthState>()(
       otpSentTo: null,
       isLoading: false,
       error: null,
+      language: "en",
+      setLanguage: (lang) => set({ language: lang }),
       clearError: () => set({ error: null }),
 
       login: async (identity, password) => {
         set({ isLoading: true, error: null });
 
-        const cleanIdentity = identity.trim().toLowerCase();
-        const cleanPassword = password.trim();
+        try {
+          const tokenResp = await apiRequest("/auth/login", {
+            method: "POST",
+            body: JSON.stringify({
+              username_or_mobile: identity.trim().toLowerCase(),
+              password: password.trim(),
+            }),
+          });
 
-        // Hardcoded frontend-only login for testing
-        const mockUser: User = {
-          id: "u_mock_1",
-          username: cleanIdentity.split("@")[0] || "User",
-          email: cleanIdentity.includes("@") ? cleanIdentity : "",
-          mobile: !cleanIdentity.includes("@") ? cleanIdentity : "8102133992",
-          fullName: "Rohit",
-          dob: "1990-01-01",
-          gender: "male",
-          address: "Mock Address",
-          avatarUrl: `https://api.dicebear.com/7.x/adventurer/svg?seed=${cleanIdentity}`,
-          kycStatus: "verified",
-          walletBalance: 10000,
-          winningsBalance: 5000,
-          bonusBalance: 500,
-        };
+          const token = tokenResp.access_token;
+          set({ token });
 
-        set({
-          isAuthenticated: true,
-          user: mockUser,
-          token: "mock-jwt-token-12345",
-          isLoading: false,
-        });
-        return true;
+          const profile = await apiRequest("/users/me");
+
+          const mappedUser: User = {
+            id: String(profile.id || "u_new"),
+            username: profile.username,
+            email: profile.email || "",
+            mobile: profile.mobile || "",
+            fullName: profile.profile?.full_name || profile.username,
+            dob: profile.profile?.dob || "",
+            gender: profile.profile?.gender || "male",
+            address: profile.profile?.address || "",
+            avatarUrl: profile.profile?.avatar_url || `https://api.dicebear.com/7.x/adventurer/svg?seed=${profile.username}`,
+            kycStatus: profile.kyc?.status || "unverified",
+            walletBalance: (profile.wallet?.main_balance || 0) + (profile.wallet?.winning_balance || 0) + (profile.wallet?.bonus_balance || 0),
+            winningsBalance: profile.wallet?.winning_balance || 0,
+            bonusBalance: profile.wallet?.bonus_balance || 0,
+          };
+
+          set({
+            isAuthenticated: true,
+            user: mappedUser,
+            token: token,
+            isLoading: false,
+          });
+          return true;
+        } catch (err: any) {
+          set({ error: err.message, isLoading: false, token: null });
+          return false;
+        }
       },
 
       signup: async (username, email, mobile, fullName, password) => {
@@ -111,6 +132,16 @@ export const useAuthStore = create<AuthState>()(
               password: password,
             }),
           });
+          
+          // 2. Request backend to send OTP for this new user
+          await apiRequest("/auth/resend-otp", {
+            method: "POST",
+            body: JSON.stringify({
+              mobile_or_email: mobile,
+              purpose: "register",
+            }),
+          });
+
           set({
             otpSentTo: mobile,
             isLoading: false,
@@ -155,40 +186,7 @@ export const useAuthStore = create<AuthState>()(
             }),
           });
 
-          // Post-verification auto login
-          const tokenResp = await apiRequest("/auth/login", {
-            method: "POST",
-            body: JSON.stringify({
-              username_or_mobile: mobile,
-              password: "password123",
-            }),
-          });
-
-          const token = tokenResp.access_token;
-          set({ token });
-
-          const profile = await apiRequest("/users/me");
-
-          const mappedUser: User = {
-            id: String(profile.id || "u_new"),
-            username: profile.username,
-            email: profile.email,
-            mobile: profile.mobile,
-            fullName: profile.profile?.full_name || profile.username,
-            dob: profile.profile?.dob || "",
-            gender: profile.profile?.gender || "male",
-            address: profile.profile?.address || "",
-            avatarUrl: profile.profile?.avatar_url || `https://api.dicebear.com/7.x/adventurer/svg?seed=${profile.username}`,
-            kycStatus: profile.kyc?.status || "unverified",
-            walletBalance: (profile.wallet?.main_balance || 0) + (profile.wallet?.winning_balance || 0) + (profile.wallet?.bonus_balance || 0),
-            winningsBalance: profile.wallet?.winning_balance || 0,
-            bonusBalance: profile.wallet?.bonus_balance || 0,
-          };
-
           set({
-            isAuthenticated: true,
-            user: mappedUser,
-            token: token,
             otpSentTo: null,
             isLoading: false,
           });
@@ -351,8 +349,36 @@ export const useAuthStore = create<AuthState>()(
               },
             });
             return true;
-          } catch (err) {
+          } catch (err: any) {
             console.error("Live withdrawal failed", err);
+            return false;
+          }
+        }
+        return false;
+      },
+
+      transferFunds: async (amount, source) => {
+        const currentUser = get().user;
+        if (currentUser) {
+          try {
+            await apiRequest("/wallet/transfer", {
+              method: "POST",
+              body: JSON.stringify({ amount, source_wallet: source, target_wallet: "main" }),
+            });
+
+            const balances = await apiRequest("/wallet/balance");
+            set({
+              user: {
+                ...currentUser,
+                walletBalance: (balances.main_balance || 0) + (balances.winning_balance || 0) + (balances.bonus_balance || 0),
+                winningsBalance: balances.winning_balance || 0,
+                bonusBalance: balances.bonus_balance || 0,
+              },
+            });
+            return true;
+          } catch (err: any) {
+            console.error("Transfer failed", err);
+            return false;
           }
         }
         return false;
@@ -400,6 +426,41 @@ export const useAuthStore = create<AuthState>()(
           return false;
         }
       },
+
+      forgotPassword: async (mobileOrEmail: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          const resp = await apiRequest("/auth/forgot-password", {
+            method: "POST",
+            body: JSON.stringify({ mobile_or_email: mobileOrEmail }),
+          });
+          console.log(`[Sandbox OTP Hint]: Reset code sent -> ${resp.otp_sandbox_hint}`);
+          set({ isLoading: false });
+          return true;
+        } catch (err: any) {
+          set({ error: err.message, isLoading: false });
+          return false;
+        }
+      },
+
+      resetPassword: async (mobileOrEmail: string, otp: string, newPassword: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          await apiRequest("/auth/reset-password", {
+            method: "POST",
+            body: JSON.stringify({
+              mobile_or_email: mobileOrEmail,
+              otp_code: otp,
+              new_password: newPassword,
+            }),
+          });
+          set({ isLoading: false });
+          return true;
+        } catch (err: any) {
+          set({ error: err.message, isLoading: false });
+          return false;
+        }
+      },
     }),
     {
       name: "bullwave-auth-storage",
@@ -408,6 +469,7 @@ export const useAuthStore = create<AuthState>()(
         isAuthenticated: state.isAuthenticated,
         user: state.user,
         token: state.token,
+        language: state.language,
         // specifically NOT persisting 'error' or 'isLoading'
       }),
     }

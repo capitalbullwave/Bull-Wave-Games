@@ -15,9 +15,10 @@ import {
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { apiRequest } from "@/lib/api";
 
 export default function ProfilePage() {
-  const { user, updateProfile, logout } = useAuthStore();
+  const { user, updateProfile, logout, language, setLanguage } = useAuthStore();
   const router = useRouter();
   
   // Profile Form States
@@ -31,6 +32,35 @@ export default function ProfilePage() {
   const [bankIfsc, setBankIfsc] = useState("SBIN0001234");
   const [kycDoc, setKycDoc] = useState<File | null>(null);
   const [giftCode, setGiftCode] = useState("");
+  
+  // History State
+  const [depositHistory, setDepositHistory] = useState<any[]>([]);
+  const [withdrawHistory, setWithdrawHistory] = useState<any[]>([]);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+
+  // Fetch History Effect
+  useEffect(() => {
+    const fetchHistory = async () => {
+      setIsLoadingHistory(true);
+      try {
+        if (activeModal === "depositHistory") {
+          const resp = await apiRequest("/wallet/deposit/history?page=1&size=20");
+          setDepositHistory(resp.data?.items || []);
+        } else if (activeModal === "withdrawHistory") {
+          const resp = await apiRequest("/wallet/withdraw/history?page=1&size=20");
+          setWithdrawHistory(resp.data?.items || []);
+        }
+      } catch (err: any) {
+        toast.error(err.message || "Failed to load history");
+      } finally {
+        setIsLoadingHistory(false);
+      }
+    };
+    
+    if (activeModal === "depositHistory" || activeModal === "withdrawHistory") {
+      fetchHistory();
+    }
+  }, [activeModal]);
 
   // Dynamic Scroll-to-Top hook on modal subpage transition
   useEffect(() => {
@@ -225,7 +255,6 @@ export default function ProfilePage() {
                   </button>
                 </div>
               </div>
-
             </div>
 
             {/* Security Information Title */}
@@ -409,112 +438,67 @@ export default function ProfilePage() {
         pageTitle = "Announcements";
         bodyContent = (
           <div className="px-4 py-5 space-y-4">
-            {[
-              { id: 1, title: "Super Win Bonus", desc: "Double payouts on all classic color predictions during our weekly tournament weekend! Check brackets under tournaments tab.", date: "May 18, 2026", icon: <Megaphone size={16} />, color: "bg-red-500/10 text-red-600" },
-              { id: 2, title: "Instant Withdrawals Active", desc: "Fast-track cashouts are now processing dynamically within 2 minutes via automated banking partners.", date: "May 15, 2026", icon: <Wallet size={16} />, color: "bg-blue-500/10 text-blue-600" }
-            ].map((a) => (
-              <div key={a.id} className="bg-white rounded-3xl p-5 shadow-sm border border-slate-100/85 space-y-3">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-8 h-8 rounded-xl ${a.color} flex items-center justify-center`}>
-                      {a.icon}
-                    </div>
-                    <span className="font-black text-xs text-slate-800">{a.title}</span>
-                  </div>
-                  <span className="text-[9px] text-slate-400 font-bold">{a.date}</span>
-                </div>
-                <p className="text-[10px] text-slate-500 font-bold leading-relaxed border-t border-slate-50 pt-2.5">{a.desc}</p>
-              </div>
-            ))}
+            <div className="text-center text-slate-400 py-10">Loading announcements...</div>
           </div>
         );
       } else if (activeModal === "notifications") {
         pageTitle = "Notification";
         bodyContent = (
           <div className="px-4 py-5 space-y-3">
-            {[
-              { id: 1, title: "Welcome Reward!", desc: "₹100 has been credited as signup bonus. Play live clusters now!", time: "2 hrs ago", new: true },
-              { id: 2, title: "KYC Verified Successfully", desc: "Congratulations! Your identity has been verified. VIP withdrawals are active.", time: "1 day ago", new: true },
-              { id: 3, title: "Maintenance Alert Done", desc: "Platform nodes successfully upgraded. Lower platform fees applied.", time: "3 days ago", new: false },
-            ].map((n) => (
-              <div key={n.id} className={`p-4 bg-white rounded-3xl border transition-all shadow-sm flex items-start gap-3 ${n.new ? "border-red-200" : "border-slate-100"}`}>
-                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${n.new ? "bg-red-500/10 text-red-500" : "bg-slate-100 text-slate-450"}`}>
-                  <Bell size={16} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start mb-1">
-                    <span className="font-black text-xs text-slate-850 truncate flex items-center gap-1.5">
-                      {n.new && <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />}
-                      {n.title}
-                    </span>
-                    <span className="text-[9px] text-slate-400 font-bold shrink-0">{n.time}</span>
-                  </div>
-                  <p className="text-[10px] text-slate-550 leading-relaxed font-bold">{n.desc}</p>
-                </div>
-              </div>
-            ))}
+            <div className="text-center text-slate-400 py-10">Loading notifications...</div>
           </div>
         );
-      } else if (activeModal === "guide") {
-        pageTitle = "Beginner's Guide";
-        bodyContent = (
-          <div className="px-4 py-5 space-y-4">
-            <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm space-y-4">
-              <div className="flex items-center gap-2 pb-2 border-b border-slate-50">
-                <div className="w-1 h-4 bg-red-500 rounded-full shrink-0" />
-                <h4 className="font-black text-slate-800 text-xs">
-                  Welcome to Bull Wave Games!
-                </h4>
-              </div>
-              <p className="text-[10px] text-slate-400 font-bold leading-relaxed">
-                Bull Wave is a premium gaming prediction cluster where players multiply their entries. Here is how to play:
-              </p>
-              
-              <div className="space-y-4 pt-2">
-                {[
-                  { step: "1", title: "Choose a Game", desc: "Pick games like Wingo, Aviator, or Color Prediction from the main Lobby." },
-                  { step: "2", title: "Select Entry", desc: "Submit your preferred fee and choose color, size or number groups." },
-                  { step: "3", title: "Watch Countdown", desc: "Results are calculated in real-time. Winners receive instant, automated cashout multipliers!" }
-                ].map((s) => (
-                  <div key={s.step} className="flex gap-3">
-                    <div className="w-6 h-6 rounded-full bg-red-500/10 text-red-500 font-black text-xs flex items-center justify-center shrink-0">
-                      {s.step}
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-slate-850">{s.title}</p>
-                      <p className="text-[10px] text-slate-500 font-bold mt-0.5 leading-relaxed">{s.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
+
       } else if (activeModal === "language") {
-        pageTitle = "Language";
+        pageTitle = language === "hi" ? "भाषा" : "Language";
         bodyContent = (
-          <div className="px-4 py-5 space-y-3">
-            {[
-              { code: "en", name: "English (US)", active: true },
-              { code: "hi", name: "हिन्दी (Hindi)", active: false },
-              { code: "te", name: "తెలుగు (Telugu)", active: false },
-              { code: "ta", name: "தமிழ் (Tamil)", active: false },
-            ].map((lang) => (
+          <div className="px-4 py-5">
+            <div className="bg-white rounded-xl overflow-hidden shadow-sm">
               <button
                 type="button"
-                key={lang.code}
                 onClick={() => {
-                  toast.success(`Language changed to ${lang.name}`);
-                  setActiveModal(null);
+                  setLanguage("en");
+                  toast.success(`Language changed to English`);
                 }}
-                className={`w-full p-4 rounded-3xl border text-left flex justify-between items-center transition-all shadow-sm ${
-                  lang.active ? "border-[#ff6b5a] bg-[#ff6b5a]/5 text-[#ff6b5a] font-black" : "border-slate-100 bg-white text-slate-750 hover:bg-slate-50"
-                }`}
+                className="w-full px-4 py-4 flex justify-between items-center bg-white border-b border-slate-100 hover:bg-slate-50 transition-colors"
               >
-                <span className="text-xs font-black">{lang.name}</span>
-                {lang.active && <CheckCircle2 size={16} className="text-[#ff6b5a]" />}
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 shadow-sm border border-slate-200">
+                    <img src="https://flagcdn.com/w40/us.png" alt="USA" className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-sm text-slate-800">English</span>
+                </div>
+                {language === "en" ? (
+                  <div className="w-5 h-5 rounded-full bg-[#ff4d4d] flex items-center justify-center text-white shrink-0">
+                    <CheckCircle2 size={14} className="stroke-[3]" />
+                  </div>
+                ) : (
+                  <div className="w-5 h-5 rounded-full border border-slate-300 shrink-0" />
+                )}
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setLanguage("hi");
+                  toast.success(`भाषा बदलकर हिंदी कर दी गई है`);
+                }}
+                className="w-full px-4 py-4 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 shadow-sm border border-slate-200">
+                    <img src="https://flagcdn.com/w40/in.png" alt="India" className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-sm text-slate-800">हिंदी</span>
+                </div>
+                {language === "hi" ? (
+                  <div className="w-5 h-5 rounded-full bg-[#ff4d4d] flex items-center justify-center text-white shrink-0">
+                    <CheckCircle2 size={14} className="stroke-[3]" />
+                  </div>
+                ) : (
+                  <div className="w-5 h-5 rounded-full border border-slate-300 shrink-0" />
+                )}
+              </button>
+            </div>
           </div>
         );
       } else if (activeModal === "gifts") {
@@ -568,16 +552,29 @@ export default function ProfilePage() {
         pageTitle = "Deposit Transactions";
         bodyContent = (
           <div className="px-4 py-5 space-y-3">
-            {[
-              { id: 101, amount: "₹5,000.00", status: "Success", ref: "TXN5819", date: "Today, 11:20 AM" },
-              { id: 102, amount: "₹1,000.00", status: "Success", ref: "TXN4910", date: "May 16, 2026" },
-            ].map((txn) => (
+            {isLoadingHistory ? (
+              <div className="text-center text-slate-400 py-10 flex flex-col items-center gap-2">
+                <div className="w-6 h-6 border-2 border-rose-500 border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-xs font-bold uppercase tracking-wider">Loading...</span>
+              </div>
+            ) : depositHistory.length === 0 ? (
+              <div className="text-center text-slate-400 py-10 text-xs font-bold uppercase tracking-wider">No deposits found</div>
+            ) : depositHistory.map((txn) => (
               <div key={txn.id} className="p-4 bg-white border border-slate-100 rounded-3xl flex justify-between items-center shadow-sm">
                 <div className="space-y-0.5">
-                  <p className="text-xs font-black text-slate-800">{txn.amount}</p>
-                  <span className="text-[9px] text-slate-400 font-bold block">{txn.date} | Ref: {txn.ref}</span>
+                  <p className="text-xs font-black text-slate-800">₹{txn.amount?.toFixed(2)}</p>
+                  <span className="text-[9px] text-slate-400 font-bold block">
+                    {new Date(txn.created_at || Date.now()).toLocaleString("en-IN", {
+                      month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"
+                    })} 
+                    {txn.gateway_tx_id ? ` | Ref: ${txn.gateway_tx_id}` : ""}
+                  </span>
                 </div>
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">{txn.status}</span>
+                <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide ${
+                  txn.status?.toLowerCase() === "pending" ? "bg-orange-500/10 text-orange-600" :
+                  txn.status?.toLowerCase() === "failed" ? "bg-red-500/10 text-red-600" :
+                  "bg-emerald-500/10 text-emerald-600"
+                }`}>{txn.status}</span>
               </div>
             ))}
           </div>
@@ -586,17 +583,28 @@ export default function ProfilePage() {
         pageTitle = "Withdrawal Settlements";
         bodyContent = (
           <div className="px-4 py-5 space-y-3">
-            {[
-              { id: 201, amount: "₹2,500.00", status: "Processing", ref: "WD9218", date: "Today, 02:45 PM" },
-              { id: 202, amount: "₹4,000.00", status: "Completed", ref: "WD8192", date: "May 14, 2026" },
-            ].map((txn) => (
+            {isLoadingHistory ? (
+              <div className="text-center text-slate-400 py-10 flex flex-col items-center gap-2">
+                <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-xs font-bold uppercase tracking-wider">Loading...</span>
+              </div>
+            ) : withdrawHistory.length === 0 ? (
+              <div className="text-center text-slate-400 py-10 text-xs font-bold uppercase tracking-wider">No withdrawals found</div>
+            ) : withdrawHistory.map((txn) => (
               <div key={txn.id} className="p-4 bg-white border border-slate-100 rounded-3xl flex justify-between items-center shadow-sm">
                 <div className="space-y-0.5">
-                  <p className="text-xs font-black text-slate-800">{txn.amount}</p>
-                  <span className="text-[9px] text-slate-400 font-bold block">{txn.date} | Ref: {txn.ref}</span>
+                  <p className="text-xs font-black text-slate-800">₹{txn.amount?.toFixed(2)}</p>
+                  <span className="text-[9px] text-slate-400 font-bold block">
+                    {new Date(txn.created_at || Date.now()).toLocaleString("en-IN", {
+                      month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit"
+                    })} 
+                    {txn.rejection_reason ? ` | Reason: ${txn.rejection_reason}` : ""}
+                  </span>
                 </div>
                 <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide ${
-                  txn.status === "Processing" ? "bg-orange-500/10 text-orange-600" : "bg-emerald-500/10 text-emerald-600"
+                  txn.status?.toLowerCase() === "processing" || txn.status?.toLowerCase() === "pending" ? "bg-orange-500/10 text-orange-600" :
+                  txn.status?.toLowerCase() === "rejected" || txn.status?.toLowerCase() === "failed" ? "bg-red-500/10 text-red-600" :
+                  "bg-emerald-500/10 text-emerald-600"
                 }`}>{txn.status}</span>
               </div>
             ))}
@@ -631,13 +639,37 @@ export default function ProfilePage() {
 
 
 
+  // Translations Dictionary
+  const t = {
+    accountCenter: language === "hi" ? "खाता केंद्र" : "Account Center",
+    accountDesc: language === "hi" ? "अपनी प्रोफ़ाइल, सुरक्षा विवरण और बैंक क्रेडेंशियल प्रबंधित करें" : "Manage your profile, security details, and bank credentials",
+    mobile: language === "hi" ? "मोबाइल:" : "Mobile:",
+    email: language === "hi" ? "ईमेल:" : "Email:",
+    kycStatus: language === "hi" ? "केवाईसी स्थिति:" : "KYC Status:",
+    deposit: language === "hi" ? "जमा करें" : "Deposit",
+    withdraw: language === "hi" ? "निकासी" : "Withdraw",
+    myHistory: language === "hi" ? "मेरा इतिहास" : "My History",
+    notification: language === "hi" ? "अधिसूचना" : "Notification",
+    gifts: language === "hi" ? "उपहार" : "Gifts",
+    gameStatistics: language === "hi" ? "खेल के आँकड़े" : "Game statistics",
+    languageStr: language === "hi" ? "भाषा (Language)" : "Language",
+    serviceCenter: language === "hi" ? "सेवा केंद्र" : "Service center",
+    settings: language === "hi" ? "समायोजन" : "Settings",
+    feedback: language === "hi" ? "प्रतिक्रिया" : "Feedback",
+    announcement: language === "hi" ? "घोषणा" : "Announcement",
+    customerService: language === "hi" ? "24/7 ग्राहक सेवा" : "24/7 Customer service",
+    beginnersGuide: language === "hi" ? "शुरुआती गाइड" : "Beginner's Guide",
+    aboutUs: language === "hi" ? "हमारे बारे में" : "About us",
+    downloadApp: language === "hi" ? "ऐप डाउनलोड करें" : "Download APP",
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-16 bg-white">
       
       {/* Account Center Header */}
       <div>
-        <h1 className="text-2xl font-black text-slate-800">Account Center</h1>
-        <p className="text-slate-500 text-xs font-semibold">Manage your profile, security details, and bank credentials</p>
+        <h1 className="text-2xl font-black text-slate-800">{t.accountCenter}</h1>
+        <p className="text-slate-500 text-xs font-semibold">{t.accountDesc}</p>
       </div>
 
       {/* Main Container */}
@@ -662,15 +694,15 @@ export default function ProfilePage() {
 
               <div className="w-full mt-4 space-y-2 border-t border-amber-200/30 pt-3 text-xs">
                 <div className="flex justify-between text-slate-700">
-                  <span className="font-semibold text-slate-500">Mobile:</span>
+                  <span className="font-semibold text-slate-500">{t.mobile}</span>
                   <span className="font-bold">{user?.mobile || "9876543210"}</span>
                 </div>
                 <div className="flex justify-between text-slate-700">
-                  <span className="font-semibold text-slate-500">Email:</span>
+                  <span className="font-semibold text-slate-500">{t.email}</span>
                   <span className="font-bold truncate max-w-[180px]">{user?.email || "muskanmobiloitte@gmail.com"}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="font-semibold text-slate-500">KYC Status:</span>
+                  <span className="font-semibold text-slate-500">{t.kycStatus}</span>
                   <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase flex items-center gap-1 ${
                     user?.kycStatus === "verified" ? "bg-emerald-500/10 text-emerald-600" : "bg-orange-500/10 text-orange-600"
                   }`}>
@@ -694,8 +726,8 @@ export default function ProfilePage() {
               <ClipboardList size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-rose-900 font-bold uppercase tracking-wider truncate">Deposit</p>
-              <span className="text-xs font-black text-slate-800 block truncate">My History</span>
+              <p className="text-[10px] text-rose-900 font-bold uppercase tracking-wider truncate">{t.deposit}</p>
+              <span className="text-xs font-black text-slate-800 block truncate">{t.myHistory}</span>
             </div>
             <ChevronRight size={14} className="text-rose-400 group-hover:translate-x-0.5 transition-transform" />
           </button>
@@ -709,8 +741,8 @@ export default function ProfilePage() {
               <Wallet size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-orange-900 font-bold uppercase tracking-wider truncate">Withdraw</p>
-              <span className="text-xs font-black text-slate-800 block truncate">My History</span>
+              <p className="text-[10px] text-orange-900 font-bold uppercase tracking-wider truncate">{t.withdraw}</p>
+              <span className="text-xs font-black text-slate-800 block truncate">{t.myHistory}</span>
             </div>
             <ChevronRight size={14} className="text-orange-400 group-hover:translate-x-0.5 transition-transform" />
           </button>
@@ -721,14 +753,14 @@ export default function ProfilePage() {
           
           {/* Notification */}
           <div 
-            onClick={() => setActiveModal("notifications")}
+            onClick={() => router.push("/announcement")}
             className="flex items-center justify-between p-4 bg-gradient-to-r from-red-50 to-rose-100/30 border border-red-200/60 rounded-2xl cursor-pointer hover:from-red-100/50 hover:to-rose-100/20 transition-all shadow-sm group"
           >
             <div className="flex items-center gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-red-200/70 flex items-center justify-center text-rose-700">
                 <Bell size={18} />
               </div>
-              <span className="text-xs font-black text-slate-800">Notification</span>
+              <span className="text-xs font-black text-slate-800">{t.notification}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center animate-pulse">2</span>
@@ -745,7 +777,7 @@ export default function ProfilePage() {
               <div className="w-9 h-9 rounded-xl bg-pink-200/70 flex items-center justify-center text-pink-700">
                 <Gift size={18} />
               </div>
-              <span className="text-xs font-black text-slate-800">Gifts</span>
+              <span className="text-xs font-black text-slate-800">{t.gifts}</span>
             </div>
             <ChevronRight size={16} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
           </div>
@@ -759,7 +791,7 @@ export default function ProfilePage() {
               <div className="w-9 h-9 rounded-xl bg-amber-200/70 flex items-center justify-center text-amber-700">
                 <BarChart3 size={18} />
               </div>
-              <span className="text-xs font-black text-slate-800">Game statistics</span>
+              <span className="text-xs font-black text-slate-800">{t.gameStatistics}</span>
             </div>
             <ChevronRight size={16} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
           </div>
@@ -773,10 +805,10 @@ export default function ProfilePage() {
               <div className="w-9 h-9 rounded-xl bg-indigo-200/70 flex items-center justify-center text-indigo-700">
                 <Globe size={18} />
               </div>
-              <span className="text-xs font-black text-slate-800">Language</span>
+              <span className="text-xs font-black text-slate-800">{t.languageStr}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] text-slate-500 font-bold">English</span>
+              <span className="text-[11px] text-slate-500 font-bold">{language === "hi" ? "हिंदी" : "English"}</span>
               <ChevronRight size={16} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </div>
@@ -819,7 +851,7 @@ export default function ProfilePage() {
                 {/* Announcement */}
                 <button 
                   type="button"
-                  onClick={() => setActiveModal("announcement")}
+                  onClick={() => router.push("/announcement")}
                   className="flex flex-col items-center gap-2 focus:outline-none group"
                 >
                   <div className="w-10 h-10 rounded-2xl bg-amber-500/20 flex items-center justify-center text-amber-700 group-hover:scale-105 transition-transform duration-300 shadow-sm border border-amber-200/30">
@@ -843,8 +875,8 @@ export default function ProfilePage() {
                 {/* Beginner's Guide */}
                 <button 
                   type="button"
-                  onClick={() => setActiveModal("guide")}
-                  className="flex flex-col items-center gap-2 focus:outline-none group pb-1"
+                  onClick={() => router.push("/guide")}
+                  className="flex flex-col items-center gap-2 focus:outline-none group"
                 >
                   <div className="w-10 h-10 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-700 group-hover:scale-105 transition-transform duration-300 shadow-sm border border-indigo-200/30">
                     <BookOpen size={20} />

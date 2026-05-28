@@ -59,8 +59,8 @@ export default function OTPPage() {
 
     const success = await verifyOTP(otpCode);
     if (success) {
-      toast.success("Account successfully verified! Please set your new password.");
-      router.push("/auth/set-password");
+      toast.success("Account successfully verified! Please log in.");
+      router.push("/auth/login");
     } else {
       toast.error("Invalid verification code.");
     }

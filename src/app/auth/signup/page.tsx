@@ -50,10 +50,11 @@ export default function SignupPage() {
   const onSubmit = async (data: SignupSchemaType) => {
     const success = await signup(data.username, data.email, data.mobile, data.fullName, data.password);
     if (success) {
-      toast.success("OTP sent to your mobile number!");
-      router.push("/auth/otp");
+      toast.success("Registration successful! OTP sent.");
+      // Use window.location.href to guarantee a fresh page load and navigation
+      window.location.href = "/auth/otp";
     } else {
-      toast.error("Registration initiation failed.");
+      toast.error("Registration failed. Please check the errors.");
     }
   };
 

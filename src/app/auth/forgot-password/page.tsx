@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Gamepad2, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const forgotPasswordSchema = zod.object({
   email: zod.string().email("Please enter a valid email address"),
@@ -21,11 +22,12 @@ type ForgotPasswordSchemaType = zod.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
+  const { forgotPassword, isLoading } = useAuthStore();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ForgotPasswordSchemaType>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -34,10 +36,14 @@ export default function ForgotPasswordPage() {
   });
 
   const onSubmit = async (data: ForgotPasswordSchemaType) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    toast.success("Password recovery link sent successfully!");
-    router.push("/auth/reset-password");
+    const success = await forgotPassword(data.email);
+    if (success) {
+      toast.success("Password recovery OTP sent successfully!");
+      // We can pass the email in query params so the reset page knows who it is
+      router.push(`/auth/reset-password?email=${encodeURIComponent(data.email)}`);
+    } else {
+      toast.error("Failed to send recovery OTP.");
+    }
   };
 
   return (
@@ -89,10 +95,10 @@ export default function ForgotPasswordPage() {
 
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isLoading}
                 className="w-full bg-[#800000] hover:bg-[#800000]/90 text-white font-bold transition-all py-6 rounded-xl text-xs shadow-sm mt-2"
               >
-                {isSubmitting ? "Sending Link..." : "Send Recovery Email"}
+                {isLoading ? "Sending Link..." : "Send Recovery Email"}
               </Button>
             </form>
           </CardContent>
