@@ -9,10 +9,11 @@ from app.schemas.auth import UserRegister, UserLogin, Token, RefreshTokenRequest
 from app.schemas.users import UserResponse
 from app.services.auth_service import AuthService
 from app.core.security import verify_token, create_access_token
+from app.schemas.responses import BaseResponse, success_response
 
 router = APIRouter()
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=BaseResponse[UserResponse], status_code=status.HTTP_201_CREATED)
 async def register(
     schema: UserRegister,
     db: AsyncSession = Depends(get_async_db),
@@ -20,9 +21,9 @@ async def register(
 ) -> Any:
     auth_service = AuthService(db, redis)
     user = await auth_service.register_user(schema)
-    return user
+    return success_response(user, "User registered successfully")
 
-@router.post("/login", response_model=Token)
+@router.post("/login", response_model=BaseResponse[Token])
 async def login(
     request: Request,
     schema: UserLogin,
@@ -35,11 +36,11 @@ async def login(
     
     auth_service = AuthService(db, redis)
     user, access_token, refresh_token = await auth_service.authenticate_user(schema)
-    return {
+    return success_response({
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer"
-    }
+    }, "Login successful")
 
 @router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout(
@@ -53,9 +54,9 @@ async def logout(
     
     auth_service = AuthService(db, redis)
     await auth_service.logout_user(token_credentials.credentials, current_user.id)
-    return {"detail": "Successfully logged out from current session"}
+    return success_response(None, "Successfully logged out from current session")
 
-@router.post("/refresh", response_model=Token)
+@router.post("/refresh", response_model=BaseResponse[Token])
 async def refresh_token(
     schema: RefreshTokenRequest,
     db: AsyncSession = Depends(get_async_db),
@@ -71,11 +72,11 @@ async def refresh_token(
 
     # Generate new access token
     new_access_token = create_access_token(user_id_str)
-    return {
+    return success_response({
         "access_token": new_access_token,
         "refresh_token": schema.refresh_token,
         "token_type": "bearer"
-    }
+    }, "Token refreshed successfully")
 
 @router.post("/verify-otp")
 async def verify_otp(

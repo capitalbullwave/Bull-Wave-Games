@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.api.v1.auth.auth import router as auth_router
 from app.api.v1.users.users import router as users_router
 from app.api.v1.wallet.wallet import router as wallet_router
+from app.api.v1.admin.wallet import router as admin_wallet_router
 from app.api.v1.payments.payments import router as payments_router
 from app.api.v1.games.games import router as games_router
 from app.api.v1.tournaments.tournaments import router as tournaments_router
@@ -21,6 +22,7 @@ api_router.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 api_router.include_router(users_router, prefix="/users", tags=["Users"])
 api_router.include_router(users_router, prefix="/profile", tags=["Profile"])  # Profile shares user endpoints mostly
 api_router.include_router(wallet_router, prefix="/wallet", tags=["Wallet"])
+api_router.include_router(admin_wallet_router, prefix="/admin/wallet", tags=["Admin Wallet"])
 api_router.include_router(payments_router, prefix="/payments", tags=["Payments"])
 api_router.include_router(games_router, prefix="/games", tags=["Games"])
 api_router.include_router(tournaments_router, prefix="/tournaments", tags=["Tournaments"])

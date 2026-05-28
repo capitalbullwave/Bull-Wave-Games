@@ -84,6 +84,8 @@ class AuthService:
         user = await self.user_repo.get_by_username(schema.username_or_mobile)
         if not user:
             user = await self.user_repo.get_by_mobile(schema.username_or_mobile)
+        if not user and "@" in schema.username_or_mobile:
+            user = await self.user_repo.get_by_email(schema.username_or_mobile)
 
         if not user or not verify_password(schema.password, user.password_hash):
             await self._handle_failed_login(schema.username_or_mobile)

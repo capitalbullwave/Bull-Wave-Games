@@ -1,5 +1,5 @@
 from typing import AsyncGenerator, Optional
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Query
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import redis.asyncio as aioredis
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -127,9 +127,21 @@ async def get_redis() -> AsyncGenerator[Any, None]:
 
 async def get_current_user(
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_bearer),
+    test_email: Optional[str] = Query(None, description="[DEV ONLY] Bypass JWT by providing user email for testing in Swagger"),
     db: AsyncSession = Depends(get_async_db),
     redis_client: aioredis.Redis = Depends(get_redis)
 ):
+    # Lazy import to avoid circular dependency
+    from app.models.users import User
+
+    # DEV OVERRIDE: Allow testing endpoints by just passing an email
+    if test_email:
+        result = await db.execute(select(User).where(User.email == test_email))
+        user = result.scalars().first()
+        if user:
+            return user
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found with this test_email")
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -156,9 +168,6 @@ async def get_current_user(
             detail="Session has expired or logged out"
         )
         
-    # Lazy import to avoid circular dependency
-    from app.models.users import User
-    
     # Query current user
     result = await db.execute(select(User).where(User.id == int(user_id_str)))
     user = result.scalars().first()

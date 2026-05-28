@@ -2,6 +2,13 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
 
+class WalletSummaryResponse(BaseModel):
+    total_deposit: float
+    total_withdraw: float
+    total_bonus: float
+    total_bets: float
+    total_wins: float
+
 class WalletResponse(BaseModel):
     main_balance: float
     bonus_balance: float
@@ -24,6 +31,7 @@ class DepositResponse(BaseModel):
     gateway_tx_id: Optional[str] = None
     checkout_url: Optional[str] = None  # Redirect client to gateway checkout UI
     razorpay_key_id: Optional[str] = None
+    created_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
@@ -66,3 +74,27 @@ class WalletTransactionResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class TransactionListResponse(BaseModel):
+    items: List[WalletTransactionResponse]
+    total: int
+    page: int
+    size: int
+
+class DepositListResponse(BaseModel):
+    items: List[DepositResponse]
+    total: int
+    page: int
+    size: int
+
+class WithdrawalListResponse(BaseModel):
+    items: List[WithdrawalResponse]
+    total: int
+    page: int
+    size: int
+
+class WithdrawalActionRequest(BaseModel):
+    withdrawal_id: int
+    reason: Optional[str] = None
+
+

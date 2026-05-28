@@ -12,6 +12,46 @@ from pydantic import BaseModel, Field
 
 router = APIRouter()
 
+@router.get("/", response_model=List[UserResponse])
+async def get_all_users(
+    db: AsyncSession = Depends(get_async_db)
+) -> Any:
+    """
+    Retrieve all registered users.
+    """
+    from sqlalchemy.orm import selectinload
+    from app.models.users import User
+    
+    query = select(User).options(
+        selectinload(User.profile),
+        selectinload(User.kyc),
+        selectinload(User.wallet)
+    )
+    result = await db.execute(query)
+    return list(result.scalars().all())
+
+@router.delete("/{email}")
+async def delete_user(
+    email: str,
+    db: AsyncSession = Depends(get_async_db)
+) -> Any:
+    """
+    Delete a specific user by Email.
+    """
+    from app.models.users import User
+    
+    query = select(User).where(User.email == email)
+    result = await db.execute(query)
+    user = result.scalars().first()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    await db.delete(user)
+    await db.commit()
+    
+    return {"detail": f"User with email {email} deleted successfully"}
+
 class SetPasswordRequest(BaseModel):
     password: str = Field(..., min_length=4, max_length=100)
 
