@@ -50,9 +50,10 @@ export default function WalletPage() {
   const fetchTransactions = async () => {
     setTxLoading(true);
     try {
-      const data = await apiRequest("/wallet/transactions");
-      if (Array.isArray(data)) {
-        const mapped: Transaction[] = data.map((tx: any) => ({
+      const resp = await apiRequest("/wallet/transactions");
+      const txList = resp?.data?.items || resp?.items || [];
+      if (Array.isArray(txList)) {
+        const mapped: Transaction[] = txList.map((tx: any) => ({
           id: String(tx.id),
           type: tx.amount > 0 ? "deposit" : "withdraw",
           amount: Math.abs(tx.amount),
@@ -85,10 +86,11 @@ export default function WalletPage() {
   // Also fetch pending withdrawals from dedicated endpoint
   const fetchPendingWithdrawals = async () => {
     try {
-      const data = await apiRequest("/wallet/withdrawals");
-      if (Array.isArray(data)) {
-        const pending = data
-          .filter((w: any) => w.status === "pending")
+      const resp = await apiRequest("/wallet/withdraw/history");
+      const wList = resp?.data?.items || resp?.items || [];
+      if (Array.isArray(wList)) {
+        const pending = wList
+          .filter((w: any) => w.status === "pending" || w.status === "processing")
           .reduce((sum: number, w: any) => sum + Number(w.amount), 0);
         setStats((prev) => ({ ...prev, pendingWithdrawals: pending }));
       }

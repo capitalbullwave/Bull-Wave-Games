@@ -84,7 +84,7 @@ export const useAuthStore = create<AuthState>()(
             }),
           });
 
-          const token = tokenResp.access_token;
+          const token = tokenResp.data?.access_token || tokenResp.access_token;
           set({ token });
 
           const profile = await apiRequest("/users/me");
@@ -246,12 +246,12 @@ export const useAuthStore = create<AuthState>()(
       depositFunds: async (amount) => {
         try {
           // 1. Setup payment checkout
-          const depResp = await apiRequest("/wallet/deposit", {
+          const depResp = await apiRequest("/wallet/deposit/create", {
             method: "POST",
             body: JSON.stringify({ amount, gateway: "razorpay" }),
           });
 
-          const { id: depositId, gateway_tx_id: orderId, razorpay_key_id: keyId } = depResp;
+          const { id: depositId, gateway_tx_id: orderId, razorpay_key_id: keyId } = depResp.data || depResp;
 
           // 2. Load Razorpay SDK
           const isScriptLoaded = await loadRazorpayScript();
@@ -274,7 +274,7 @@ export const useAuthStore = create<AuthState>()(
                 isPaymentCompleted = true;
                 try {
                   // 4. Verify payment with backend
-                  await apiRequest("/wallet/verify-payment", {
+                  await apiRequest("/wallet/deposit/verify", {
                     method: "POST",
                     body: JSON.stringify({
                       deposit_id: depositId,
@@ -285,7 +285,8 @@ export const useAuthStore = create<AuthState>()(
                   });
 
                   // 5. Query updated balances
-                  const balances = await apiRequest("/wallet/balance");
+                  const balResp = await apiRequest("/wallet/balance");
+                  const balances = balResp.data || balResp;
                   const currentUser = get().user;
                   if (currentUser) {
                     set({
@@ -334,12 +335,13 @@ export const useAuthStore = create<AuthState>()(
         if (currentUser && currentUser.winningsBalance >= amount) {
           try {
             // Trigger winning balance withdrawal
-            await apiRequest("/wallet/withdraw", {
+            await apiRequest("/wallet/withdraw/create", {
               method: "POST",
               body: JSON.stringify({ amount, bank_account_id: 1 }),
             });
 
-            const balances = await apiRequest("/wallet/balance");
+            const balResp = await apiRequest("/wallet/balance");
+            const balances = balResp.data || balResp;
             set({
               user: {
                 ...currentUser,
@@ -366,7 +368,8 @@ export const useAuthStore = create<AuthState>()(
               body: JSON.stringify({ amount, source_wallet: source, target_wallet: "main" }),
             });
 
-            const balances = await apiRequest("/wallet/balance");
+            const balResp = await apiRequest("/wallet/balance");
+            const balances = balResp.data || balResp;
             set({
               user: {
                 ...currentUser,

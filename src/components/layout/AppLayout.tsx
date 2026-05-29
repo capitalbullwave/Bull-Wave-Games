@@ -76,7 +76,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="w-full sm:w-[400px] h-screen bg-[#fafafb] text-slate-800 flex flex-col relative shadow-[0_0_50px_rgba(0,0,0,0.25)] border-x border-slate-300/30 overflow-hidden">
         
         {/* Top Navbar */}
-        {pathname !== "/about" && pathname !== "/tournaments" && (
+        {pathname !== "/about" && pathname !== "/tournaments" && pathname !== "/activity" && (
           <header className="h-14 bg-white flex items-center justify-between px-4 flex-shrink-0 z-30 border-b border-glass-border shadow-sm">
             <Link href="/lobby" className="flex items-center gap-2 cursor-pointer">
               <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
@@ -109,13 +109,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Dynamic Page Content */}
         <main className={`flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${pathname === "/about" ? "pb-6" : "pb-24"}`}>
-          <div className={pathname === "/tournaments" ? "" : "p-4 space-y-6"}>
+          <div className={pathname === "/tournaments" || pathname === "/activity" ? "" : "p-4 space-y-6"}>
             {children}
           </div>
         </main>
 
         {/* Mobile Bottom Navigation */}
-        {pathname !== "/about" && (
+        {pathname !== "/about" && !pathname?.includes("/activity/") && !pathname?.includes("/games/") && (
           <nav className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-glass-border z-40 px-2 flex items-center justify-between shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
             
             <Link
@@ -129,12 +129,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </Link>
 
             <Link
-              href="/tournaments"
+              href="/activity"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
-                pathname === "/tournaments" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
+                pathname === "/activity" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
-              <Trophy size={20} />
+              <Award size={20} />
               <span className="text-[10px] font-bold">Activity</span>
             </Link>
 
@@ -191,7 +191,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
 
         {/* Floating Add to Desktop Button */}
-        {pathname !== "/about" && pathname !== "/download" && (
+        {pathname !== "/about" && pathname !== "/download" && !pathname?.includes("/activity/") && !pathname?.includes("/games/") && (
           <div className="absolute bottom-[76px] left-1/2 -translate-x-1/2 z-40">
             <button 
               onClick={() => router.push("/download")}
