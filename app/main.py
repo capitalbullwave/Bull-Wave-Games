@@ -68,6 +68,9 @@ async def lifespan(app: FastAPI):
     
     # Run seed bootstrapping
     await bootstrap_database()
+    
+    from app.cron_jobs.activity_scheduler import setup_scheduler
+    setup_scheduler()
     yield
     # Shutdown logic if any (e.g. close redis pools)
 

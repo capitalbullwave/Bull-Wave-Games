@@ -56,6 +56,11 @@ class WalletService:
         )
         
         await self.db.flush()
+        
+        from app.services.invitation_service import InvitationService
+        invitation_srv = InvitationService(self.db)
+        await invitation_srv.process_first_deposit(user_id, amount)
+        
         return deposit
 
     async def credit_wallet(
@@ -85,6 +90,10 @@ class WalletService:
         )
 
         await self.db.flush()
+
+        from app.services.invitation_service import InvitationService
+        invitation_srv = InvitationService(self.db)
+        await invitation_srv.process_first_deposit(user_id, amount)
 
     async def initiate_withdrawal(
         self, user_id: int, amount: float, bank_account_id: int
@@ -189,6 +198,16 @@ class WalletService:
         from app.services.referral_service import ReferralService
         referral_srv = ReferralService(self.db)
         await referral_srv.distribute_bet_commissions(user_id, amount, bet.id)
+        
+        # Update Activity Progress
+        from app.services.activity_service import ActivityService
+        activity_srv = ActivityService(self.db)
+        await activity_srv.add_bet_progress(user_id, amount)
+
+        # Update Rebate Progress
+        from app.services.rebate_service import RebateService
+        rebate_srv = RebateService(self.db)
+        await rebate_srv.process_bet_rebate(user_id, amount, game_id)
 
         await self.db.flush()
         return bet
@@ -283,3 +302,40 @@ class WalletService:
 
         await self.db.flush()
         return wallet
+
+    async def add_activity_reward(self, user_id: int, amount: float, task_id: int) -> None:
+        wallet = await self.wallet_repo.get_by_user_id_with_lock(user_id)
+        if not wallet or wallet.is_frozen:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Wallet locked or unavailable")
+
+        amount_dec = Decimal(str(amount))
+        wallet.main_balance = float(Decimal(str(wallet.main_balance)) + amount_dec)
+
+        await self.wallet_repo.create_transaction(
+            wallet_id=wallet.id,
+            amount=amount,
+            wallet_type="main",
+            transaction_type="ACTIVITY_REWARD",
+            reference_id=str(task_id),
+            description=f"Reward for Activity Task #{task_id}"
+        )
+        await self.db.flush()
+
+    async def add_bonus_balance(self, user_id: int, amount: float, transaction_type: str, description: str) -> None:
+        wallet = await self.wallet_repo.get_by_user_id_with_lock(user_id)
+        if not wallet or wallet.is_frozen:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Wallet locked or unavailable")
+
+        amount_dec = Decimal(str(amount))
+        wallet.bonus_balance = float(Decimal(str(wallet.bonus_balance)) + amount_dec)
+
+        await self.wallet_repo.create_transaction(
+            wallet_id=wallet.id,
+            amount=amount,
+            wallet_type="bonus",
+            transaction_type=transaction_type,
+            reference_id=None,
+            description=description
+        )
+        await self.db.flush()
+

@@ -18,3 +18,9 @@ def success_response(data: Any = None, message: str = "Success") -> dict:
         "message": message,
         "data": data if data is not None else {}
     }
+
+def error_response(message: str = "Error") -> dict:
+    return {
+        "success": False,
+        "message": message
+    }

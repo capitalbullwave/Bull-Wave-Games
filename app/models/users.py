@@ -36,6 +36,8 @@ class User(Base):
     bank_accounts: Mapped[List["BankAccount"]] = relationship("BankAccount", back_populates="user", cascade="all, delete-orphan")
     sessions: Mapped[List["UserSession"]] = relationship("UserSession", back_populates="user", cascade="all, delete-orphan")
     wallet: Mapped["Wallet"] = relationship("Wallet", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    activity_progress: Mapped[List["UserActivityProgress"]] = relationship("UserActivityProgress", back_populates="user", cascade="all, delete-orphan")
+    activity_rewards: Mapped[List["ActivityRewardHistory"]] = relationship("ActivityRewardHistory", back_populates="user", cascade="all, delete-orphan")
     
     # Self-referencing for direct referral tracking
     referrer: Mapped[Optional["User"]] = relationship("User", remote_side=[id], backref="referrals")

@@ -8,6 +8,11 @@ from app.models.rewards import Reward, Coupon
 from app.models.notifications import Notification
 from app.models.support import SupportTicket, TicketMessage
 from app.models.vip_and_audit import VIPLevel, AuditLog
+from app.models.activities import ActivityTask, UserActivityProgress, ActivityRewardHistory
+from app.models.invitations import InvitationBonusLevel, UserInvitationProgress, InvitationRewardHistory
+from app.models.rebates import RebateCategory, VIPRebateRate, UserRebateBalance, RebateTransaction, RebateClaimHistory
+from app.models.super_jackpots import UserSuperJackpot
+from app.models.first_gift import FirstGiftClaim
 
 __all__ = [
     "Base",
@@ -38,5 +43,18 @@ __all__ = [
     "SupportTicket",
     "TicketMessage",
     "VIPLevel",
-    "AuditLog"
+    "AuditLog",
+    "ActivityTask",
+    "UserActivityProgress",
+    "ActivityRewardHistory",
+    "InvitationBonusLevel",
+    "UserInvitationProgress",
+    "InvitationRewardHistory",
+    "RebateCategory",
+    "VIPRebateRate",
+    "UserRebateBalance",
+    "RebateTransaction",
+    "RebateClaimHistory",
+    "UserSuperJackpot",
+    "FirstGiftClaim"
 ]
