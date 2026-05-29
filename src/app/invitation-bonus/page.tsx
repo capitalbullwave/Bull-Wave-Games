@@ -84,18 +84,22 @@ export default function InvitationBonusPage() {
   return (
     <div className="min-h-screen bg-gray-100 pb-20">
       {/* Header */}
-      <div className="bg-[#f04c55] text-white px-4 py-3 flex items-center sticky top-0 z-50 shadow-md">
+      <div className="bg-white text-[#800000] px-4 py-3 flex items-center sticky top-0 z-50 shadow-sm border-b border-gray-100">
         <button onClick={() => router.back()} className="mr-4">
           <ChevronLeft size={24} />
         </button>
-        <h1 className="text-lg font-medium flex-1 text-center">Invitation Bonus</h1>
+        <h1 className="text-lg font-bold flex-1 text-center">Invitation Bonus</h1>
         <div className="w-6" />
       </div>
 
       {/* Top Banner Area */}
-      <div className="bg-gradient-to-b from-[#f04c55] to-red-400 p-6 text-white flex flex-col items-center shadow-lg rounded-b-3xl">
-        <Gift size={64} className="mb-4 opacity-90 drop-shadow-md" />
-        <h2 className="text-2xl font-bold mb-2 drop-shadow">Invite Friends & Earn</h2>
+      <div className="bg-gradient-to-b from-[#b30000] to-[#800000] p-6 text-white flex flex-col items-center shadow-lg rounded-[16px] mx-3 mt-3 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-[-20px] left-[-20px] w-32 h-32 bg-[#D4AF37]/20 rounded-full blur-xl" />
+        <div className="absolute bottom-[-20px] right-[-20px] w-40 h-40 bg-[#D4AF37]/20 rounded-full blur-xl" />
+
+        <Gift size={64} className="mb-4 opacity-90 drop-shadow-md text-[#D4AF37]" />
+        <h2 className="text-2xl font-bold mb-2 drop-shadow text-white">Invite Friends & Earn</h2>
         <p className="text-sm opacity-90 text-center mb-6">
           Invite friends to register and recharge to get huge rewards!
         </p>
@@ -112,7 +116,7 @@ export default function InvitationBonusPage() {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm">Referral Link</span>
-            <button onClick={() => copyToClipboard(referralData.referralLink)} className="px-4 py-1.5 bg-white text-red-500 rounded-full text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
+            <button onClick={() => copyToClipboard(referralData.referralLink)} className="px-4 py-1.5 bg-white text-[#800000] rounded-full text-sm font-semibold shadow-sm hover:bg-gray-50 transition-colors">
               Copy Link
             </button>
           </div>
@@ -120,15 +124,15 @@ export default function InvitationBonusPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex bg-white mt-4 mx-4 rounded-xl shadow-sm overflow-hidden">
+      <div className="flex bg-white mt-4 mx-4 rounded-xl shadow-sm overflow-hidden border border-[#D4AF37]/10">
         <button 
-          className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'rules' ? 'bg-[#f04c55] text-white' : 'text-gray-600'}`}
+          className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'rules' ? 'bg-[#800000] text-white' : 'text-gray-600 hover:bg-gray-50'}`}
           onClick={() => setActiveTab('rules')}
         >
           Bonus Rules
         </button>
         <button 
-          className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'record' ? 'bg-[#f04c55] text-white' : 'text-gray-600'}`}
+          className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'record' ? 'bg-[#800000] text-white' : 'text-gray-600 hover:bg-gray-50'}`}
           onClick={() => setActiveTab('record')}
         >
           Invitation Record
@@ -139,7 +143,7 @@ export default function InvitationBonusPage() {
       <div className="p-4">
         {loading ? (
           <div className="flex justify-center p-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#f04c55]"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#800000]"></div>
           </div>
         ) : activeTab === 'rules' ? (
           <div className="space-y-4">
@@ -153,11 +157,11 @@ export default function InvitationBonusPage() {
                 <div key={prog.id} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 relative overflow-hidden group">
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h3 className="font-bold text-gray-800 text-lg">Level {prog.level.level}</h3>
+                      <h3 className="font-bold text-[#800000] text-lg">Level {prog.level.level}</h3>
                       <p className="text-xs text-gray-500 mt-1">Invites required: {prog.level.required_invites}</p>
                       <p className="text-xs text-gray-500">Min. Deposit: ₹{prog.level.required_deposit_amount}</p>
                     </div>
-                    <div className="bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-bold text-lg shadow-sm">
+                    <div className="bg-[#D4AF37]/10 text-[#800000] px-3 py-1.5 rounded-full font-bold text-lg shadow-sm border border-[#D4AF37]/20">
                       ₹{prog.level.reward_amount}
                     </div>
                   </div>
@@ -166,11 +170,11 @@ export default function InvitationBonusPage() {
                   <div className="mt-4 mb-2">
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-gray-600 font-medium">Progress</span>
-                      <span className="text-[#f04c55] font-bold">{prog.completed_invites} / {prog.level.required_invites}</span>
+                      <span className="text-[#D4AF37] font-bold">{prog.completed_invites} / {prog.level.required_invites}</span>
                     </div>
                     <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
                       <div 
-                        className="bg-gradient-to-r from-red-400 to-[#f04c55] h-2.5 rounded-full transition-all duration-500" 
+                        className="bg-gradient-to-r from-[#D4AF37] to-[#B8860B] h-2.5 rounded-full transition-all duration-500" 
                         style={{ width: `${percentage}%` }}
                       ></div>
                     </div>
@@ -179,13 +183,13 @@ export default function InvitationBonusPage() {
                   {/* Action Button */}
                   <div className="mt-5 flex justify-end">
                     {isClaimed ? (
-                      <div className="flex items-center text-green-500 font-medium text-sm bg-green-50 px-4 py-2 rounded-full">
+                      <div className="flex items-center text-[#D4AF37] font-bold text-sm bg-[#D4AF37]/10 px-4 py-2 rounded-full border border-[#D4AF37]/20">
                         <CheckCircle2 size={16} className="mr-1.5" /> Claimed
                       </div>
                     ) : isCompleted ? (
                       <button 
                         onClick={() => handleClaim(prog.level_id)}
-                        className="bg-[#f04c55] text-white px-6 py-2 rounded-full font-medium text-sm shadow-md hover:bg-red-600 transition-colors animate-pulse"
+                        className="bg-gradient-to-r from-[#800000] to-[#600000] text-white px-6 py-2 rounded-full font-bold text-sm shadow-md hover:scale-105 transition-transform animate-pulse border border-[#D4AF37]/30"
                       >
                         Claim Reward
                       </button>

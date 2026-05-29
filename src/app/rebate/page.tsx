@@ -122,7 +122,7 @@ export default function RebatePage() {
                 }}
                 className={`flex-shrink-0 flex flex-col items-center justify-center w-[88px] h-[64px] rounded-xl transition-all cursor-pointer shadow-sm
                   ${isActive 
-                    ? 'bg-[#f04c55] text-white' 
+                    ? 'bg-gradient-to-r from-[#b30000] to-[#800000] text-white shadow-md' 
                     : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
               >
                 <div className="mb-1">{getIcon(tab.name)}</div>
@@ -142,14 +142,14 @@ export default function RebatePage() {
         </div>
 
         {/* Real-time count badge */}
-        <div className="inline-flex items-center gap-1 text-[#f04c55] border border-[#f04c55]/30 bg-red-50 px-2 py-0.5 rounded text-[11px] mb-3">
+        <div className="inline-flex items-center gap-1 text-[#800000] border border-[#800000]/30 bg-[#800000]/10 px-2 py-0.5 rounded text-[11px] mb-3 font-bold">
           <CheckCircle2 size={12} />
           Real-time count
         </div>
 
         {/* Big Amount */}
         <div className="flex items-center gap-2 mb-3">
-          <HandCoins size={28} className="text-[#f04c55]" />
+          <HandCoins size={28} className="text-[#D4AF37]" />
           <span className="text-3xl font-black text-gray-800">{currentAvailable.toFixed(2)}</span>
         </div>
 
@@ -160,13 +160,13 @@ export default function RebatePage() {
 
         {/* Today and Total Grid */}
         <div className="grid grid-cols-2 gap-3 mb-3">
-          <div className="bg-gray-50 rounded-xl p-2.5 flex flex-col justify-center">
+          <div className="bg-gray-50 rounded-xl p-2.5 flex flex-col justify-center border border-gray-100 shadow-sm">
              <span className="text-xs text-gray-500 mb-1">Today rebate</span>
-             <span className="text-[#f5a623] font-bold text-lg">{currentToday.toFixed(2)}</span>
+             <span className="text-[#D4AF37] font-bold text-lg">{currentToday.toFixed(2)}</span>
           </div>
-          <div className="bg-gray-50 rounded-xl p-2.5 flex flex-col justify-center">
+          <div className="bg-gray-50 rounded-xl p-2.5 flex flex-col justify-center border border-gray-100 shadow-sm">
              <span className="text-xs text-gray-500 mb-1">Total rebate</span>
-             <span className="text-[#f5a623] font-bold text-lg">{currentTotal.toFixed(2)}</span>
+             <span className="text-[#D4AF37] font-bold text-lg">{currentTotal.toFixed(2)}</span>
           </div>
         </div>
 
@@ -192,7 +192,7 @@ export default function RebatePage() {
 
       {/* Rebate History Title */}
       <div className="px-4 mt-6 mb-3 flex items-center gap-2">
-         <div className="w-1 h-4 bg-[#f04c55] rounded-full"></div>
+         <div className="w-1 h-4 bg-[#800000] rounded-full"></div>
          <h2 className="text-lg font-bold text-gray-800">Rebate history</h2>
       </div>
 
@@ -200,7 +200,7 @@ export default function RebatePage() {
       <div className="px-4">
         <button 
           onClick={() => router.push('/rebate/history')}
-          className="w-full py-3 rounded-full border border-[#f04c55] text-[#f04c55] font-medium bg-white active:bg-red-50 transition-colors"
+          className="w-full py-3 rounded-full border border-[#800000] text-[#800000] font-bold bg-white active:bg-[#800000]/10 transition-colors shadow-sm"
         >
           All history
         </button>

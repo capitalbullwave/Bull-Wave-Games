@@ -1,160 +1,231 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Users, Copy, Share2, DollarSign, Gift, ArrowUpRight } from "lucide-react";
-import { toast } from "sonner";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ChevronRight, Filter, Users, Copy, Download, Share2, DollarSign, Calendar, ShieldCheck, Headset, FileText } from "lucide-react";
+import { toast } from "react-hot-toast";
+import { useAuthStore } from "@/store/useAuthStore";
+import { apiRequest } from "@/lib/api";
 
 export default function ReferralPage() {
-  const [copied, setCopied] = useState(false);
-  const referralCode = "BULLWAVE7721";
-  const referralLink = `https://bullwavegames.com/invite?code=${referralCode}`;
+  const router = useRouter();
+  const { user } = useAuthStore();
+  
+  const [stats, setStats] = useState<any>({
+    yesterdayCommission: 0,
+    directRegister: 0,
+    teamRegister: 0,
+    directDepositCount: 0,
+    teamDepositCount: 0,
+    directDepositAmount: 0,
+    teamDepositAmount: 0,
+    directFirstDeposit: 0,
+    teamFirstDeposit: 0,
+    thisWeekCommission: 0,
+    totalCommission: 0,
+    directSubordinates: 0,
+    teamSubordinates: 0
+  });
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    toast.success("Referral invitation link copied to clipboard!");
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const invitationCode = (user as any)?.referral_code || "4331521376110";
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: "Join Bull Wave Games",
-        text: "Register on Bull Wave Games using my referral link and win instant bonuses!",
-        url: referralLink,
-      }).catch(console.error);
-    } else {
-      handleCopy();
-    }
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(invitationCode);
+    toast.success("Copy success");
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-10">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-3">
-          <Users className="text-[#800000] animate-pulse" /> Affiliate Program
-        </h1>
-        <p className="text-muted-foreground text-xs">Invite friends, earn lifetime commissions, and track referral networks</p>
+    <div className="min-h-screen bg-[#f0f3f7] pb-24 font-sans text-gray-800">
+      
+      {/* Header */}
+      <div className="bg-white px-4 py-3 flex items-center sticky top-0 z-50 shadow-sm border-b border-[#D4AF37]/20">
+        <div className="w-8" /> {/* Spacer for centering */}
+        <h1 className="text-[18px] flex-1 text-center text-[#800000] font-bold pr-2">Agency</h1>
+        <button className="text-[#D4AF37]">
+           <FileText size={20} />
+        </button>
       </div>
 
-      {/* Main Referral Stats */}
-      <section className="flex flex-col gap-3 w-full">
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50/50 border border-blue-200/50 shadow-sm rounded-2xl">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
-              <Users size={20} />
-            </div>
-            <div>
-              <span className="text-[10px] text-blue-800 font-bold block">Total Referrals</span>
-              <h3 className="text-lg font-black text-blue-900">42 Players</h3>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="bg-[#f0f3f7]">
+        {/* Banner Section */}
+        <div className="bg-gradient-to-b from-[#b30000] to-[#800000] text-white pt-6 pb-0 flex flex-col items-center relative overflow-hidden rounded-[16px] shadow-sm z-10 mx-3 mt-3">
+            {/* Background circles */}
+            <div className="absolute top-[-20px] left-[-20px] w-32 h-32 bg-[#D4AF37]/20 rounded-full blur-xl" />
+            <div className="absolute top-[20%] right-[-30px] w-40 h-40 bg-[#D4AF37]/20 rounded-full blur-xl" />
 
-        <Card className="bg-gradient-to-r from-emerald-50 to-teal-50/50 border border-emerald-200/50 shadow-sm rounded-2xl">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
-              <DollarSign size={20} />
+            <h2 className="text-[32px] font-medium leading-none mb-2 z-10 drop-shadow-md text-[#D4AF37]">{stats.yesterdayCommission}</h2>
+            <div className="bg-[#D4AF37] text-[#800000] text-[12px] px-4 py-0.5 rounded-full mb-1 z-10 font-bold shadow-md">
+                Yesterday's total commission
             </div>
-            <div>
-              <span className="text-[10px] text-emerald-800 font-bold block">Commission Earned</span>
-              <h3 className="text-lg font-black text-emerald-900">₹ 12,450.00</h3>
-            </div>
-          </CardContent>
-        </Card>
+            <p className="text-white/80 text-[11px] mb-4 z-10 font-medium">
+                Upgrade the level to increase commission income
+            </p>
 
-        <Card className="bg-gradient-to-r from-rose-50 to-pink-50/50 border border-rose-200/50 shadow-sm rounded-2xl">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0">
-              <Gift size={20} />
-            </div>
-            <div>
-              <span className="text-[10px] text-rose-800 font-bold block">Active Tier Level</span>
-              <h3 className="text-lg font-black text-rose-900">Bronze Agent</h3>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Referral Link & Share Controls */}
-      <section className="flex flex-col gap-6 w-full">
-        
-        <div className="w-full space-y-6">
-          <Card className="bg-gradient-to-br from-[#800000]/5 via-white to-[#D4AF37]/5 border border-[#D4AF37]/35 shadow-sm rounded-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px]" />
-            <CardHeader>
-              <CardTitle className="text-base text-[#800000]">Share Invitation Link</CardTitle>
-              <CardDescription className="text-xs text-slate-600">Get 10% commission on every friend's prediction and cash addition.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex gap-2">
-                <Input
-                  readOnly
-                  value={referralLink}
-                  className="bg-white border-[#D4AF37]/30 rounded-xl text-slate-800 py-4 text-xs shadow-sm"
-                />
-                <Button onClick={handleCopy} className="bg-[#800000] hover:bg-[#800000]/90 text-white rounded-xl px-4 py-4">
-                  <Copy size={14} />
-                </Button>
-              </div>
-
-              <div className="flex gap-4">
-                <Button onClick={handleShare} className="w-full bg-white border border-[#D4AF37]/30 text-[#800000] hover:bg-slate-50 py-4 rounded-xl flex items-center justify-center gap-2 text-xs shadow-sm">
-                  <Share2 size={14} /> Share via Socials
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Steps description */}
-          <div className="bg-gradient-to-r from-slate-50 via-white to-slate-100/50 border border-slate-200/60 rounded-2xl p-5 space-y-4 shadow-sm">
-            <h4 className="font-bold text-sm text-slate-800">How it works?</h4>
-            <div className="flex flex-col gap-3 text-xs">
-              <div className="space-y-1">
-                <strong className="text-[#800000] text-sm">1. Invite</strong>
-                <p className="text-slate-600 text-[10px] leading-relaxed">Share your unique affiliate link with friends and networks.</p>
-              </div>
-              <div className="space-y-1">
-                <strong className="text-[#D4AF37] text-sm">2. Register</strong>
-                <p className="text-slate-600 text-[10px] leading-relaxed">Your invitees join the Bull Wave gaming portal and place deposits.</p>
-              </div>
-              <div className="space-y-1">
-                <strong className="text-blue-600 text-sm">3. Earn</strong>
-                <p className="text-slate-600 text-[10px] leading-relaxed">Collect up to 10% commission settled directly to your wallet.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Affiliate network logs */}
-        <div className="w-full">
-          <Card className="bg-gradient-to-r from-violet-50 to-purple-50/50 border border-purple-200/50 shadow-sm rounded-2xl">
-            <CardHeader className="py-4">
-              <CardTitle className="text-sm text-purple-900">Recent Referrals</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pb-4">
-              {[
-                { username: "Rohit_Inv", date: "Joined yesterday", comm: "₹150.00" },
-                { username: "Player_1819", date: "Joined 3 days ago", comm: "₹450.00" },
-                { username: "VipPredict", date: "Joined last week", comm: "₹1,200.00" },
-              ].map((r, idx) => (
-                <div key={idx} className="p-3 rounded-xl bg-white/80 border border-purple-200/30 flex justify-between items-center shadow-sm">
-                  <div>
-                    <p className="text-xs font-bold text-slate-800">{r.username}</p>
-                    <span className="text-[10px] text-slate-500">{r.date}</span>
-                  </div>
-                  <span className="text-xs font-black text-emerald-600 flex items-center gap-0.5">
-                    +{r.comm} <ArrowUpRight size={12} />
-                  </span>
+            {/* Subordinates Grid inside banner */}
+            <div className="w-full grid grid-cols-2 text-center z-10 border-t border-[#D4AF37]/30 bg-black/10">
+                <div className="py-2 border-r border-[#D4AF37]/30">
+                    <span className="text-[13px] font-medium text-white/90">Direct subordinates</span>
                 </div>
-              ))}
-            </CardContent>
-          </Card>
+                <div className="py-2">
+                    <span className="text-[13px] font-medium text-white/90">Team subordinates</span>
+                </div>
+            </div>
         </div>
-      </section>
+
+        {/* Stats Content - White Background overlap */}
+        <div className="bg-white mx-3 mt-[-15px] pt-[20px] pb-4 shadow-sm border border-[#D4AF37]/10 rounded-[16px] relative z-0">
+            <div className="grid grid-cols-2 text-center border-b border-gray-100">
+                <div className="py-3 border-r border-gray-100 flex flex-col items-center justify-center">
+                    <span className="text-[#800000] font-bold text-[15px]">{stats.directRegister}</span>
+                    <span className="text-gray-500 text-[11px] font-medium">number of register</span>
+                </div>
+                <div className="py-3 flex flex-col items-center justify-center">
+                    <span className="text-[#800000] font-bold text-[15px]">{stats.teamRegister}</span>
+                    <span className="text-gray-500 text-[11px] font-medium">number of register</span>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 text-center border-b border-gray-100">
+                <div className="py-3 border-r border-gray-100 flex flex-col items-center justify-center">
+                    <span className="text-[#D4AF37] font-bold text-[15px]">{stats.directDepositCount}</span>
+                    <span className="text-gray-500 text-[11px] font-medium">Deposit number</span>
+                </div>
+                <div className="py-3 flex flex-col items-center justify-center">
+                    <span className="text-[#D4AF37] font-bold text-[15px]">{stats.teamDepositCount}</span>
+                    <span className="text-gray-500 text-[11px] font-medium">Deposit number</span>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 text-center border-b border-gray-100">
+                <div className="py-3 border-r border-gray-100 flex flex-col items-center justify-center">
+                    <span className="text-[#D4AF37] font-bold text-[15px]">{stats.directDepositAmount}</span>
+                    <span className="text-gray-500 text-[11px] font-medium">Deposit amount</span>
+                </div>
+                <div className="py-3 flex flex-col items-center justify-center">
+                    <span className="text-[#D4AF37] font-bold text-[15px]">{stats.teamDepositAmount}</span>
+                    <span className="text-gray-500 text-[11px] font-medium">Deposit amount</span>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 text-center border-b border-gray-100">
+                <div className="py-3 border-r border-gray-100 flex flex-col items-center justify-center">
+                    <span className="text-[#800000] font-bold text-[15px]">{stats.directFirstDeposit}</span>
+                    <span className="text-gray-500 text-[10px] leading-tight max-w-[120px] font-medium">Number of people making first deposit</span>
+                </div>
+                <div className="py-3 flex flex-col items-center justify-center">
+                    <span className="text-[#800000] font-bold text-[15px]">{stats.teamFirstDeposit}</span>
+                    <span className="text-gray-500 text-[10px] leading-tight max-w-[120px] font-medium">Number of people making first deposit</span>
+                </div>
+            </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="px-4 py-5">
+            <button className="w-full bg-gradient-to-r from-[#800000] to-[#600000] text-[#D4AF37] rounded-full py-3.5 text-[15px] font-black uppercase shadow-[0_4px_15px_rgba(128,0,0,0.3)] active:scale-[0.98] transition-transform border border-[#D4AF37]/50">
+                Download QR Code
+            </button>
+        </div>
+
+        {/* Menu Items */}
+        <div className="bg-white mx-3 mb-4 rounded-[16px] shadow-sm px-4 pb-2 border border-[#D4AF37]/10">
+            
+            <div className="flex items-center justify-between py-4 border-b border-gray-100 active:bg-gray-50 cursor-pointer" onClick={handleCopyCode}>
+                <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#800000]/10 flex items-center justify-center border border-[#800000]/20">
+                        <Copy size={15} className="text-[#800000]" />
+                    </div>
+                    <span className="text-[#333] font-bold text-[14px]">Copy invitation code</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-gray-500 font-medium text-[13px]">{invitationCode}</span>
+                    <Copy size={16} className="text-[#D4AF37]" />
+                </div>
+            </div>
+
+            <div className="flex items-center justify-between py-4 border-b border-gray-100 active:bg-gray-50 cursor-pointer">
+                <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30">
+                        <Users size={15} className="text-[#D4AF37]" />
+                    </div>
+                    <span className="text-[#333] font-bold text-[14px]">Subordinate data</span>
+                </div>
+                <ChevronRight size={18} className="text-gray-400" />
+            </div>
+
+            <div className="flex items-center justify-between py-4 border-b border-gray-100 active:bg-gray-50 cursor-pointer">
+                <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#800000]/10 flex items-center justify-center border border-[#800000]/20">
+                        <DollarSign size={15} className="text-[#800000]" />
+                    </div>
+                    <span className="text-[#333] font-bold text-[14px]">Commission detail</span>
+                </div>
+                <ChevronRight size={18} className="text-gray-400" />
+            </div>
+
+            <div className="flex items-center justify-between py-4 border-b border-gray-100 active:bg-gray-50 cursor-pointer">
+                <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30">
+                        <ShieldCheck size={15} className="text-[#D4AF37]" />
+                    </div>
+                    <span className="text-[#333] font-bold text-[14px]">Invitation rules</span>
+                </div>
+                <ChevronRight size={18} className="text-gray-400" />
+            </div>
+
+            <div className="flex items-center justify-between py-4 border-b border-gray-100 active:bg-gray-50 cursor-pointer">
+                <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#800000]/10 flex items-center justify-center border border-[#800000]/20">
+                        <Headset size={15} className="text-[#800000]" />
+                    </div>
+                    <span className="text-[#333] font-bold text-[14px]">Agent line customer service</span>
+                </div>
+                <ChevronRight size={18} className="text-gray-400" />
+            </div>
+
+            <div className="flex items-center justify-between py-4 border-b border-gray-100 active:bg-gray-50 cursor-pointer">
+                <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/30">
+                        <DollarSign size={15} className="text-[#D4AF37]" />
+                    </div>
+                    <span className="text-[#333] font-bold text-[14px]">Rebate ratio</span>
+                </div>
+                <ChevronRight size={18} className="text-gray-400" />
+            </div>
+
+        </div>
+
+      </div>
+
+      {/* Promotion Data Box */}
+      <div className="bg-white mx-3 mt-1 px-4 pt-4 pb-6 shadow-sm border border-[#D4AF37]/10 rounded-[16px]">
+        <div className="flex items-center gap-2 mb-4">
+            <DollarSign size={20} className="text-[#D4AF37]" />
+            <h3 className="text-[#800000] font-black uppercase text-[15px]">Promotion Data</h3>
+        </div>
+
+        <div className="grid grid-cols-2 text-center mb-6">
+            <div className="border-r border-gray-100 flex flex-col items-center justify-center">
+                <span className="text-[#800000] font-bold text-[18px]">{stats.thisWeekCommission}</span>
+                <span className="text-gray-500 font-medium text-[11px] mt-1">This Week</span>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+                <span className="text-[#800000] font-bold text-[18px]">{stats.totalCommission}</span>
+                <span className="text-gray-500 font-medium text-[11px] mt-1">Total commission</span>
+            </div>
+        </div>
+
+        <div className="grid grid-cols-2 text-center">
+            <div className="border-r border-gray-100 flex flex-col items-center justify-center">
+                <span className="text-[#D4AF37] font-bold text-[18px]">{stats.directSubordinates}</span>
+                <span className="text-gray-500 font-medium text-[11px] mt-1">direct subordinate</span>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+                <span className="text-[#D4AF37] font-bold text-[18px]">{stats.teamSubordinates}</span>
+                <span className="text-gray-500 font-medium text-[10px] leading-tight max-w-[120px] mt-1">Total number of subordinates in the team</span>
+            </div>
+        </div>
+      </div>
+
     </div>
   );
 }

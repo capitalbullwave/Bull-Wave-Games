@@ -79,11 +79,11 @@ export default function ActivityPage() {
   return (
     <div className="min-h-screen bg-[#f4f5f8] pb-24 text-slate-800 font-sans selection:bg-[#D4AF37]/30">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#800000] text-white shadow-md">
+      <header className="sticky top-0 z-50 bg-white text-[#800000] shadow-sm border-b border-gray-100">
         <div className="flex items-center justify-between px-4 h-14">
           <button 
             onClick={() => router.back()} 
-            className="p-2 -ml-2 rounded-full hover:bg-white/10 transition-colors"
+            className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors"
           >
             <ChevronLeft size={24} />
           </button>
@@ -93,7 +93,7 @@ export default function ActivityPage() {
           </h1>
           <button 
             onClick={() => setActiveTab(activeTab === "activity" ? "history" : "activity")}
-            className="p-2 -mr-2 rounded-full hover:bg-white/10 transition-colors"
+            className="p-2 -mr-2 rounded-full hover:bg-gray-100 transition-colors"
           >
             {activeTab === "activity" ? <History size={20} /> : <Award size={20} />}
           </button>
@@ -101,7 +101,7 @@ export default function ActivityPage() {
       </header>
 
       {/* Hero Banner Area */}
-      <div className="bg-gradient-to-b from-[#800000] to-[#b30000] px-4 pt-6 pb-12 text-white relative overflow-hidden rounded-b-[40px] shadow-lg">
+      <div className="bg-gradient-to-b from-[#b30000] to-[#800000] px-4 pt-6 pb-12 text-white relative overflow-hidden rounded-[16px] shadow-sm mx-3 mt-3">
         {/* Subtle background decoration */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-2xl translate-y-1/4 -translate-x-1/4 pointer-events-none" />
