@@ -65,9 +65,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const isAuthPage = pathname?.startsWith("/auth");
   const isLandingPage = pathname === "/";
 
+  // Only show the floating action buttons on the home page (/lobby) and landing page (/)
+  const showQuickActions = pathname === "/lobby" || pathname === "/";
+
   // Floating Quick Action Menu component on the Right (visible on desktop/tablet)
-  const renderQuickActions = () => (
-    <div className="hidden md:flex fixed right-4 top-1/2 -translate-y-1/2 flex-col gap-3 z-50 animate-in slide-in-from-right duration-500">
+  const renderQuickActions = () => {
+    if (!showQuickActions) return null;
+    return (
+      <div className="hidden md:flex fixed right-4 top-1/2 -translate-y-1/2 flex-col gap-3 z-50 animate-in slide-in-from-right duration-500">
       
       {/* 1. Mystery Gift Box */}
       <button
@@ -255,6 +260,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
     </div>
   );
+};
 
   if (isAuthPage || isLandingPage) {
     return (
