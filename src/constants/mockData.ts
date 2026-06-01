@@ -113,6 +113,7 @@ export const MOCK_GAMES = [
   { id: "o45", title: "Football Plinko", category: "original", image: "https://images.unsplash.com/photo-1518136247453-74e7b5265980?w=500&q=80", players: 25000, isLive: true, tags: ["Mini Games", "FOOTBALL PLINKO"] },
 
   // 3. Slots Category
+  { id: "s_kings_riches", title: "King's Riches", category: "slots", provider: "JILI", image: "/assets/games/kings_riches.png", players: 198000, isLive: true, tags: ["Slots", "Premium"] },
   { id: "s1", title: "Money Coming", category: "slots", provider: "JILI", image: "/assets/games/moneycoming.png", players: 142000, isLive: true, tags: ["Slots"] },
   { id: "s2", title: "Fortune Gems", category: "slots", provider: "JILI", image: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=500&q=80", players: 12000, isLive: true, tags: ["Slots"] },
   { id: "s3", title: "Go Rush", category: "slots", provider: "JILI", image: "https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?w=500&q=80", players: 31000, isLive: false, tags: ["Slots"] },

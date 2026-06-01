@@ -14,6 +14,7 @@ import {
   Gift, 
   LogOut,
   ChevronRight,
+  ChevronLeft,
   Headset,
   Award,
   Users
@@ -78,10 +79,20 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Top Navbar */}
         {pathname !== "/about" && pathname !== "/tournaments" && pathname !== "/activity" && (
           <header className="h-14 bg-white flex items-center justify-between px-4 flex-shrink-0 z-30 border-b border-glass-border shadow-sm">
-            <Link href="/lobby" className="flex items-center gap-2 cursor-pointer">
-              <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
-              <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave</span>
-            </Link>
+            <div className="flex items-center gap-1.5">
+              {pathname !== "/lobby" && pathname !== "/" && (
+                <button 
+                  onClick={() => router.back()} 
+                  className="text-slate-600 hover:text-[#800000] active:scale-90 transition-all p-1 rounded-full hover:bg-slate-100/50 cursor-pointer flex items-center justify-center shrink-0"
+                >
+                  <ChevronLeft size={22} className="stroke-[2.5]" />
+                </button>
+              )}
+              <Link href="/lobby" className="flex items-center gap-2 cursor-pointer">
+                <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
+                <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave</span>
+              </Link>
+            </div>
 
           <div className="flex items-center gap-3">
             {/* Wallet balance */}
@@ -95,8 +106,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
             <button 
               onClick={() => {
-                toast.info("No new announcements in your mailbox.");
-                router.push("/support");
+                router.push("/announcement");
               }}
               className="p-1.5 rounded-full hover:bg-black/5 text-[#800000] transition-colors relative"
             >

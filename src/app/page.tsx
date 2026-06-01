@@ -27,6 +27,80 @@ export default function Dashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(0);
 
+  // States for interactive King's Riches Slots game mockup
+  const [spinning, setSpinning] = useState(false);
+  const [reels, setReels] = useState(["🎰", "💎", "👑"]);
+  const [hasWon, setHasWon] = useState(false);
+  const [balance, setBalance] = useState(1500);
+  const [bet, setBet] = useState(50);
+  const [lastWin, setLastWin] = useState(0);
+
+  const handleSpin = () => {
+    if (spinning) return;
+    if (balance < bet) {
+      toast.error("Insufficient mock balance! Depositing free chips... +₹1,500");
+      setBalance(1500);
+      return;
+    }
+
+    setBalance(prev => prev - bet);
+    setSpinning(true);
+    setHasWon(false);
+    setLastWin(0);
+    toast.info("Spinning King's Riches Slot...");
+
+    const symbols = ["🎰", "💎", "👑", "🍒", "🔔", "💰", "7️⃣"];
+    let count = 0;
+    const interval = setInterval(() => {
+      setReels([
+        symbols[Math.floor(Math.random() * symbols.length)],
+        symbols[Math.floor(Math.random() * symbols.length)],
+        symbols[Math.floor(Math.random() * symbols.length)]
+      ]);
+      count++;
+      if (count > 10) {
+        clearInterval(interval);
+        
+        // Randomly select outcome: 35% chance of Jackpot, 40% chance of standard match, 25% chance of lose
+        const rand = Math.random();
+        if (rand < 0.35) {
+          const jackpotWin = bet * 50;
+          setReels(["👑", "👑", "👑"]);
+          setBalance(prev => prev + jackpotWin);
+          setLastWin(jackpotWin);
+          setSpinning(false);
+          setHasWon(true);
+          toast.success(`🏆 GRAND JACKPOT! +₹${jackpotWin} won!`, {
+            duration: 4000,
+            description: "3x Royal Crowns matched in King's Riches!"
+          });
+        } else if (rand < 0.75) {
+          const matchWin = bet * 5;
+          const matchSymbol = symbols[Math.floor(Math.random() * (symbols.length - 1))]; // Non-crown match
+          setReels([matchSymbol, matchSymbol, "💎"]);
+          setBalance(prev => prev + matchWin);
+          setLastWin(matchWin);
+          setSpinning(false);
+          setHasWon(true);
+          toast.success(`🎉 BIG WIN! +₹${matchWin} won!`, {
+            duration: 3000,
+            description: "Nice match! Keep spinning!"
+          });
+        } else {
+          // Lose
+          setReels([
+            symbols[Math.floor(Math.random() * symbols.length)],
+            symbols[Math.floor(Math.random() * symbols.length)],
+            symbols[Math.floor(Math.random() * symbols.length)]
+          ]);
+          setSpinning(false);
+          setHasWon(false);
+          toast.error("No match. Spin again to win!");
+        }
+      }
+    }, 150);
+  };
+
   const banners = ['/banner1.jpg', '/banner2.jpg', '/banner3.jpg'];
 
   useEffect(() => {
@@ -227,32 +301,168 @@ export default function Dashboard() {
                   </div>
 
                   {/* Slots Game Reels Teaser */}
-                  <div className="my-auto space-y-3 w-full text-center">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#D4AF37] to-[#F1D279] flex items-center justify-center shadow-lg mx-auto">
-                      <Gamepad2 className="text-[#800000]" size={22} />
+                  <div className="my-auto space-y-2.5 w-full text-center relative">
+                    
+                    {/* Floating explodes/gold coins on jackpot win */}
+                    {hasWon && (
+                      <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+                        {Array.from({ length: 12 }).map((_, i) => (
+                          <motion.span
+                            key={i}
+                            initial={{ 
+                              opacity: 0, 
+                              scale: 0.5, 
+                              x: 100 + Math.random() * 40, 
+                              y: 120 
+                            }}
+                            animate={{ 
+                              opacity: [0, 1, 1, 0],
+                              scale: [0.5, 1.2, 1.2, 0.8],
+                              x: Math.random() * 220, 
+                              y: Math.random() * 180 - 40,
+                              rotate: Math.random() * 360
+                            }}
+                            transition={{ 
+                              duration: 2 + Math.random() * 1.5, 
+                              repeat: Infinity,
+                              ease: "easeOut"
+                            }}
+                            className="absolute text-base"
+                          >
+                            💰
+                          </motion.span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Logo/Badge */}
+                    <div className="w-16 h-16 rounded-2xl border-2 border-[#D4AF37]/80 overflow-hidden shadow-lg mx-auto bg-black relative group transition-transform duration-300 hover:scale-105">
+                      <img 
+                        src="/assets/games/kings_riches.png" 
+                        alt="King's Riches Logo" 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <h3 className="text-sm font-black text-white uppercase tracking-widest leading-tight">
+                    <h3 className="text-xs font-black text-white uppercase tracking-widest leading-tight">
                       King's Riches
                     </h3>
-                    <p className="text-[9px] text-[#D4AF37] font-bold">SPIN TO WIN GRAND JACKPOT</p>
 
-                    {/* Simulating slot reels */}
-                    <div className="grid grid-cols-3 gap-1.5 bg-black/50 p-2.5 rounded-2xl border border-amber-500/30">
-                      {["🎰", "💎", "👑"].map((emoji, idx) => (
-                        <div key={idx} className="h-12 rounded-xl bg-gradient-to-b from-slate-900 to-black flex items-center justify-center text-lg border border-amber-500/10 shadow-inner">
-                          {emoji}
+                    {/* Game HUD */}
+                    <div className="w-full grid grid-cols-2 gap-2 text-center text-[10px] bg-black/60 p-2 rounded-xl border border-amber-500/20 mb-2">
+                      <div className="flex flex-col justify-center">
+                        <span className="text-slate-400 block text-[7px] font-bold uppercase tracking-wider">MOCK BALANCE</span>
+                        <span className="text-[#D4AF37] font-extrabold text-[11px]">₹{balance}</span>
+                      </div>
+                      <div className="flex flex-col justify-center items-center border-l border-amber-500/20">
+                        <span className="text-slate-400 block text-[7px] font-bold uppercase tracking-wider">BET AMOUNT</span>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (bet > 10) setBet(b => b - 10);
+                            }}
+                            disabled={spinning}
+                            className="w-3.5 h-3.5 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/50 text-[#D4AF37] flex items-center justify-center font-bold text-[9px] hover:bg-[#D4AF37]/45 active:scale-90 transition-all shrink-0 cursor-pointer disabled:opacity-50"
+                          >
+                            -
+                          </button>
+                          <span className="text-white font-extrabold text-[10px] w-8">₹{bet}</span>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (bet < 500) setBet(b => b + 10);
+                            }}
+                            disabled={spinning}
+                            className="w-3.5 h-3.5 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/50 text-[#D4AF37] flex items-center justify-center font-bold text-[9px] hover:bg-[#D4AF37]/45 active:scale-90 transition-all shrink-0 cursor-pointer disabled:opacity-50"
+                          >
+                            +
+                          </button>
                         </div>
-                      ))}
+                      </div>
                     </div>
+
+                    {/* Flashing Gold LED Reels Frame */}
+                    <div className="relative p-2.5 rounded-2xl bg-black/85 border border-amber-500/40 shadow-inner overflow-hidden">
+                      
+                      {/* LED Top border */}
+                      <div className="absolute top-1 left-0 right-0 flex justify-between px-2.5 z-15">
+                        {[1, 2, 3, 4, 5].map((led) => (
+                          <span 
+                            key={led} 
+                            className={`w-1 h-1 rounded-full ${
+                              spinning 
+                                ? (led % 2 === 0 ? 'bg-red-500 shadow-[0_0_4px_#ef4444]' : 'bg-yellow-400 shadow-[0_0_4px_#facc15]') 
+                                : hasWon 
+                                  ? 'bg-[#D4AF37] shadow-[0_0_6px_#D4AF37]'
+                                  : 'bg-amber-500/40'
+                            } transition-all duration-150`} 
+                          />
+                        ))}
+                      </div>
+
+                      {/* Simulating slot reels */}
+                      <div className={`grid grid-cols-3 gap-1.5 bg-black/80 p-1.5 rounded-xl border transition-all duration-300 ${hasWon ? "border-amber-400 shadow-[0_0_12px_rgba(212,175,55,0.5)]" : "border-amber-500/10"}`}>
+                        {reels.map((emoji, idx) => (
+                          <motion.div 
+                            key={idx}
+                            animate={spinning ? { 
+                              y: [0, -20, 20, 0],
+                              scale: [1, 0.95, 1.05, 1],
+                            } : {}}
+                            transition={{ 
+                              repeat: spinning ? Infinity : 0, 
+                              duration: 0.15,
+                              ease: "easeInOut" 
+                            }}
+                            className={`h-12 rounded-xl bg-gradient-to-b from-slate-900 to-black flex items-center justify-center text-lg border border-amber-500/10 shadow-inner ${hasWon ? "border-amber-400" : ""}`}
+                          >
+                            {emoji}
+                          </motion.div>
+                        ))}
+                      </div>
+
+                      {/* LED Bottom border */}
+                      <div className="absolute bottom-1 left-0 right-0 flex justify-between px-2.5 z-15">
+                        {[1, 2, 3, 4, 5].map((led) => (
+                          <span 
+                            key={led} 
+                            className={`w-1 h-1 rounded-full ${
+                              spinning 
+                                ? (led % 2 !== 0 ? 'bg-red-500 shadow-[0_0_4px_#ef4444]' : 'bg-yellow-400 shadow-[0_0_4px_#facc15]') 
+                                : hasWon 
+                                  ? 'bg-[#D4AF37] shadow-[0_0_6px_#D4AF37]'
+                                  : 'bg-amber-500/40'
+                            } transition-all duration-150`} 
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Win Status HUD */}
+                    {lastWin > 0 && (
+                      <motion.div 
+                        initial={{ scale: 0.85, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-400/50 p-1.5 rounded-xl text-center shadow-lg"
+                      >
+                        <span className="text-[7px] text-amber-300 font-extrabold uppercase tracking-widest block">WINNER!</span>
+                        <span className="text-white text-xs font-black tracking-wider animate-pulse block mt-0.5">
+                          +₹{lastWin}
+                        </span>
+                      </motion.div>
+                    )}
+
                   </div>
 
                   {/* Spin Button */}
                   <div className="w-full shrink-0">
                     <button 
                       type="button"
-                      className="w-full py-2.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F1D279] text-[#800000] font-black text-[10px] uppercase tracking-widest shadow-md"
+                      onClick={handleSpin}
+                      disabled={spinning}
+                      className={`w-full py-2.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F1D279] text-[#800000] font-black text-[10px] uppercase tracking-widest shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer ${spinning ? 'opacity-80 cursor-not-allowed' : ''}`}
                     >
-                      SPIN NOW
+                      {spinning ? "SPINNING..." : "SPIN NOW"}
                     </button>
                   </div>
                 </div>

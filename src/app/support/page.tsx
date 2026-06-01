@@ -1,20 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Headset, HelpCircle, MessageSquare, Send, Paperclip, CheckCircle } from "lucide-react";
+import { Headset, HelpCircle, MessageSquare, Send, Paperclip, CheckCircle, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
-
-interface Message {
-  sender: "user" | "support";
-  text: string;
-  time: string;
-}
+import { apiRequest } from "@/lib/api";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const FAQS = [
   { q: "How long do withdrawals take?", a: "Withdrawals are typically settled within 2 to 4 hours. Bank transfers might take up to 24 hours during banking holidays." },
@@ -23,44 +20,118 @@ const FAQS = [
 ];
 
 export default function SupportPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    { sender: "support", text: "Hello! Welcome to Bull Wave Support. How can we help you today?", time: "10:00 AM" },
-  ]);
+  const router = useRouter();
+  const { user } = useAuthStore();
+  
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [activeTicket, setActiveTicket] = useState<any | null>(null);
+  const [loadingTickets, setLoadingTickets] = useState(true);
+  
   const [inputText, setInputText] = useState("");
   const [ticketSubject, setTicketSubject] = useState("");
   const [ticketDescription, setTicketDescription] = useState("");
 
-  const handleSendMessage = () => {
-    if (!inputText.trim()) return;
-    const newMsg: Message = { sender: "user", text: inputText, time: "Just now" };
-    setMessages((prev) => [...prev, newMsg]);
-    setInputText("");
-
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { sender: "support", text: "Thank you for reaching out. We have logged your request.", time: "Just now" },
-      ]);
-    }, 1000);
+  const fetchTickets = async () => {
+    try {
+      setLoadingTickets(true);
+      const resp = await apiRequest("/support/tickets");
+      if (resp) {
+        setTickets(resp);
+        // Automatically load latest ticket messages if any exist and none is selected
+        if (resp.length > 0 && !activeTicket) {
+          const detail = await apiRequest(`/support/tickets/${resp[0].id}`);
+          setActiveTicket(detail);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load tickets", error);
+    } finally {
+      setLoadingTickets(false);
+    }
   };
 
-  const handleCreateTicket = () => {
+  useEffect(() => {
+    fetchTickets();
+  }, []);
+
+  const handleSelectTicket = async (ticketId: number) => {
+    try {
+      const detail = await apiRequest(`/support/tickets/${ticketId}`);
+      setActiveTicket(detail);
+    } catch (error) {
+      toast.error("Failed to load ticket details.");
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputText.trim()) return;
+    if (!activeTicket) {
+      toast.error("Please raise a ticket or select a ticket first.");
+      return;
+    }
+    try {
+      const newMsg = await apiRequest(`/support/tickets/${activeTicket.id}/messages`, {
+        method: "POST",
+        body: JSON.stringify({ message: inputText })
+      });
+      if (newMsg) {
+        setActiveTicket((prev: any) => ({
+          ...prev,
+          messages: [...(prev?.messages || []), newMsg]
+        }));
+        setInputText("");
+        // Reload list to sync last active statuses
+        const listResp = await apiRequest("/support/tickets");
+        if (listResp) setTickets(listResp);
+      }
+    } catch (error) {
+      toast.error("Failed to send message.");
+    }
+  };
+
+  const handleCreateTicket = async () => {
     if (!ticketSubject || !ticketDescription) {
       toast.error("Please fill in all ticket details.");
       return;
     }
-    toast.success(`Ticket #${Math.floor(Math.random() * 90000 + 10000)} successfully raised!`);
-    setTicketSubject("");
-    setTicketDescription("");
+    try {
+      const newTicket = await apiRequest("/support/tickets", {
+        method: "POST",
+        body: JSON.stringify({
+          subject: ticketSubject,
+          message: ticketDescription,
+          priority: "medium"
+        })
+      });
+      if (newTicket) {
+        toast.success(`Ticket #${newTicket.id} successfully raised!`);
+        setTicketSubject("");
+        setTicketDescription("");
+        await fetchTickets();
+        // Set new ticket active
+        const detail = await apiRequest(`/support/tickets/${newTicket.id}`);
+        setActiveTicket(detail);
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to submit ticket");
+    }
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-10">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-3">
-          <Headset className="text-[#800000]" /> Support Desk
-        </h1>
-        <p className="text-muted-foreground text-xs">Raise tickets, chat with our agents, or browse popular FAQs</p>
+    <div className="space-y-6 animate-in fade-in duration-500 pb-10 relative">
+      <div className="flex items-center gap-2">
+        <button 
+          onClick={() => router.back()} 
+          className="text-gray-600 hover:text-[#800000] active:scale-95 transition-all p-1 rounded-lg hover:bg-slate-100/50 cursor-pointer"
+        >
+          <ChevronLeft size={24} />
+        </button>
+        <div>
+          <h1 className="text-2xl font-black flex items-center gap-2">
+            <Headset className="text-[#800000]" size={24} /> Support Desk
+          </h1>
+          <p className="text-muted-foreground text-xs font-semibold">Raise tickets, chat with our agents, or browse popular FAQs</p>
+        </div>
       </div>
 
       <div className="flex flex-col gap-6 w-full">
@@ -82,9 +153,11 @@ export default function SupportPage() {
 
             {/* Live Chat Panel */}
             <TabsContent value="chat" className="mt-4">
-              <Card className="bg-gradient-to-r from-blue-50 to-indigo-50/50 border border-blue-200/50 rounded-2xl flex flex-col h-[500px] shadow-sm">
+              <Card className="bg-gradient-to-r from-blue-50 to-indigo-50/50 border border-blue-200/50 rounded-2xl flex flex-col h-[500px] shadow-sm animate-in fade-in">
                 <CardHeader className="border-b border-blue-100 pb-3">
-                  <CardTitle className="text-base text-blue-950">Live Support Representative</CardTitle>
+                  <CardTitle className="text-base text-blue-950">
+                    {activeTicket ? `Chat: ${activeTicket.subject}` : "Live Support Chat"}
+                  </CardTitle>
                   <CardDescription className="flex items-center gap-2 text-xs text-blue-800">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     Online - Avg response time 1 min
@@ -92,41 +165,59 @@ export default function SupportPage() {
                 </CardHeader>
                 
                 {/* Chat Message Box */}
-                <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[300px]">
-                  {messages.map((msg, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
-                    >
-                      <div
-                        className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs shadow-sm ${
-                          msg.sender === "user"
-                            ? "bg-[#800000] text-white rounded-tr-none"
-                            : "bg-white border border-blue-200/50 text-slate-800 rounded-tl-none"
-                        }`}
-                      >
-                        <p>{msg.text}</p>
-                        <span className={`text-[8px] block text-right mt-1 ${
-                          msg.sender === "user" ? "text-amber-200/80" : "text-slate-500"
-                        }`}>{msg.time}</span>
-                      </div>
+                <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[300px] no-scrollbar">
+                  {activeTicket && activeTicket.messages && activeTicket.messages.length > 0 ? (
+                    activeTicket.messages.map((msg: any) => {
+                      const isMe = msg.sender_id === user?.id;
+                      return (
+                        <div
+                          key={msg.id}
+                          className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+                        >
+                          <div
+                            className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs shadow-sm ${
+                              isMe
+                                ? "bg-[#800000] text-white rounded-tr-none"
+                                : "bg-white border border-blue-200/50 text-slate-800 rounded-tl-none"
+                            }`}
+                          >
+                            <p>{msg.message}</p>
+                            <span className={`text-[8px] block text-right mt-1 ${
+                              isMe ? "text-amber-200/80" : "text-slate-500"
+                            }`}>
+                              {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-slate-400 py-16 text-center px-4">
+                      <MessageSquare className="opacity-20 mb-2" size={36} />
+                      <p className="text-xs font-bold leading-relaxed">No messages in active chat.</p>
+                      <span className="text-[10px] text-slate-400 font-semibold block mt-1">Please select or raise a ticket above to start!</span>
                     </div>
-                  ))}
+                  )}
                 </CardContent>
 
                 {/* Message input bar */}
-                <div className="p-4 border-t border-blue-100 flex gap-2 items-center">
+                <div className="p-4 border-t border-blue-100 flex gap-2 items-center bg-white rounded-b-2xl">
                   <button className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-[#800000] hover:bg-slate-50 transition-all shadow-sm">
                     <Paperclip size={16} />
                   </button>
                   <Input
-                    placeholder="Type your message..."
+                    placeholder={activeTicket ? "Type your message..." : "Raise a ticket to start chat..."}
+                    disabled={!activeTicket}
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-                    className="flex-1 bg-white border-slate-200 rounded-xl text-slate-800 shadow-sm"
+                    className="flex-1 bg-white border-slate-200 rounded-xl text-slate-850 shadow-sm"
                   />
-                  <Button onClick={handleSendMessage} className="bg-[#800000] hover:bg-[#800000]/90 text-white rounded-xl py-5 shadow-sm">
+                  <Button 
+                    onClick={handleSendMessage} 
+                    disabled={!activeTicket}
+                    className="bg-[#800000] hover:bg-[#800000]/90 text-white rounded-xl py-5 shadow-sm"
+                  >
                     <Send size={14} />
                   </Button>
                 </div>
@@ -135,7 +226,7 @@ export default function SupportPage() {
 
             {/* Raise Ticket Panel */}
             <TabsContent value="ticket" className="mt-4">
-              <Card className="bg-gradient-to-r from-rose-50 to-pink-50/50 border border-rose-200/50 shadow-sm rounded-2xl">
+              <Card className="bg-gradient-to-r from-rose-50 to-pink-50/50 border border-rose-200/50 shadow-sm rounded-2xl animate-in fade-in">
                 <CardHeader>
                   <CardTitle className="text-rose-950 text-base">Create Support Ticket</CardTitle>
                   <CardDescription className="text-xs text-rose-800">File a formal ticket if your query requires extensive audit checks.</CardDescription>
@@ -178,7 +269,7 @@ export default function SupportPage() {
             <TabsContent value="faq" className="mt-4">
               <div className="space-y-4">
                 {FAQS.map((faq, idx) => (
-                  <Card key={idx} className="bg-gradient-to-r from-amber-50 to-orange-50/50 border border-amber-200/50 shadow-sm rounded-2xl">
+                  <Card key={idx} className="bg-gradient-to-r from-amber-50 to-orange-50/50 border border-amber-200/50 shadow-sm rounded-2xl animate-in fade-in">
                     <CardHeader className="py-4">
                       <CardTitle className="text-xs font-black flex items-center gap-2 text-amber-950">
                         <HelpCircle size={16} className="text-[#800000]" />
@@ -202,21 +293,44 @@ export default function SupportPage() {
               <CardTitle className="text-base text-purple-950">Ticket Audit History</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 pb-4">
-              {[
-                { id: "T-4491", topic: "UPI Ref Deposit Audit", date: "2 days ago", status: "resolved" },
-                { id: "T-2210", topic: "KYC Aadhaar Re-Verify", date: "1 week ago", status: "resolved" },
-              ].map((t) => (
-                <div key={t.id} className="p-3 rounded-xl bg-white/80 border border-purple-200/30 flex justify-between items-center shadow-sm">
-                  <div>
-                    <span className="text-[9px] text-slate-500 font-bold">{t.id}</span>
-                    <p className="text-xs font-black text-slate-800">{t.topic}</p>
-                    <span className="text-[9px] text-slate-400 block mt-0.5">{t.date}</span>
-                  </div>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 text-[10px] uppercase font-bold flex items-center gap-1">
-                    <CheckCircle size={10} /> {t.status}
-                  </span>
+              {loadingTickets ? (
+                <div className="text-center py-10 flex flex-col items-center gap-2">
+                  <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase">Loading history...</span>
                 </div>
-              ))}
+              ) : tickets.length > 0 ? (
+                tickets.map((t) => {
+                  const isActive = activeTicket?.id === t.id;
+                  return (
+                    <div 
+                      key={t.id} 
+                      onClick={() => handleSelectTicket(t.id)}
+                      className={`p-3 rounded-xl bg-white/80 border border-purple-250/30 flex justify-between items-center shadow-sm cursor-pointer hover:bg-purple-100/40 transition-all ${
+                        isActive ? "ring-2 ring-[#800000]" : ""
+                      }`}
+                    >
+                      <div>
+                        <span className="text-[9px] text-slate-500 font-bold uppercase">Ticket #{t.id}</span>
+                        <p className="text-xs font-black text-slate-800 truncate max-w-[180px]">{t.subject}</p>
+                        <span className="text-[9px] text-slate-400 block mt-0.5">
+                          {new Date(t.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold flex items-center gap-1 ${
+                        t.status === "resolved" ? "bg-emerald-500/10 text-emerald-600" :
+                        t.status === "closed" ? "bg-slate-500/10 text-slate-600" :
+                        "bg-orange-500/10 text-orange-600"
+                      }`}>
+                        <CheckCircle size={10} /> {t.status}
+                      </span>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="text-center py-8 text-slate-400">
+                  <p className="text-xs font-bold">No tickets filed yet</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

@@ -73,6 +73,7 @@ export default function ProfilePage() {
 
   // Avatar Upload Ref and base64 reader handler
   const avatarInputRef = useRef<HTMLInputElement>(null);
+  const mainAvatarInputRef = useRef<HTMLInputElement>(null);
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -665,6 +666,14 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-16 bg-white">
+      {/* Hidden File Input for Avatar Customization directly on the profile card */}
+      <input 
+        type="file" 
+        ref={mainAvatarInputRef} 
+        onChange={handleAvatarChange} 
+        accept="image/*" 
+        className="hidden" 
+      />
       
       {/* Account Center Header */}
       <div>
@@ -687,6 +696,17 @@ export default function ProfilePage() {
                 >
                   <img src={user?.avatarUrl || "https://i.pravatar.cc/150?u=a042581f4e29026704d"} alt="Profile Avatar" className="w-full h-full object-cover" />
                 </div>
+                {/* Floating edit pencil button */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    mainAvatarInputRef.current?.click();
+                  }}
+                  className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-[#800000] border-2 border-white text-white flex items-center justify-center shadow-md hover:scale-110 active:scale-90 transition-all cursor-pointer z-20"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-pencil"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </button>
               </div>
 
               <h2 className="text-base font-black text-slate-800">{user?.fullName || "Rohit Kumar"}</h2>
