@@ -69,8 +69,8 @@ export default function LoginPage() {
       >
         {/* Logo and title */}
         <div className="text-center mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#800000] to-[#b30000] flex items-center justify-center shadow-md mx-auto mb-3">
-            <Gamepad2 className="text-white" size={32} />
+          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg mx-auto mb-3 border border-[#D4AF37]/30 bg-white p-0.5">
+            <img src="/logo.png" alt="Bull Wave Logo" className="w-full h-full object-cover rounded-xl animate-pulse" />
           </div>
           <h1 className="text-3xl font-black tracking-widest text-[#800000]">BULL WAVE</h1>
           <p className="text-slate-500 text-xs font-bold mt-1">Premium Gaming Platform</p>
@@ -96,7 +96,7 @@ export default function LoginPage() {
                 <Label htmlFor="identity" className="text-amber-900 text-xs font-bold">Email or Mobile Number</Label>
                 <Input
                   id="identity"
-                  placeholder="e.g. player@bullwavegames.com or 9876543210"
+                  placeholder="Enter your mobile number or email address"
                   className="bg-white border-amber-200/80 focus:ring-primary/50 text-slate-800 rounded-xl shadow-sm text-xs"
                   {...register("identity")}
                 />

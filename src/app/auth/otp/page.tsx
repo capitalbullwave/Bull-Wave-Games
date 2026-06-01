@@ -88,8 +88,8 @@ export default function OTPPage() {
         className="w-full max-w-md z-10"
       >
         <div className="text-center mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary to-neon-pink flex items-center justify-center shadow-[0_0_20px_rgba(0,243,255,0.4)] mx-auto mb-3">
-            <Gamepad2 className="text-white" size={32} />
+          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg mx-auto mb-3 border border-[#D4AF37]/30 bg-white p-0.5">
+            <img src="/logo.png" alt="Bull Wave Logo" className="w-full h-full object-cover rounded-xl" />
           </div>
           <h1 className="text-3xl font-black neon-text-blue tracking-widest">BULL WAVE</h1>
           <p className="text-muted-foreground text-sm mt-1">Verification Step</p>

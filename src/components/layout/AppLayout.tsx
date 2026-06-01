@@ -17,7 +17,8 @@ import {
   ChevronLeft,
   Headset,
   Award,
-  Users
+  Users,
+  Download
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -60,18 +61,212 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Hide layout for auth pages
-  if (pathname?.startsWith("/auth")) {
-    return <>{children}</>;
-  }
+  // Hide layout for auth pages and public landing page, but render floating menu globally on the right side
+  const isAuthPage = pathname?.startsWith("/auth");
+  const isLandingPage = pathname === "/";
 
-  // Hide mobile layout for public widescreen landing page
-  if (pathname === "/") {
-    return <>{children}</>;
+  // Floating Quick Action Menu component on the Right (visible on desktop/tablet)
+  const renderQuickActions = () => (
+    <div className="hidden md:flex fixed right-4 top-1/2 -translate-y-1/2 flex-col gap-3 z-50 animate-in slide-in-from-right duration-500">
+      
+      {/* 1. Mystery Gift Box */}
+      <button
+        onClick={() => {
+          toast.success("Welcome to Bull Wave Rewards!");
+          router.push("/rewards");
+        }}
+        className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-400 via-rose-500 to-[#ff4757] text-white flex items-center justify-center shadow-[0_4px_15px_rgba(255,71,87,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
+      >
+        <Gift size={20} className="animate-bounce text-yellow-100" />
+        <span className="absolute right-14 bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+          Mystery Gift
+        </span>
+      </button>
+
+      {/* 2. Invite Wheel */}
+      <button
+        onClick={() => {
+          router.push("/activity/invite-wheel");
+        }}
+        className="w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-400 via-amber-500 to-orange-500 text-white flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
+      >
+        <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center overflow-hidden shadow-inner p-0.5 border border-amber-300">
+          <svg className="w-full h-full" viewBox="0 0 100 100">
+            {/* Stand / Support Base at the bottom */}
+            <path d="M38,90 L62,90 L56,76 L44,76 Z" fill="#e25c27" stroke="#b33c15" strokeWidth="1" />
+            <rect x="47" y="72" width="6" height="6" fill="#f0783c" stroke="#b33c15" strokeWidth="1" />
+            <ellipse cx="50" cy="90" rx="14" ry="3" fill="#c2410c" />
+            
+            {/* Rotating Wheel Group */}
+            <g className="animate-[spin_10s_linear_infinite] origin-center">
+              {/* Outer Red Wheel Rim */}
+              <circle cx="50" cy="46" r="36" fill="#ef4444" stroke="#d97706" strokeWidth="2" />
+              
+              {/* Wheel Segments */}
+              {/* Green */}
+              <path d="M50,46 L50,10 A36,36 0 0,1 81,28 Z" fill="#10b981" />
+              {/* Orange */}
+              <path d="M50,46 L81,28 A36,36 0 0,1 86,46 Z" fill="#f97316" />
+              {/* Yellow */}
+              <path d="M50,46 L86,46 A36,36 0 0,1 68,77 Z" fill="#fbbf24" />
+              {/* Purple */}
+              <path d="M50,46 L68,77 A36,36 0 0,1 32,77 Z" fill="#a855f7" />
+              {/* Pink/Red */}
+              <path d="M50,46 L32,77 A36,36 0 0,1 14,46 Z" fill="#f43f5e" />
+              {/* Cyan */}
+              <path d="M50,46 L14,46 A36,36 0 0,1 19,28 Z" fill="#06b6d4" />
+              {/* Yellow-Green */}
+              <path d="M50,46 L19,28 A36,36 0 0,1 50,10 Z" fill="#84cc16" />
+
+              {/* Bulbs on Rim */}
+              <circle cx="50" cy="13" r="1.5" fill="#fff" />
+              <circle cx="80" cy="30" r="1.5" fill="#fff" />
+              <circle cx="83" cy="46" r="1.5" fill="#fff" />
+              <circle cx="66" cy="74" r="1.5" fill="#fff" />
+              <circle cx="34" cy="74" r="1.5" fill="#fff" />
+              <circle cx="17" cy="46" r="1.5" fill="#fff" />
+              <circle cx="20" cy="30" r="1.5" fill="#fff" />
+
+              {/* Central Gold Cap */}
+              <circle cx="50" cy="46" r="9" fill="#facc15" stroke="#d97706" strokeWidth="1" />
+              <circle cx="50" cy="46" r="4.5" fill="#fef08a" />
+            </g>
+
+            {/* Static Gold Pointer at the Top */}
+            <path d="M50,4 L53,15 L47,15 Z" fill="#eab308" stroke="#ca8a04" strokeWidth="0.8" />
+            <circle cx="50" cy="15" r="2" fill="#ef4444" />
+          </svg>
+        </div>
+        <span className="absolute right-14 bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+          Invite Wheel
+        </span>
+      </button>
+
+      {/* 3. Wheel Spin */}
+      <button
+        onClick={() => {
+          router.push("/games/o12");
+        }}
+        className="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-600 to-pink-600 text-white flex items-center justify-center shadow-[0_4px_15px_rgba(99,102,241,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
+      >
+        <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center overflow-hidden shadow-inner p-0.5 border border-purple-300">
+          <svg className="w-full h-full" viewBox="0 0 100 100">
+            {/* Thick 3D Outer Gold Ring */}
+            <circle cx="50" cy="50" r="46" fill="#ca8a04" stroke="#fef08a" strokeWidth="2" />
+            <circle cx="50" cy="50" r="42" fill="#eab308" />
+            
+            {/* Rotating Wheel Group */}
+            <g className="animate-[spin_12s_linear_infinite] origin-center">
+              <circle cx="50" cy="50" r="39" fill="#1e293b" />
+              
+              {/* 3D Wheel Segments */}
+              {/* Red */}
+              <path d="M50,50 L50,11 A39,39 0 0,1 77,22 Z" fill="#dc2626" />
+              {/* Violet */}
+              <path d="M50,50 L77,22 A39,39 0 0,1 89,50 Z" fill="#7c3aed" />
+              {/* Indigo */}
+              <path d="M50,50 L89,50 A39,39 0 0,1 77,78 Z" fill="#312e81" />
+              {/* Cyan */}
+              <path d="M50,50 L77,78 A39,39 0 0,1 50,89 Z" fill="#0891b2" />
+              {/* Green */}
+              <path d="M50,50 L50,89 A39,39 0 0,1 23,78 Z" fill="#16a34a" />
+              {/* Lime */}
+              <path d="M50,50 L23,78 A39,39 0 0,1 11,50 Z" fill="#65a30d" />
+              {/* Yellow */}
+              <path d="M50,50 L11,50 A39,39 0 0,1 23,22 Z" fill="#eab308" />
+              {/* Orange */}
+              <path d="M50,50 L23,22 A39,39 0 0,1 50,11 Z" fill="#ea580c" />
+
+              {/* Gold spokes / segment dividers */}
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+                const rad = (angle * Math.PI) / 180;
+                const x2 = 50 + 39 * Math.cos(rad);
+                const y2 = 50 + 39 * Math.sin(rad);
+                return <line key={i} x1="50" y1="50" x2={x2} y2={y2} stroke="#fef08a" strokeWidth="0.8" opacity="0.8" />;
+              })}
+
+              {/* Outer gold ring inside sectors */}
+              <circle cx="50" cy="50" r="39" fill="none" stroke="#fef08a" strokeWidth="1" />
+            </g>
+
+            {/* Central Shiny 3D Gold Cap */}
+            <circle cx="50" cy="50" r="10" fill="#ca8a04" stroke="#fef08a" strokeWidth="1" />
+            <circle cx="50" cy="50" r="7" fill="#eab308" />
+            <circle cx="48" cy="48" r="3" fill="#fef08a" opacity="0.9" />
+
+            {/* Pointer Needle on Top Left edge */}
+            <path d="M19,19 L28,25 L25,28 Z" fill="#ea580c" stroke="#ca8a04" strokeWidth="0.5" />
+            <circle cx="21" cy="21" r="2" fill="#fef08a" />
+          </svg>
+        </div>
+        <span className="absolute right-14 bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+          Wheel Spin
+        </span>
+      </button>
+
+      {/* 4. Telegram Group Support */}
+      <a
+        href="https://t.me/bullwavecapital26"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#229ED9] to-[#1d82b5] text-white flex items-center justify-center shadow-[0_4px_15px_rgba(34,158,217,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+          <path d="M9.78 18.65l.28-4.28 7.76-7.01c.34-.3-.07-.46-.52-.16L7.76 12.14l-4.14-1.3c-.9-.28-.92-.9.19-1.34L19.9 3.03c.75-.28 1.4.17 1.15 1.25L17.7 19.86c-.26 1.25-.99 1.56-2.03.98l-4.87-3.58-2.35 2.27c-.26.26-.48.48-.97.48z"/>
+        </svg>
+        <span className="absolute right-14 bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+          Telegram Support
+        </span>
+      </a>
+
+      {/* 5. Download APP (Dragon Circle style) */}
+      <button
+        onClick={() => {
+          router.push("/download");
+        }}
+        className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#800000] to-rose-700 text-white flex items-center justify-center shadow-[0_4px_15px_rgba(128,0,0,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
+      >
+        <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden border border-[#D4AF37]/50 shadow-inner p-1 shrink-0">
+          <svg className="w-7 h-7 text-[#800000]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 3c.13 2.7 1.26 4.75 3.5 5.5-2.24.75-3.37 2.8-3.5 5.5-.13-2.7-1.26-4.75-3.5-5.5 2.24-.75 3.37-2.8 3.5-5.5z" fill="currentColor"/>
+            <path d="M5 12c3.5 0 5-1.5 5-5-3.5 0-5 1.5-5 5z" fill="currentColor" opacity="0.7"/>
+            <path d="M19 12c-3.5 0-5-1.5-5-5 3.5 0 5 1.5 5 5z" fill="currentColor" opacity="0.7"/>
+            <path d="M12 14c0 3.5 1.5 5 5 5 0-3.5-1.5-5-5-5z" fill="currentColor" opacity="0.7"/>
+            <path d="M12 14c0 3.5-1.5 5-5 5 0-3.5 1.5-5 5-5z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </div>
+        <span className="absolute right-14 bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+          Download App
+        </span>
+      </button>
+
+      {/* 6. Live Chat Customer Service */}
+      <button
+        onClick={() => {
+          router.push("/support");
+        }}
+        className="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 text-white flex items-center justify-center shadow-[0_4px_15px_rgba(244,63,94,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
+      >
+        <Headset size={20} className="text-white" />
+        <span className="absolute right-14 bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+          Live Support
+        </span>
+      </button>
+
+    </div>
+  );
+
+  if (isAuthPage || isLandingPage) {
+    return (
+      <>
+        {children}
+        {renderQuickActions()}
+      </>
+    );
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#8b919e] flex justify-center items-center overflow-hidden font-sans">
+    <div className="min-h-screen w-full bg-[#8b919e] flex justify-center items-center gap-6 overflow-hidden font-sans">
       
       {/* Centered Phone Wrapper */}
       <div className="w-full sm:w-[400px] h-screen bg-[#fafafb] text-slate-800 flex flex-col relative shadow-[0_0_50px_rgba(0,0,0,0.25)] border-x border-slate-300/30 overflow-hidden">
@@ -225,6 +420,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
 
       </div>
+
+      {/* Premium Floating Quick Action Menu on the Right (Screenshot style) */}
+      {renderQuickActions()}
+
     </div>
   );
 }

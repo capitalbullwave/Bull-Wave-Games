@@ -70,8 +70,8 @@ export default function SignupPage() {
         className="w-full max-w-md z-10"
       >
         <div className="text-center mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#800000] to-[#b30000] flex items-center justify-center shadow-md mx-auto mb-3">
-            <Gamepad2 className="text-white" size={32} />
+          <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg mx-auto mb-3 border border-[#D4AF37]/30 bg-white p-0.5">
+            <img src="/logo.png" alt="Bull Wave Logo" className="w-full h-full object-cover rounded-xl" />
           </div>
           <h1 className="text-3xl font-black tracking-widest text-[#800000]">BULL WAVE</h1>
           <p className="text-slate-500 text-xs font-bold mt-1">Join the Premium Hub</p>
