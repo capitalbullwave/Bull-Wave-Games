@@ -122,12 +122,9 @@ export default function LobbyPage() {
 
   return (
     <div 
-      className="space-y-4 animate-in fade-in duration-500 min-h-screen pb-48"
+      className="space-y-4 animate-in fade-in duration-500 min-h-screen"
       style={{
-        backgroundImage: "linear-gradient(to bottom, rgba(248, 250, 252, 0.94), rgba(248, 250, 252, 0.97)), url('/hero-banner.png')",
-        backgroundAttachment: "fixed",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundImage: "linear-gradient(to bottom, rgba(248, 250, 252, 0.95), rgba(240, 242, 245, 0.98))",
       }}
     >
       <FirstDepositPopup 

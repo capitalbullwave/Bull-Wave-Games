@@ -121,7 +121,7 @@ export default function WingoGamePage() {
 
       {/* Wallet Banner */}
       <div className="bg-[#800000] rounded-b-3xl px-6 pb-8 pt-4 text-center shadow-lg relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/hero-banner.png')] opacity-10 bg-cover bg-center" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#800000] to-[#600000] opacity-30" />
         <div className="relative z-10">
           <p className="text-white/80 text-xs font-bold uppercase tracking-widest mb-1 flex items-center justify-center gap-1.5">
             <Wallet size={14} /> Available Balance

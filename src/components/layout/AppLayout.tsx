@@ -65,8 +65,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const isAuthPage = pathname?.startsWith("/auth");
   const isLandingPage = pathname === "/";
 
-  // Only show the floating action buttons on the home page (/lobby) and landing page (/)
-  const showQuickActions = pathname === "/lobby" || pathname === "/";
+  // Only show the floating action buttons on the home page (/lobby)
+  const showQuickActions = pathname === "/lobby";
 
   // Floating Quick Action Menu component on the Right (visible on desktop/tablet)
   const renderQuickActions = () => {
