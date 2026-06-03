@@ -45,7 +45,7 @@ export default function LeaderboardPage() {
   const podium = [leaders[1], leaders[0], leaders[2]]; // 2nd, 1st, 3rd configuration
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-10">
+    <div className="space-y-6 animate-in fade-in duration-500 pb-10 px-4 pt-4">
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-3">
           <Trophy className="text-[#800000] animate-bounce" /> Leaderboard

@@ -224,24 +224,24 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </span>
       </a>
 
-      {/* 5. Download APP (Dragon Circle style) */}
+      {/* 5. Dragon Assistant (Dragon Circle style) */}
       <button
         onClick={() => {
-          router.push("/download");
+          router.push("/dragon-assistant");
         }}
         className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#800000] to-rose-700 text-white flex items-center justify-center shadow-[0_4px_15px_rgba(128,0,0,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
       >
         <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden border border-[#D4AF37]/50 shadow-inner p-1 shrink-0">
-          <svg className="w-7 h-7 text-[#800000]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 3c.13 2.7 1.26 4.75 3.5 5.5-2.24.75-3.37 2.8-3.5 5.5-.13-2.7-1.26-4.75-3.5-5.5 2.24-.75 3.37-2.8 3.5-5.5z" fill="currentColor"/>
-            <path d="M5 12c3.5 0 5-1.5 5-5-3.5 0-5 1.5-5 5z" fill="currentColor" opacity="0.7"/>
-            <path d="M19 12c-3.5 0-5-1.5-5-5 3.5 0 5 1.5 5 5z" fill="currentColor" opacity="0.7"/>
-            <path d="M12 14c0 3.5 1.5 5 5 5 0-3.5-1.5-5-5-5z" fill="currentColor" opacity="0.7"/>
-            <path d="M12 14c0 3.5-1.5 5-5 5 0-3.5 1.5-5 5-5z" fill="currentColor" opacity="0.7"/>
+          <svg className="w-7 h-7 text-[#800000]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M 12 3 L 8.5 6.5 L 5 3.5 L 6 8 L 3 11 L 5 14 L 9 19 L 12 21 L 15 19 L 19 14 L 21 11 L 18 8 L 19 3.5 L 15.5 6.5 Z" fill="currentColor" fillOpacity="0.15" />
+            <circle cx="8.5" cy="11.5" r="1.2" fill="currentColor" />
+            <circle cx="15.5" cy="11.5" r="1.2" fill="currentColor" />
+            <path d="M 10 16 L 12 14 L 14 16" />
+            <path d="M 12 14 L 12 20" />
           </svg>
         </div>
         <span className="absolute right-14 bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
-          Download App
+          Dragon Assistant
         </span>
       </button>
 
@@ -278,7 +278,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="w-full sm:w-[400px] h-screen bg-[#fafafb] text-slate-800 flex flex-col relative shadow-[0_0_50px_rgba(0,0,0,0.25)] border-x border-slate-300/30 overflow-hidden">
         
         {/* Top Navbar */}
-        {pathname !== "/about" && pathname !== "/tournaments" && pathname !== "/activity" && (
+        {pathname !== "/about" && pathname !== "/tournaments" && pathname !== "/activity" && pathname !== "/dragon-assistant" && (
           <header className="h-14 bg-white flex items-center justify-between px-4 flex-shrink-0 z-30 border-b border-glass-border shadow-sm">
             <div className="flex items-center gap-1.5">
               {pathname !== "/lobby" && pathname !== "/" && (
@@ -319,14 +319,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
 
         {/* Dynamic Page Content */}
-        <main className={`flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${pathname === "/about" ? "pb-6" : "pb-24"}`}>
-          <div className={pathname === "/tournaments" || pathname === "/activity" ? "" : "p-4 space-y-6"}>
+        <main className={`flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${(pathname === "/about" || pathname === "/dragon-assistant") ? "pb-6" : "pb-24"}`}>
+          <div className="w-full flex-1">
             {children}
           </div>
         </main>
 
         {/* Mobile Bottom Navigation */}
-        {pathname !== "/about" && !pathname?.includes("/activity/") && !pathname?.includes("/games/") && (
+        {pathname !== "/about" && pathname !== "/dragon-assistant" && !pathname?.includes("/activity/") && !pathname?.includes("/games/") && (
           <nav className="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-glass-border z-40 px-2 flex items-center justify-between shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
             
             <Link
@@ -402,7 +402,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
 
         {/* Floating Add to Desktop Button */}
-        {pathname !== "/about" && pathname !== "/download" && !pathname?.includes("/activity/") && !pathname?.includes("/games/") && (
+        {pathname !== "/about" && pathname !== "/download" && pathname !== "/dragon-assistant" && !pathname?.includes("/activity/") && !pathname?.includes("/games/") && (
           <div className="absolute bottom-[76px] left-1/2 -translate-x-1/2 z-40">
             <button 
               onClick={() => router.push("/download")}

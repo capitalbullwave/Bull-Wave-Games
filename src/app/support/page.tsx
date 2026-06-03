@@ -118,7 +118,7 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-10 relative">
+    <div className="space-y-6 animate-in fade-in duration-500 pb-10 relative px-4 pt-4">
       <div className="flex items-center gap-2">
         <button 
           onClick={() => router.back()} 

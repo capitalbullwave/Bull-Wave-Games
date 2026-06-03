@@ -179,7 +179,7 @@ export default function WalletPage() {
   });
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-10">
+    <div className="space-y-6 animate-in fade-in duration-500 pb-10 px-4 pt-4">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">My Wallet</h1>

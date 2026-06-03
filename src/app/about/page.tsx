@@ -13,7 +13,7 @@ export default function AboutPage() {
   // 1. FULL PAGE CONFIDENTIALITY AGREEMENT VIEW (Matching user screenshot)
   if (agreementType === "confidentiality") {
     return (
-      <div className="min-h-screen bg-white flex flex-col -mx-4 -mt-4 animate-in slide-in-from-right duration-300 pb-10">
+      <div className="min-h-screen bg-white flex flex-col animate-in slide-in-from-right duration-300 pb-10">
 
         {/* White header with sticky shadow */}
         <div className="h-14 bg-white border-b border-slate-200/60 flex items-center justify-between px-4 sticky top-0 z-35 shrink-0">
@@ -130,7 +130,7 @@ export default function AboutPage() {
   // 2. FULL PAGE RISK DISCLOSURE VIEW
   if (agreementType === "risk") {
     return (
-      <div className="min-h-screen bg-white flex flex-col -mx-4 -mt-4 animate-in slide-in-from-right duration-300 pb-10">
+      <div className="min-h-screen bg-white flex flex-col animate-in slide-in-from-right duration-300 pb-10">
 
         {/* Header */}
         <div className="h-14 bg-white border-b border-slate-200/60 flex items-center justify-between px-4 sticky top-0 z-35 shrink-0">
@@ -178,7 +178,7 @@ export default function AboutPage() {
 
   // 3. MAIN ABOUT US SECTIONS
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex flex-col -mx-4 -mt-4 animate-in fade-in duration-300">
+    <div className="min-h-screen bg-[#f8f9fa] flex flex-col animate-in fade-in duration-300">
 
       {/* Premium Red-Orange Coral Gradient Header */}
       <div className="h-14 bg-gradient-to-r from-[#ff6b5a] to-[#ff4d4d] flex items-center justify-between px-4 z-30 shadow-sm relative shrink-0">

@@ -182,7 +182,7 @@ export default function ProfilePage() {
   if (activeModal) {
     if (activeModal === "settings") {
       return (
-        <div className="min-h-screen bg-slate-50 flex flex-col -mx-4 -mt-4 animate-in slide-in-from-right duration-300 pb-10">
+        <div className="min-h-screen bg-slate-50 flex flex-col animate-in slide-in-from-right duration-300 pb-10">
           {/* Hidden File Input for Avatar Customization */}
           <input 
             type="file" 
@@ -342,7 +342,7 @@ export default function ProfilePage() {
     } else {
       let pageTitle = "";
       let bodyContent = null;
-      let bgStyle = "bg-[#f4f5f7] min-h-screen pb-10 flex flex-col -mx-4 -mt-4 animate-in slide-in-from-right duration-300";
+      let bgStyle = "bg-[#f4f5f7] min-h-screen pb-10 flex flex-col animate-in slide-in-from-right duration-300";
 
       if (activeModal === "feedback") {
         pageTitle = "Feedback";
@@ -665,7 +665,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-16 bg-white">
+    <div className="space-y-6 animate-in fade-in duration-500 pb-16 bg-white px-4 pt-4">
       {/* Hidden File Input for Avatar Customization directly on the profile card */}
       <input 
         type="file" 

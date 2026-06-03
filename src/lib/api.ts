@@ -38,13 +38,18 @@ export async function apiRequest<T = any>(
     defaultHeaders["Authorization"] = `Bearer ${token}`;
   }
 
-  const response = await fetch(url, {
-    headers: {
-      ...defaultHeaders,
-      ...headers,
-    },
-    ...restOptions,
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        ...defaultHeaders,
+        ...headers,
+      },
+      ...restOptions,
+    });
+  } catch (e) {
+    throw new Error("Failed to connect to backend server. Please verify uvicorn is running.");
+  }
 
   if (!response.ok) {
     // Only auto-logout on 401 if it's not a login/register attempt
