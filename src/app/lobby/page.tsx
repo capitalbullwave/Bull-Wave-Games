@@ -227,8 +227,17 @@ export default function LobbyPage() {
               <div className="flex items-center gap-1.5 border-l-4 border-[#800000] pl-2">
                 <h3 className="text-sm font-black text-slate-800 capitalize">{category.name}</h3>
               </div>
-              <button className="text-[10px] text-slate-500 font-bold flex items-center hover:text-[#800000]">
-                {t.seeAll} <ArrowRight size={10} className="ml-0.5" />
+              <button 
+                onClick={() => {
+                  if (activeCategory === category.id) {
+                    setActiveCategory("");
+                  } else {
+                    setActiveCategory(category.id);
+                  }
+                }}
+                className="text-[10px] text-slate-500 font-bold flex items-center hover:text-[#800000]"
+              >
+                {activeCategory === category.id ? (language === "hi" ? "कम दिखाएं" : "Show Less") : t.seeAll} <ArrowRight size={10} className="ml-0.5" />
               </button>
             </div>
 
@@ -310,8 +319,17 @@ export default function LobbyPage() {
                     </div>
 
                     <div className="flex justify-center mt-1">
-                      <button className="bg-white border border-[#ff4757] text-[#ff4757] text-xs font-bold px-8 py-2 rounded-full shadow-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 w-3/4 max-w-[250px]">
-                        <Gamepad2 size={14} className="text-[#ff4757]" /> {t.allGames}
+                      <button 
+                        onClick={() => {
+                          if (activeCategory === category.id) {
+                            setActiveCategory("");
+                          } else {
+                            setActiveCategory(category.id);
+                          }
+                        }}
+                        className="bg-white border border-[#ff4757] text-[#ff4757] text-xs font-bold px-8 py-2 rounded-full shadow-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 w-3/4 max-w-[250px]"
+                      >
+                        <Gamepad2 size={14} className="text-[#ff4757]" /> {activeCategory === category.id ? (language === "hi" ? "कम दिखाएं" : "Show Less") : t.allGames}
                       </button>
                     </div>
                   </div>
