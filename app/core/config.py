@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     )
 
     API_V1_STR: str = "/api/v1"
-    PROJECT_NAME: str = "Bull Wave Games API"
+    PROJECT_NAME: str = "Bull Wave Club API"
     
     # Security
     SECRET_KEY: str = "super_secret_jwt_signing_key_bull_wave_games_123!"

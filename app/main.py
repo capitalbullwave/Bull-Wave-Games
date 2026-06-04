@@ -1,4 +1,4 @@
-# Main Entrypoint for Bull Wave Games API backend
+# Main Entrypoint for Bull Wave Club API backend
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
