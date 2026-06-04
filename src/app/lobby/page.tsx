@@ -92,7 +92,7 @@ export default function LobbyPage() {
     winningInfo: language === "hi" ? "विजेता जानकारी" : "Winning Information",
     received: language === "hi" ? "प्राप्त हुआ" : "Received",
     earningsChart: language === "hi" ? "आज की कमाई का चार्ट" : "Today's earnings chart",
-    noticeText: language === "hi" ? "कृपया आधिकारिक बुल वेव गेम्स डोमेन नाम याद रखें। कभी भी अनधिकृत स्रोतों पर भरोसा न करें।" : "Please remember the official Bull Wave Games domain name. Never trust unauthorized sources.",
+    noticeText: language === "hi" ? "कृपया आधिकारिक बुल वेव क्लब डोमेन नाम याद रखें। कभी भी अनधिकृत स्रोतों पर भरोसा न करें।" : "Please remember the official Bull Wave Club domain name. Never trust unauthorized sources.",
     detail: language === "hi" ? "विवरण" : "Detail",
     menu: {
       language: language === "hi" ? "भाषा" : "Language",
@@ -103,10 +103,10 @@ export default function LobbyPage() {
       downloadApp: language === "hi" ? "ऐप डाउनलोड करें" : "Download APP"
     },
     warning1: language === "hi" ? "मंच निष्पक्षता, न्याय और खुलेपन की वकालत करता है। हम मुख्य रूप से निष्पक्ष लॉटरी, ब्लॉकचेन गेम्स, लाइव कैसीनो और स्लॉट मशीन गेम संचालित करते हैं।" : "The platform advocates fairness, justice, and openness. We mainly operate fair lottery, blockchain games, live casinos, and slot machine games.",
-    warning2: language === "hi" ? "बुल वेव गेम्स में आपका स्वागत है, जो 10,000 से अधिक ऑनलाइन लाइव गेम डीलरों और स्लॉट गेम्स के साथ काम करता है, जो सभी सत्यापित निष्पक्ष गेम हैं।" : "Welcome to Bull Wave Games works with more than 10,000 online live game dealers and slot games, all of which are verified fair games.",
-    warning3: language === "hi" ? "बुल वेव गेम्स तेज जमा और निकासी का समर्थन करता है, और आपकी यात्रा की प्रतीक्षा कर रहा है।" : "Welcome to Bull Wave Games supports fast deposit and withdrawal, and looks forward to your visit.",
+    warning2: language === "hi" ? "बुल वेव क्लब में आपका स्वागत है, जो 10,000 से अधिक ऑनलाइन लाइव गेम डीलरों और स्लॉट गेम्स के साथ काम करता है, जो सभी सत्यापित निष्पक्ष गेम हैं।" : "Welcome to Bull Wave Club works with more than 10,000 online live game dealers and slot games, all of which are verified fair games.",
+    warning3: language === "hi" ? "बुल वेव क्लब तेज जमा और निकासी का समर्थन करता है, और आपकी यात्रा की प्रतीक्षा कर रहा है।" : "Welcome to Bull Wave Club supports fast deposit and withdrawal, and looks forward to your visit.",
     warning4: language === "hi" ? "जुआ खेलने की लत लग सकती है, कृपया समझदारी से खेलें।" : "Gambling can be addictive, please play rationally.",
-    warning5: language === "hi" ? "बुल वेव गेम्स केवल 18 वर्ष से अधिक आयु के ग्राहकों को स्वीकार करता है।" : "Welcome to Bull Wave Games only accepts customers above the age of 18."
+    warning5: language === "hi" ? "बुल वेव क्लब केवल 18 वर्ष से अधिक आयु के ग्राहकों को स्वीकार करता है।" : "Welcome to Bull Wave Club only accepts customers above the age of 18."
   };
 
   const categories = [
@@ -447,7 +447,7 @@ export default function LobbyPage() {
         </div>
       </section>
 
-      {/* 8. Footer Info - Daman Style Branded for Bull Wave Games */}
+      {/* 8. Footer Info - Daman Style Branded for Bull Wave Club */}
       <section className="px-4 py-6 mt-4 border-t border-slate-200/80 bg-slate-50/30">
         
         {/* Brand Header */}
@@ -567,7 +567,7 @@ export default function LobbyPage() {
 
         {/* Copyright */}
         <p className="text-[9px] text-slate-400 text-center font-medium">
-          © 2026 Bull Wave Games. All rights reserved.
+          © 2026 Bull Wave Club. All rights reserved.
         </p>
 
       </section>

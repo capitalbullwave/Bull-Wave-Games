@@ -1175,8 +1175,8 @@ export default function ProfilePage() {
                     <BookOpen className="text-[#800000]" size={18} /> Beginner's Guide
                   </h3>
                   <div className="space-y-3 text-xs text-slate-600 leading-relaxed max-h-[50vh] overflow-y-auto pr-1">
-                    <p className="font-bold text-slate-800">Welcome to Bull Wave Games!</p>
-                    <p>Bull Wave is a premium gaming prediction cluster where players multiply their entries. Here is how to play:</p>
+                    <p className="font-bold text-slate-800">Welcome to Bull Wave Club!</p>
+                    <p>Bull Wave Club is a premium gaming prediction cluster where players multiply their entries. Here is how to play:</p>
                     <div className="space-y-2 border-t border-slate-100 pt-3">
                       <p className="flex gap-2"><span className="font-black text-[#800000]">1. Choose a Game:</span> Pick games like Wingo, Aviator, or Color Prediction from the main Lobby.</p>
                       <p className="flex gap-2"><span className="font-black text-[#800000]">2. Select Entry:</span> Submit your preferred fee and choose color, size or number groups.</p>
@@ -1197,7 +1197,7 @@ export default function ProfilePage() {
                     <span className="text-[10px] text-slate-400 font-bold">Version 2.0.4 (Stable Release)</span>
                   </div>
                   <p className="text-[11px] text-slate-600 leading-relaxed px-2">
-                    Bull Wave Games is the leading provably fair interactive gaming destination, optimized for high-performance and instant liquidity settlements. Underwritten by secure cluster technology.
+                    Bull Wave Club is the leading provably fair interactive gaming destination, optimized for high-performance and instant liquidity settlements. Underwritten by secure cluster technology.
                   </p>
                   <div className="text-[10px] text-slate-400 font-bold border-t border-slate-100 pt-4">
                     © 2026 Bull Wave interactive nodes. All rights reserved.

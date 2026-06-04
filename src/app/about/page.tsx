@@ -39,10 +39,10 @@ export default function AboutPage() {
             <p className="font-bold text-slate-800">For the purposes of this Privacy Policy:</p>
             <ul className="list-disc pl-5 space-y-1.5 text-slate-600">
               <li><strong>You</strong> means the individual accessing or using the Service.</li>
-              <li><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot;) refers to Bull Wave Games.</li>
+              <li><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot;) refers to Bull Wave Club.</li>
               <li><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party.</li>
               <li><strong>Account</strong> means a unique account created for You to access our Service.</li>
-              <li><strong>Website</strong> refers to Bull Wave Games.</li>
+              <li><strong>Website</strong> refers to Bull Wave Club.</li>
               <li><strong>Country</strong> refers to India.</li>
               <li><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company.</li>
               <li><strong>Third-party Social Media Service</strong> refers to any website or social network website through which a User can log in or create an account.</li>
@@ -119,7 +119,7 @@ export default function AboutPage() {
 
           <div className="text-center pt-6 text-slate-400 border-t border-slate-100 text-[10px] font-medium leading-loose">
             By visiting this page on our website: <br />
-            <span className="text-blue-500 underline font-bold">https://bullwavegames.in/</span>
+            <span className="text-blue-500 underline font-bold">https://bullwaveclub.in/</span>
           </div>
 
         </div>
@@ -147,7 +147,7 @@ export default function AboutPage() {
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto px-5 py-6 text-slate-650 text-xs leading-relaxed space-y-5 text-left bg-white">
           <h1 className="text-lg font-black text-slate-800 tracking-wide text-center">Risk Disclosure Agreement</h1>
-          <h2 className="text-sm font-bold text-slate-500 tracking-wide text-center">Bull Wave Games Safety Node</h2>
+          <h2 className="text-sm font-bold text-slate-500 tracking-wide text-center">Bull Wave Club Safety Node</h2>
 
           <p>Please read this Risk Disclosure Agreement carefully before participating in any predictions or gaming events on the Service.</p>
 
@@ -158,17 +158,17 @@ export default function AboutPage() {
 
           <div className="space-y-2">
             <h3 className="font-extrabold text-slate-900 border-b border-slate-100 pb-1">2. Client Responsibility</h3>
-            <p>Users must evaluate their personal budget models and maintain full self-control. Bull Wave Game provides custom safety balance buffers to encourage clean, healthy interactive habits.</p>
+            <p>Users must evaluate their personal budget models and maintain full self-control. Bull Wave Club provides custom safety balance buffers to encourage clean, healthy interactive habits.</p>
           </div>
 
           <div className="space-y-2">
             <h3 className="font-extrabold text-slate-900 border-b border-slate-100 pb-1">3. Hardware and Network Interactivity</h3>
-            <p>Platform counts rely on real-time internet connectivity. Bull Wave Game utilizes redundant fail-safe APIs, but network variations can impact live updates. Decisions based on historical predictions are carried out at user discretion.</p>
+            <p>Platform counts rely on real-time internet connectivity. Bull Wave Club utilizes redundant fail-safe APIs, but network variations can impact live updates. Decisions based on historical predictions are carried out at user discretion.</p>
           </div>
 
           <div className="text-center pt-6 text-slate-400 border-t border-slate-100 text-[10px] font-medium leading-loose">
             By visiting this page on our website: <br />
-            <span className="text-blue-500 underline font-bold">https://bullwavegames.in/</span>
+            <span className="text-blue-500 underline font-bold">https://bullwaveclub.in/</span>
           </div>
 
         </div>

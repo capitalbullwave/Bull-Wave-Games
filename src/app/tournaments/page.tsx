@@ -13,7 +13,7 @@ export default function ActivityPage() {
         {/* Title */}
         <div className="flex items-center gap-2 mb-4 mt-2">
           <img src="/logo.png" alt="Logo" className="w-6 h-6 rounded-sm object-cover bg-white" />
-          <h1 className="text-white text-[18px] font-bold tracking-wide">Bull Wave</h1>
+          <h1 className="text-white text-[18px] font-bold tracking-wide">Bull Wave Club</h1>
         </div>
 
         {/* Bonus stats */}
@@ -120,7 +120,7 @@ export default function ActivityPage() {
             <div className="z-10 w-full relative">
               <div className="flex items-center gap-1 mb-1">
                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-[#D4AF37] to-white" />
-                 <span className="text-[#D4AF37] font-black text-[9px] uppercase tracking-wider">Bull Wave Games</span>
+                 <span className="text-[#D4AF37] font-black text-[9px] uppercase tracking-wider">Bull Wave Club</span>
               </div>
               <h2 className="text-white text-[22px] font-black leading-[1.1] mb-1">BECOME<br/>AGENT</h2>
               <p className="text-[#D4AF37] text-[10px] font-bold">ENJOY LUXURY REWARDS</p>
@@ -153,7 +153,7 @@ export default function ActivityPage() {
         <div className="bg-white rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#800000]/10 flex flex-col cursor-pointer active:scale-[0.98] transition-transform">
           <div className="h-[120px] bg-gradient-to-r from-[#1a1a2e] to-[#16213e] flex flex-row items-center p-3 relative border-b-2 border-[#D4AF37]">
              <div className="w-[60%] border border-[#D4AF37]/50 rounded-lg p-2 bg-black/40 backdrop-blur-sm z-10">
-               <p className="text-white/90 text-[8px] font-medium leading-[1.3]">The new exciting game is popular all over India. Aviator is now in Bull Wave games. The higher you fly, the higher the multiple. Additional high-multiplier rewards available once a day!</p>
+               <p className="text-white/90 text-[8px] font-medium leading-[1.3]">The new exciting game is popular all over India. Aviator is now in Bull Wave Club. The higher you fly, the higher the multiple. Additional high-multiplier rewards available once a day!</p>
              </div>
              <div className="w-[40%] flex items-center justify-center absolute right-2">
                <Rocket size={70} className="text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.5)] animate-pulse" />
@@ -188,10 +188,10 @@ export default function ActivityPage() {
           <div className="h-[120px] bg-[#111] flex flex-col items-center justify-center relative overflow-hidden border-b-2 border-red-600">
              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20"><Play size={80} className="text-red-600 fill-red-600"/></div>
              <h2 className="text-white text-[26px] font-black uppercase text-center leading-[1.1] z-10 drop-shadow-md">
-                BULL WAVE<br/><span className="text-red-600">YOUTUBE</span>
+                BULL WAVE CLUB<br/><span className="text-red-600">YOUTUBE</span>
              </h2>
              <div className="mt-2 border-y border-[#D4AF37]/50 py-0.5 px-4 z-10">
-                <p className="text-[#D4AF37] text-[9px] font-bold uppercase tracking-wider">Make a video content about BULL WAVE</p>
+                <p className="text-[#D4AF37] text-[9px] font-bold uppercase tracking-wider">Make a video content about BULL WAVE CLUB</p>
              </div>
           </div>
           <div className="p-3 bg-white flex items-center gap-2">

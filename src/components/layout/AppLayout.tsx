@@ -77,7 +77,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       {/* 1. Mystery Gift Box */}
       <button
         onClick={() => {
-          toast.success("Welcome to Bull Wave Rewards!");
+          toast.success("Welcome to Bull Wave Club Rewards!");
           router.push("/rewards");
         }}
         className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-400 via-rose-500 to-[#ff4757] text-white flex items-center justify-center shadow-[0_4px_15px_rgba(255,71,87,0.35)] hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 relative group cursor-pointer shrink-0"
@@ -291,7 +291,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               )}
               <Link href="/lobby" className="flex items-center gap-2 cursor-pointer">
                 <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
-                <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave</span>
+                <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave Club</span>
               </Link>
             </div>
 
@@ -353,7 +353,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="relative -top-5 flex flex-col items-center">
               <button
                 onClick={() => {
-                  toast.success("Welcome to Bull Wave Wingo rewards!");
+                  toast.success("Welcome to Bull Wave Club Wingo rewards!");
                   router.push("/rewards");
                 }}
                 className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ff6b6b] to-[#ff4757] p-0.5 shadow-[0_0_15px_rgba(255,71,87,0.5)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"

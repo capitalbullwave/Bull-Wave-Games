@@ -92,7 +92,7 @@ export default function RewardsPage() {
   };
 
   const handleInviteFriends = () => {
-    navigator.clipboard.writeText("https://bullwavegames.com/register?code=382757617365");
+    navigator.clipboard.writeText("https://bullwaveclub.com/register?code=382757617365");
     toast.success("Referral invitation link copied! Share with friends to earn spins.");
     // Simulate awarding 1 free spin for sharing
     setSpinsLeft((prev) => prev + 1);
@@ -183,7 +183,7 @@ export default function RewardsPage() {
               {/* Pedestal Platform Base in red/gold */}
               <div className="absolute bottom-2 w-48 h-10 bg-gradient-to-b from-[#800000] to-[#4D0000] rounded-t-3xl border-t border-[#D4AF37]/50 flex flex-col items-center justify-end pb-1.5 shadow-2xl z-0">
                 <div className="w-40 h-2 bg-gradient-to-r from-transparent via-[#FFE680]/60 to-transparent rounded-full mb-0.5 animate-pulse" />
-                <span className="text-[7px] text-[#FFE680]/80 font-black tracking-widest uppercase">Bull Wave Fortune</span>
+                <span className="text-[7px] text-[#FFE680]/80 font-black tracking-widest uppercase">Bull Wave Club Fortune</span>
               </div>
 
               {/* The Rotating Wheel Container */}

@@ -267,7 +267,7 @@ export const useAuthStore = create<AuthState>()(
               key: keyId,
               amount: amount * 100, // Razorpay amount in paise
               currency: "INR",
-              name: "Bull Wave",
+              name: "Bull Wave Club",
               description: "Deposit Funds to Wallet",
               order_id: orderId,
               handler: async (response: any) => {

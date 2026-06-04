@@ -119,7 +119,7 @@ export default function GameDetailsPage({ params }: { params: Promise<{ id: stri
             <div className="space-y-4">
               {[
                 { user: "Player_119", review: "Provably fair and incredibly fast cashouts!", rating: 5 },
-                { user: "WingoMaster", review: "Best game model on Bull Wave, highly recommended.", rating: 4 },
+                { user: "WingoMaster", review: "Best game model on Bull Wave Club, highly recommended.", rating: 4 },
               ].map((r, idx) => (
                 <div key={idx} className="border-b border-amber-200/30 pb-3 last:border-b-0">
                   <div className="flex justify-between items-center mb-1">

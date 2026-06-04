@@ -85,7 +85,7 @@ export default function GuidePage() {
           <div className="relative z-10">
             <h2 className="text-xl font-black mb-1">{language === "hi" ? "शुरुआत कैसे करें?" : "How to get started?"}</h2>
             <p className="text-xs font-medium text-amber-100">
-              {language === "hi" ? "बुल वेव गेम्स में आपका स्वागत है। यहां आपके सभी सवालों के जवाब हैं।" : "Welcome to Bull Wave Games. Here are the answers to all your questions."}
+              {language === "hi" ? "बुल वेव क्लब में आपका स्वागत है। यहां आपके सभी सवालों के जवाब हैं।" : "Welcome to Bull Wave Club. Here are the answers to all your questions."}
             </p>
           </div>
           <HelpCircle size={80} className="absolute -right-4 -bottom-4 text-white opacity-20 rotate-12" />

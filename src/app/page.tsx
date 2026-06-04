@@ -147,7 +147,7 @@ export default function Dashboard() {
               <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
               <span className={`text-xl font-black uppercase tracking-wider transition-colors duration-300 ${
                 scrolled ? "text-[#800000]" : "text-white"
-              }`}>Bull Wave Games</span>
+              }`}>Bull Wave Club</span>
             </Link>
 
             {/* Desktop Nav Links */}
@@ -522,7 +522,7 @@ export default function Dashboard() {
               </span>
               <h2 className="text-3xl md:text-5xl font-black text-slate-800">Unlock Premium Rewards</h2>
               <p className="text-base text-slate-500 font-medium max-w-xl mx-auto leading-relaxed">
-                Join the Bull Wave Games community using our verified invitation code to unlock premium membership benefits, instant cashbacks, and VIP status.
+                Join the Bull Wave Club community using our verified invitation code to unlock premium membership benefits, instant cashbacks, and VIP status.
               </p>
 
               {/* Verified invitation code copy layout */}
@@ -600,7 +600,7 @@ export default function Dashboard() {
               <div className="md:col-span-2 space-y-6">
                 <Link href="/" className="flex items-center gap-2">
                   <img src="/logo.png" alt="Bull Wave Logo" className="w-16 h-16 rounded-2xl object-cover shadow-md" />
-                  <span className="text-3xl font-black uppercase tracking-wider text-white">Bull Wave Games</span>
+                  <span className="text-3xl font-black uppercase tracking-wider text-white">Bull Wave Club</span>
                 </Link>
                 <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
                   India's premier destination for strategic online gaming. We provide a secure, transparent, and high-reward environment for players who demand the absolute best in entertainment excellence.
@@ -658,7 +658,7 @@ export default function Dashboard() {
 
             {/* Bottom Footer block */}
             <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-semibold">
-              <p>&copy; 2026 Bull Wave Games International. All rights reserved. Professional standards for elite gaming.</p>
+              <p>&copy; 2026 Bull Wave Club International. All rights reserved. Professional standards for elite gaming.</p>
               <div className="flex gap-6">
                 <span className="flex items-center gap-1.5 text-slate-400">
                   <Shield size={14} className="text-[#D4AF37]" /> SSL Secured

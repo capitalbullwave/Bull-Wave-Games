@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bull Wave Games | Premium User Panel",
-  description: "Experience premium gaming with Bull Wave Games.",
+  title: "Bull Wave Club | Premium User Panel",
+  description: "Experience premium gaming with Bull Wave Club.",
 };
 
 export default function RootLayout({

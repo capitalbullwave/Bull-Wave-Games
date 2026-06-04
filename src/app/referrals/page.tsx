@@ -703,7 +703,7 @@ export default function ReferralPage() {
                   08
                 </div>
                 <p className="p-4 text-xs font-bold leading-relaxed text-slate-500 text-justify">
-                  The final interpretation of this activity belongs to Welcome to Bull Wave Games.
+                  The final interpretation of this activity belongs to Welcome to Bull Wave Club.
                 </p>
               </div>
 

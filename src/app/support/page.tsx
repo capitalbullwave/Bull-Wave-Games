@@ -16,7 +16,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 const FAQS = [
   { q: "How long do withdrawals take?", a: "Withdrawals are typically settled within 2 to 4 hours. Bank transfers might take up to 24 hours during banking holidays." },
   { q: "Is this platform legal and secure?", a: "Yes, our gaming systems are provably fair and built with encrypted smart contracts ensuring legal compliance." },
-  { q: "What is the minimum deposit amount?", a: "The minimum deposit on the Bull Wave gaming portal is ₹100 via Instant UPI methods." },
+  { q: "What is the minimum deposit amount?", a: "The minimum deposit on the Bull Wave Club gaming portal is ₹100 via Instant UPI methods." },
 ];
 
 export default function SupportPage() {
