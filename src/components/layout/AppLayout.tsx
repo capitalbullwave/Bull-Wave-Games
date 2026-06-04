@@ -41,11 +41,19 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuthStore();
+  const mainRef = React.useRef<HTMLElement>(null);
 
   const [mounted, setMounted] = useState(false);
   React.useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Reset scroll container position on route changes
+  React.useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
+  }, [pathname]);
 
   const handleLogout = () => {
     logout();
@@ -278,17 +286,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="w-full sm:w-[400px] h-screen bg-[#fafafb] text-slate-800 flex flex-col relative shadow-[0_0_50px_rgba(0,0,0,0.25)] border-x border-slate-300/30 overflow-hidden">
         
         {/* Top Navbar */}
-        {pathname !== "/about" && pathname !== "/tournaments" && pathname !== "/activity" && pathname !== "/dragon-assistant" && (
+        {pathname !== "/about" && pathname !== "/tournaments" && pathname !== "/activity" && pathname !== "/dragon-assistant" && pathname !== "/profile/settings" && (
           <header className="h-14 bg-white flex items-center justify-between px-4 flex-shrink-0 z-30 border-b border-glass-border shadow-sm">
             <div className="flex items-center gap-1.5">
-              {pathname !== "/lobby" && pathname !== "/" && (
-                <button 
-                  onClick={() => router.back()} 
-                  className="text-slate-600 hover:text-[#800000] active:scale-90 transition-all p-1 rounded-full hover:bg-slate-100/50 cursor-pointer flex items-center justify-center shrink-0"
-                >
-                  <ChevronLeft size={22} className="stroke-[2.5]" />
-                </button>
-              )}
+
               <Link href="/lobby" className="flex items-center gap-2 cursor-pointer">
                 <img src="/logo.png" alt="Bull Wave Logo" className="w-12 h-12 rounded-xl object-cover shadow-md" />
                 <span className="text-xl font-black text-[#800000] tracking-wide">Bull Wave Club</span>
@@ -319,7 +320,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
 
         {/* Dynamic Page Content */}
-        <main className={`flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${(pathname === "/about" || pathname === "/dragon-assistant") ? "pb-6" : "pb-24"}`}>
+        <main 
+          ref={mainRef}
+          className={`flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${(pathname === "/about" || pathname === "/dragon-assistant") ? "pb-6" : "pb-24"}`}
+        >
           <div className="w-full flex-1">
             {children}
           </div>
@@ -332,7 +336,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Link
               href="/lobby"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
-                pathname === "/lobby" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
+                (pathname === "/lobby" || pathname === "/") ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <Gamepad2 size={20} />
@@ -342,7 +346,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Link
               href="/activity"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
-                pathname === "/activity" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
+                pathname?.startsWith("/activity") ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <Award size={20} />
@@ -381,7 +385,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Link
               href="/referrals"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
-                pathname === "/referrals" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
+                pathname?.startsWith("/referrals") ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <Users size={20} />
@@ -391,7 +395,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Link
               href="/profile"
               className={`flex flex-col items-center justify-center w-14 gap-0.5 transition-colors ${
-                pathname === "/profile" ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
+                pathname?.startsWith("/profile") ? "text-[#800000]" : "text-muted-foreground hover:text-[#800000]"
               }`}
             >
               <UserCircle size={20} />

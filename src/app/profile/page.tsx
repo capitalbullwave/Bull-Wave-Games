@@ -847,7 +847,7 @@ export default function ProfilePage() {
                 {/* Settings */}
                 <button 
                   type="button"
-                  onClick={() => setActiveModal("settings")}
+                  onClick={() => router.push("/profile/settings")}
                   className="flex flex-col items-center gap-2 focus:outline-none group"
                 >
                   <div className="w-10 h-10 rounded-2xl bg-rose-500/20 flex items-center justify-center text-rose-700 group-hover:scale-105 transition-transform duration-300 shadow-sm border border-rose-200/30">
