@@ -180,8 +180,8 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#f8f9fa] flex flex-col animate-in fade-in duration-300">
 
-      {/* Premium Red-Orange Coral Gradient Header */}
-      <div className="h-14 bg-gradient-to-r from-[#ff6b5a] to-[#ff4d4d] flex items-center justify-between px-4 z-30 shadow-sm relative shrink-0">
+      {/* Premium Maroon-Gold Gradient Header */}
+      <div className="h-14 bg-gradient-to-r from-[#800000] to-[#b30000] flex items-center justify-between px-4 z-30 shadow-sm relative shrink-0">
         <button
           onClick={() => router.push("/profile")}
           className="p-1 text-white hover:opacity-80 transition-opacity flex items-center justify-center"
@@ -196,7 +196,7 @@ export default function AboutPage() {
       <div className="flex-1 p-4 space-y-6">
 
         {/* Futuristic Glassmorphism Tech Workspace Illustration */}
-        <div className="w-full bg-white rounded-3xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-[#ff6b5a]/10 p-4">
+        <div className="w-full bg-white rounded-3xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-[#800000]/15 p-4">
           <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-gradient-to-tr from-sky-50 to-blue-50/30 flex items-center justify-center">
             <img
               src="/about_us_workspace.png"
@@ -215,7 +215,7 @@ export default function AboutPage() {
             className="w-full flex items-center justify-between p-5 hover:bg-slate-50 transition-colors focus:outline-none text-left"
           >
             <div className="flex items-center gap-4">
-              <div className="w-9 h-9 rounded-xl bg-[#ff6b5a]/15 flex items-center justify-center text-[#ff6b5a] shrink-0 shadow-sm">
+              <div className="w-9 h-9 rounded-xl bg-[#800000]/10 flex items-center justify-center text-[#800000] shrink-0 shadow-sm">
                 <FileText size={18} className="stroke-[2.5]" />
               </div>
               <span className="text-[13px] font-black text-slate-800 tracking-wide">Confidentiality Agreement</span>
@@ -229,8 +229,8 @@ export default function AboutPage() {
             className="w-full flex items-center justify-between p-5 hover:bg-slate-50 transition-colors focus:outline-none text-left"
           >
             <div className="flex items-center gap-4">
-              <div className="w-9 h-9 rounded-xl bg-[#ff6b5a]/15 flex items-center justify-center text-[#ff6b5a] shrink-0 shadow-sm">
-                <Bookmark size={18} className="fill-[#ff6b5a] stroke-[2.5]" />
+              <div className="w-9 h-9 rounded-xl bg-[#800000]/10 flex items-center justify-center text-[#800000] shrink-0 shadow-sm">
+                <Bookmark size={18} className="fill-[#800000] stroke-[2.5]" />
               </div>
               <span className="text-[13px] font-black text-slate-800 tracking-wide">Risk Disclosure Agreement</span>
             </div>

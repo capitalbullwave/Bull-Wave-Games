@@ -43,7 +43,7 @@ export default function LanguagePage() {
               <span className="text-sm text-slate-800">English</span>
             </div>
             {language === "en" ? (
-              <div className="w-5 h-5 rounded-full bg-[#ff4d4d] flex items-center justify-center text-white shrink-0">
+              <div className="w-5 h-5 rounded-full bg-[#800000] flex items-center justify-center text-white shrink-0">
                 <CheckCircle2 size={14} className="stroke-[3]" />
               </div>
             ) : (
@@ -67,7 +67,7 @@ export default function LanguagePage() {
               <span className="text-sm text-slate-800">हिंदी</span>
             </div>
             {language === "hi" ? (
-              <div className="w-5 h-5 rounded-full bg-[#ff4d4d] flex items-center justify-center text-white shrink-0">
+              <div className="w-5 h-5 rounded-full bg-[#800000] flex items-center justify-center text-white shrink-0">
                 <CheckCircle2 size={14} className="stroke-[3]" />
               </div>
             ) : (

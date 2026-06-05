@@ -56,16 +56,16 @@ export default function SuperJackpotPage() {
   return (
     <div className="min-h-screen bg-[#f5f7fa] pb-20 font-sans">
       {/* Header */}
-      <div className="bg-white text-gray-800 px-4 py-3 flex items-center sticky top-0 z-50">
+      <div className="bg-white text-[#800000] px-4 py-3 flex items-center sticky top-0 z-50 border-b border-gray-100 shadow-sm">
         <button onClick={() => router.back()} className="mr-4 active:scale-90 transition-transform">
-          <ChevronLeft size={24} className="text-gray-600" />
+          <ChevronLeft size={24} className="text-[#800000]" />
         </button>
-        <h1 className="text-[17px] font-medium flex-1 text-center">Super Jackpot</h1>
+        <h1 className="text-[17px] font-bold flex-1 text-center">Super Jackpot</h1>
         <div className="w-6" /> {/* Spacer */}
       </div>
 
       {/* Banner */}
-      <div className="relative bg-gradient-to-r from-[#fb6a60] to-[#fcab7f] overflow-hidden p-6 text-white min-h-[190px] flex flex-col justify-center">
+      <div className="relative bg-gradient-to-r from-[#b30000] to-[#800000] overflow-hidden p-6 text-white min-h-[190px] flex flex-col justify-center">
         {/* Background Circles / Effects */}
         <div className="absolute -top-12 -right-8 w-40 h-40 border-[20px] border-white/10 rounded-full" />
         <div className="absolute -bottom-16 -left-12 w-56 h-56 border-[15px] border-white/10 rounded-full" />
@@ -87,7 +87,7 @@ export default function SuperJackpotPage() {
             {/* The main gift icon */}
             <Gift size={90} className="text-yellow-100 drop-shadow-xl z-10 relative" />
             <div className="absolute -top-3 -right-2 w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow-sm z-20" />
-            <div className="absolute -bottom-2 -left-2 w-8 h-6 rounded-sm bg-[#e8413a] -rotate-12 flex items-center justify-center shadow-lg border border-red-400 z-20">
+            <div className="absolute -bottom-2 -left-2 w-8 h-6 rounded-sm bg-[#800000] -rotate-12 flex items-center justify-center shadow-lg border border-rose-900/30 z-20">
                <div className="w-3 h-3 rounded-full bg-yellow-400 shadow-inner" />
             </div>
           </div>
@@ -106,12 +106,12 @@ export default function SuperJackpotPage() {
            <button 
              onClick={handleClaim}
              disabled={claiming}
-             className="w-full bg-gradient-to-r from-[#fc6b6d] to-[#fdb08a] text-white flex items-center justify-center gap-2 py-3.5 rounded-full font-medium shadow-md active:scale-95 transition-transform"
+             className="w-full bg-gradient-to-r from-[#D4AF37] to-[#B8860B] text-[#800000] font-black flex items-center justify-center gap-2 py-3.5 rounded-full font-medium shadow-md active:scale-95 transition-transform"
            >
              {claiming ? (
                <Loader2 size={16} className="animate-spin" />
              ) : (
-               <div className="bg-white/40 p-1 rounded-full"><LayoutGrid size={16} className="text-white" /></div>
+               <div className="bg-[#800000]/20 p-1 rounded-full"><LayoutGrid size={16} className="text-[#800000]" /></div>
              )}
              Receive in batches ({status?.unclaimed_count}) - ₹{status?.total_unclaimed_amount.toFixed(2)}
            </button>
@@ -125,14 +125,14 @@ export default function SuperJackpotPage() {
         {/* Action Buttons Row */}
         <div className="grid grid-cols-2 gap-3">
           <button className="bg-white py-3.5 rounded-xl shadow-sm border border-gray-50 flex items-center justify-center gap-2 font-medium text-[15px] text-gray-800 active:scale-95 transition-transform">
-            <div className="text-[#f14d4d]">
+            <div className="text-[#800000]">
                <ClipboardList size={22} />
             </div>
             Rule
           </button>
           
           <button className="bg-white py-3.5 rounded-xl shadow-sm border border-gray-50 flex items-center justify-center gap-2 font-medium text-[15px] text-gray-800 active:scale-95 transition-transform">
-            <div className="w-6 h-6 rounded-full bg-[#f14d4d] flex items-center justify-center text-white">
+            <div className="w-6 h-6 rounded-full bg-[#800000] flex items-center justify-center text-white">
                <Crown size={14} />
             </div>
             Winning star
@@ -164,7 +164,7 @@ export default function SuperJackpotPage() {
         {!hasJackpots && (
           <button 
             onClick={() => router.push('/lobby')}
-            className="w-full mt-6 bg-gradient-to-r from-[#fa6261] to-[#fc917e] text-white font-medium py-3.5 rounded-full shadow-md active:scale-[0.98] transition-transform text-[17px]"
+            className="w-full mt-6 bg-gradient-to-r from-[#800000] to-[#b30000] text-white font-black py-3.5 rounded-full shadow-md active:scale-[0.98] transition-transform text-[17px]"
           >
             Go bet
           </button>

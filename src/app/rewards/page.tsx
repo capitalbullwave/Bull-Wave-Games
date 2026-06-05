@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function RewardsPage() {
+  const router = useRouter();
   const [dailyClaimed, setDailyClaimed] = useState(false);
   const [scratched, setScratched] = useState(false);
   
@@ -128,7 +130,10 @@ export default function RewardsPage() {
             
             {/* Invite Wheel Top Bar */}
             <div className="flex items-center justify-between px-5 pt-5 pb-3">
-              <button className="p-1 rounded-full hover:bg-white/10 transition-colors">
+              <button 
+                onClick={() => router.back()}
+                className="p-1 rounded-full hover:bg-white/10 transition-colors active:scale-90"
+              >
                 <ChevronLeft size={18} />
               </button>
               <span className="text-sm font-black uppercase tracking-wider text-[#FFE680] drop-shadow-md">Invite Wheel</span>

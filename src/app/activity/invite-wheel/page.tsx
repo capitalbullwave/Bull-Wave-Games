@@ -76,10 +76,10 @@ export default function InviteWheelPage() {
     <div className="min-h-screen bg-[#f0f3f7] pb-24 font-sans text-gray-800">
       {/* Header */}
       <div className="bg-white px-4 py-3 flex items-center sticky top-0 z-50 shadow-sm">
-        <button onClick={() => router.back()} className="mr-4">
-          <ChevronLeft size={24} className="text-[#002b5e]" />
+        <button onClick={() => router.back()} className="mr-4 active:scale-90 transition-transform">
+          <ChevronLeft size={24} className="text-[#800000]" />
         </button>
-        <h1 className="text-[20px] flex-1 text-center text-[#002b5e] font-medium pr-8">Invite Wheel</h1>
+        <h1 className="text-[20px] flex-1 text-center text-[#800000] font-medium pr-8">Invite Wheel</h1>
       </div>
 
       <div className="p-4 flex flex-col items-center pt-8">

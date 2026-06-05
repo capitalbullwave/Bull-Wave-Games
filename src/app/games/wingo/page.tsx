@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Wallet, Clock, History, List, X } from "lucide-react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -26,6 +26,48 @@ const NUMBERS = [
   { num: 9, color: "green" },
 ];
 
+let sharedAudioCtx: AudioContext | null = null;
+
+const playBeep = () => {
+  if (typeof window === "undefined") return;
+  try {
+    const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    if (!sharedAudioCtx) {
+      sharedAudioCtx = new AudioContextClass();
+    }
+
+    if (sharedAudioCtx.state === "suspended") {
+      sharedAudioCtx.resume().catch(() => {});
+    }
+
+    const now = sharedAudioCtx.currentTime;
+
+    const osc = sharedAudioCtx.createOscillator();
+    const gainNode = sharedAudioCtx.createGain();
+
+    osc.type = "sine";
+    // 1200Hz: crisp, high-pitched stopwatch beep
+    osc.frequency.setValueAtTime(1200, now);
+
+    // Fast volume envelope to make a short digital tick
+    gainNode.gain.setValueAtTime(0, now);
+    // 3ms soft attack to avoid clicking
+    gainNode.gain.linearRampToValueAtTime(0.06, now + 0.003);
+    // 65ms exponential decay to silence
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+
+    osc.connect(gainNode);
+    gainNode.connect(sharedAudioCtx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.075);
+  } catch (error) {
+    console.warn("AudioContext beep failed:", error);
+  }
+};
+
 export default function WingoGamePage() {
   const { user, deductEntryFee } = useAuthStore();
   const [activeTab, setActiveTab] = useState("1min");
@@ -45,32 +87,43 @@ export default function WingoGamePage() {
   const [betAmount, setBetAmount] = useState(10);
   const [multiplier, setMultiplier] = useState(1);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          // Period Ends, generate new result
-          setPeriod(p => p + 1);
-          generateResult();
-          return activeTab === "1min" ? 60 : activeTab === "3min" ? 180 : 300;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [activeTab]);
-
-  const generateResult = () => {
+  const generateResult = useCallback((targetPeriod: number) => {
     const randNum = Math.floor(Math.random() * 10);
     const numData = NUMBERS.find(n => n.num === randNum)!;
     const newResult = {
-      period: period,
+      period: targetPeriod,
       number: randNum,
       size: randNum >= 5 ? "Big" : "Small",
       color: numData.color
     };
     setHistory(prev => [newResult, ...prev].slice(0, 10));
-  };
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          // Period Ends, generate new result
+          let endedPeriod = 0;
+          setPeriod((p) => {
+            endedPeriod = p;
+            return p + 1;
+          });
+          generateResult(endedPeriod);
+          return activeTab === "1min" ? 60 : activeTab === "3min" ? 180 : 300;
+        }
+        
+        // Play beep when timer is at 5 seconds or fewer
+        const nextTime = prev - 1;
+        if (nextTime <= 5 && nextTime >= 1) {
+          playBeep();
+        }
+        
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [activeTab, generateResult]);
 
   const handleOpenBet = (type: "color" | "number", value: string | number, colorCode: string) => {
     if (timeLeft <= 5) {
@@ -205,7 +258,7 @@ export default function WingoGamePage() {
                 <button
                   key={item.num}
                   onClick={() => {
-                    let c = item.color === "green" ? COLORS.green : item.color === "red" ? COLORS.red : COLORS.violet;
+                    const c = item.color === "green" ? COLORS.green : item.color === "red" ? COLORS.red : COLORS.violet;
                     handleOpenBet("number", item.num, c);
                   }}
                   className={`aspect-square rounded-full flex items-center justify-center text-xl font-black text-white shadow-md active:scale-90 transition-transform ${

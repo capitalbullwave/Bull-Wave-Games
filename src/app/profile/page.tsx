@@ -191,8 +191,8 @@ export default function ProfilePage() {
             accept="image/*" 
             className="hidden" 
           />
-          {/* Coral header with back button */}
-          <div className="h-28 bg-gradient-to-b from-[#ff6b5a] to-[#ff4d4d] flex flex-col justify-start px-4 pt-4 relative shrink-0">
+          {/* Maroon & Gold header with back button */}
+          <div className="h-28 bg-gradient-to-b from-[#800000] to-[#b30000] flex flex-col justify-start px-4 pt-4 relative shrink-0">
             <div className="flex items-center justify-between text-white">
               <button 
                 onClick={() => setActiveModal(null)} 
@@ -260,7 +260,7 @@ export default function ProfilePage() {
 
             {/* Security Information Title */}
             <div className="flex items-center gap-2 pt-2">
-              <div className="w-1 h-4 bg-[#ff4d4d] rounded-full shrink-0" />
+              <div className="w-1 h-4 bg-[#800000] rounded-full shrink-0" />
               <h4 className="text-xs font-black text-slate-800 uppercase tracking-wide">
                 Security information
               </h4>
@@ -272,7 +272,7 @@ export default function ProfilePage() {
               {/* Login password */}
               <div className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-slate-100 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-red-500 shadow-sm shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/20">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                   </div>
                   <span className="text-xs font-black text-slate-800">Login password</span>
@@ -288,7 +288,7 @@ export default function ProfilePage() {
               {/* Bind mailbox */}
               <div className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-slate-100 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-500 shadow-sm shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/20">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                   </div>
                   <span className="text-xs font-black text-slate-800">Bind mailbox</span>
@@ -304,7 +304,7 @@ export default function ProfilePage() {
               {/* Google Verification */}
               <div className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-slate-100 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-500 shadow-sm shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/20">
                     <span className="text-sm font-black tracking-tighter">G</span>
                   </div>
                   <span className="text-xs font-black text-slate-800">Google Verification</span>
@@ -320,7 +320,7 @@ export default function ProfilePage() {
               {/* Updated version */}
               <div className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-slate-100 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center text-rose-500 shadow-sm shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/20">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                   </div>
                   <span className="text-xs font-black text-slate-800">Updated version</span>
@@ -356,7 +356,7 @@ export default function ProfilePage() {
                 <textarea 
                   placeholder="Write your feedback or bug report here..." 
                   rows={6}
-                  className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#ff6b5a]/40 text-xs text-slate-800 bg-slate-50/50 transition-all placeholder:text-slate-350"
+                  className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#800000]/40 text-xs text-slate-800 bg-slate-50/50 transition-all placeholder:text-slate-350"
                 />
               </div>
               
@@ -428,7 +428,7 @@ export default function ProfilePage() {
                   toast.success("Feedback submitted successfully! Thank you.");
                   setActiveModal(null);
                 }}
-                className="w-full bg-[#ff6b5a] hover:bg-[#ff6b5a]/90 text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-transform active:scale-[0.99]"
+                className="w-full bg-gradient-to-r from-[#800000] to-[#b30000] hover:from-[#b30000] hover:to-[#800000] text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-transform active:scale-[0.99]"
               >
                 Submit
               </Button>
@@ -470,7 +470,7 @@ export default function ProfilePage() {
                   <span className="text-sm text-slate-800">English</span>
                 </div>
                 {language === "en" ? (
-                  <div className="w-5 h-5 rounded-full bg-[#ff4d4d] flex items-center justify-center text-white shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-[#800000] flex items-center justify-center text-white shrink-0">
                     <CheckCircle2 size={14} className="stroke-[3]" />
                   </div>
                 ) : (
@@ -492,7 +492,7 @@ export default function ProfilePage() {
                   <span className="text-sm text-slate-800">हिंदी</span>
                 </div>
                 {language === "hi" ? (
-                  <div className="w-5 h-5 rounded-full bg-[#ff4d4d] flex items-center justify-center text-white shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-[#800000] flex items-center justify-center text-white shrink-0">
                     <CheckCircle2 size={14} className="stroke-[3]" />
                   </div>
                 ) : (
@@ -523,7 +523,7 @@ export default function ProfilePage() {
               />
               <Button 
                 onClick={handleClaimGift} 
-                className="w-full bg-[#ff6b5a] hover:bg-[#ff6b5a]/90 text-white font-extrabold py-5 rounded-full shadow-sm text-xs transition-all active:scale-[0.99]"
+                className="w-full bg-gradient-to-r from-[#800000] to-[#b30000] hover:from-[#b30000] hover:to-[#800000] text-white font-extrabold py-5 rounded-full shadow-sm text-xs transition-all active:scale-[0.99]"
               >
                 Claim Code
               </Button>

@@ -278,8 +278,8 @@ export default function SettingsPage() {
             className="hidden" 
           />
 
-          {/* Coral header with back button */}
-          <div className="h-28 bg-gradient-to-b from-[#ff6b5a] to-[#ff4d4d] flex flex-col justify-start px-4 pt-4 relative shrink-0">
+          {/* Maroon & Gold header with back button */}
+          <div className="h-28 bg-gradient-to-b from-[#800000] to-[#b30000] flex flex-col justify-start px-4 pt-4 relative shrink-0">
             <div className="flex items-center justify-between text-white">
               <button 
                 onClick={() => router.push("/profile")} 
@@ -350,7 +350,7 @@ export default function SettingsPage() {
           <div className="px-4 mt-6 space-y-3">
             {/* Header */}
             <div className="flex items-center gap-2 pl-1.5 py-1">
-              <div className="w-1 h-4 bg-[#ff4d4d] rounded-full shrink-0" />
+              <div className="w-1 h-4 bg-[#800000] rounded-full shrink-0" />
               <h4 className="text-xs font-black text-slate-800 uppercase tracking-wide">
                 Security information
               </h4>
@@ -365,7 +365,7 @@ export default function SettingsPage() {
                 className="w-full flex items-center justify-between p-4.5 hover:bg-slate-50 transition-colors text-left focus:outline-none cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-red-500 shadow-sm shrink-0 border border-rose-100/40">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/40">
                     <Lock size={18} className="stroke-[2.5]" />
                   </div>
                   <span className="text-xs font-black text-slate-800">Login password</span>
@@ -382,7 +382,7 @@ export default function SettingsPage() {
                 className="w-full flex items-center justify-between p-4.5 hover:bg-slate-50 transition-colors text-left focus:outline-none cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-500 shadow-sm shrink-0 border border-rose-100/40">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/40">
                     <Mail size={18} className="stroke-[2.5]" />
                   </div>
                   <span className="text-xs font-black text-slate-800">Bind mailbox</span>
@@ -401,8 +401,8 @@ export default function SettingsPage() {
                 className="w-full flex items-center justify-between p-4.5 hover:bg-slate-50 transition-colors text-left focus:outline-none cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-[#ff6b5a] shadow-sm shrink-0 border border-rose-100/40">
-                    <span className="text-base font-black tracking-tighter text-[#ff6b5a]">G</span>
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/40">
+                    <span className="text-base font-black tracking-tighter text-[#800000]">G</span>
                   </div>
                   <span className="text-xs font-black text-slate-800">Google Verification</span>
                 </div>
@@ -417,7 +417,7 @@ export default function SettingsPage() {
               {/* Updated Version Option */}
               <div className="w-full flex items-center justify-between p-4.5 text-left">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-500 shadow-sm shrink-0 border border-rose-100/40">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-[#800000] shadow-sm shrink-0 border border-amber-200/40">
                     <Info size={18} className="stroke-[2.5]" />
                   </div>
                   <span className="text-xs font-black text-slate-800">Updated version</span>
@@ -456,7 +456,7 @@ export default function SettingsPage() {
               {/* Old Login Password */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-slate-700">
-                  <div className="w-5 h-5 rounded-md bg-red-100 text-red-500 flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-[#800000] flex items-center justify-center shrink-0">
                     <Lock size={12} className="stroke-[2.5]" />
                   </div>
                   <Label className="text-xs font-black text-slate-700">Login password</Label>
@@ -482,7 +482,7 @@ export default function SettingsPage() {
               {/* New Login Password */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-slate-700">
-                  <div className="w-5 h-5 rounded-md bg-red-100 text-red-500 flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-[#800000] flex items-center justify-center shrink-0">
                     <Lock size={12} className="stroke-[2.5]" />
                   </div>
                   <Label className="text-xs font-black text-slate-700">New login password</Label>
@@ -508,7 +508,7 @@ export default function SettingsPage() {
               {/* Confirm New Password */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-slate-700">
-                  <div className="w-5 h-5 rounded-md bg-red-100 text-red-500 flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-[#800000] flex items-center justify-center shrink-0">
                     <Lock size={12} className="stroke-[2.5]" />
                   </div>
                   <Label className="text-xs font-black text-slate-700">Confirm new password</Label>
@@ -547,7 +547,7 @@ export default function SettingsPage() {
             <div className="mt-8">
               <Button
                 onClick={handleSavePasswordChanges}
-                className="w-full bg-[#ff6b5a] hover:bg-[#ff6b5a]/90 text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-[#800000] to-[#b30000] hover:from-[#b30000] hover:to-[#800000] text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
               >
                 Save changes
               </Button>
@@ -580,7 +580,7 @@ export default function SettingsPage() {
               {/* Mail Address */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-slate-700">
-                  <div className="w-5 h-5 rounded-md bg-red-100 text-red-500 flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-[#800000] flex items-center justify-center shrink-0">
                     <Mail size={12} className="stroke-[2.5]" />
                   </div>
                   <Label className="text-xs font-black text-slate-700">Mail</Label>
@@ -597,7 +597,7 @@ export default function SettingsPage() {
               {/* Verification Code */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-slate-700">
-                  <div className="w-5 h-5 rounded-md bg-red-100 text-red-500 flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-[#800000] flex items-center justify-center shrink-0">
                     <ShieldCheck size={12} className="stroke-[2.5]" />
                   </div>
                   <Label className="text-xs font-black text-slate-700">Verification Code</Label>
@@ -614,7 +614,7 @@ export default function SettingsPage() {
                     type="button"
                     disabled={timer > 0}
                     onClick={handleSendVerificationCode}
-                    className="bg-[#ff6b5a] disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold px-5 py-2.5 rounded-xl text-[10px] uppercase tracking-wide transition-all active:scale-95 shrink-0 cursor-pointer"
+                    className="bg-[#800000] hover:bg-[#800000]/90 disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold px-5 py-2.5 rounded-xl text-[10px] uppercase tracking-wide transition-all active:scale-95 shrink-0 cursor-pointer"
                   >
                     {timer > 0 ? `${timer}s` : "Send"}
                   </button>
@@ -627,7 +627,7 @@ export default function SettingsPage() {
             <div className="mt-8">
               <Button
                 onClick={handleBindMailbox}
-                className="w-full bg-[#ff6b5a] hover:bg-[#ff6b5a]/90 text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-[#800000] to-[#b30000] hover:from-[#b30000] hover:to-[#800000] text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
               >
                 Bind
               </Button>
@@ -640,8 +640,8 @@ export default function SettingsPage() {
       {/* -------------------- VIEW 4: GOOGLE AUTHENTICATOR (Screenshot 3 & 4) -------------------- */}
       {activeView === "google" && (
         <div className="flex flex-col flex-1 pb-16">
-          {/* Custom Coral Red Header to match Screenshot 3 */}
-          <div className="h-14 bg-[#ff6b5a] text-white flex items-center px-4 sticky top-0 z-35 shrink-0">
+          {/* Custom Maroon Header to match project brand */}
+          <div className="h-14 bg-[#800000] text-white flex items-center px-4 sticky top-0 z-35 shrink-0">
             <button
               onClick={() => setActiveView("menu")}
               className="p-1 text-white hover:bg-white/10 rounded-xl transition-all active:scale-95 flex items-center justify-center"
@@ -656,7 +656,7 @@ export default function SettingsPage() {
           <div className="flex-1 flex flex-col justify-between">
             <div>
               {/* Graphic Banner */}
-              <div className="bg-gradient-to-b from-[#ff6b5a] to-[#ff8e7e]/50 py-10 flex flex-col items-center justify-center relative overflow-hidden">
+              <div className="bg-gradient-to-b from-[#800000] to-[#800000]/40 py-10 flex flex-col items-center justify-center relative overflow-hidden">
                 <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/35 z-10 shadow-lg relative">
                   <div className="absolute inset-2 bg-gradient-to-tr from-sky-400 via-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
                     {/* SVG Shield Check */}
@@ -683,16 +683,16 @@ export default function SettingsPage() {
                     </h3>
                   </div>
 
-                  {/* Bullets with red-play arrow icons */}
+                  {/* Bullets with Maroon play arrow icons */}
                   <div className="space-y-4 text-slate-500 text-xs leading-relaxed font-semibold">
                     <div className="flex items-start gap-2">
-                      <span className="text-[#ff6b5a] text-xs mt-0.5 shrink-0">▶</span>
+                      <span className="text-[#800000] text-xs mt-0.5 shrink-0">▶</span>
                       <p className="text-justify">
                         Google Authenticator is a TOTP and HOTP two-step verification software token for Google's authentication service.
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <span className="text-[#ff6b5a] text-xs mt-0.5 shrink-0">▶</span>
+                      <span className="text-[#800000] text-xs mt-0.5 shrink-0">▶</span>
                       <p className="text-justify">
                         After binding, a dynamic verification code is generated every 30 seconds, and the verification code can be used for security verification of operations such as login, withdrawal, and modification of security settings.
                       </p>
@@ -706,7 +706,7 @@ export default function SettingsPage() {
             <div className="p-4 mb-4">
               <Button
                 onClick={() => setShowPasswordModal(true)}
-                className="w-full bg-[#ff6b5a] hover:bg-[#ff6b5a]/90 text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-[#800000] to-[#b30000] hover:from-[#b30000] hover:to-[#800000] text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
               >
                 Turn on Google Verification
               </Button>
@@ -730,7 +730,7 @@ export default function SettingsPage() {
                     className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-2xl flex flex-col"
                   >
                     {/* Header Bar */}
-                    <div className="bg-[#ff6b5a] text-white py-3.5 text-center font-black tracking-wider text-base select-none">
+                    <div className="bg-[#800000] text-white py-3.5 text-center font-black tracking-wider text-base select-none">
                       Password Validation
                     </div>
 
@@ -740,7 +740,7 @@ export default function SettingsPage() {
                       {/* Password input field */}
                       <div className="space-y-1.5 text-left">
                         <div className="flex items-center gap-2 text-slate-700">
-                          <div className="w-4 h-4 rounded bg-red-100 text-red-500 flex items-center justify-center shrink-0">
+                          <div className="w-4 h-4 rounded bg-amber-100 text-[#800000] flex items-center justify-center shrink-0">
                             <Lock size={10} className="stroke-[2.5]" />
                           </div>
                           <Label className="text-[11px] font-black text-slate-700">Login password</Label>
@@ -764,9 +764,9 @@ export default function SettingsPage() {
                       </div>
 
                       {/* Warning notice */}
-                      <div className="flex items-start gap-1.5 bg-rose-50/50 border-l-2 border-rose-500 p-2.5 rounded-xl">
-                        <AlertCircle size={14} className="text-[#ff6b5a] shrink-0 mt-0.5" />
-                        <p className="text-[10px] text-[#ff6b5a] leading-tight font-bold text-left">
+                      <div className="flex items-start gap-1.5 bg-amber-50/50 border-l-2 border-[#800000] p-2.5 rounded-xl">
+                        <AlertCircle size={14} className="text-[#800000] shrink-0 mt-0.5" />
+                        <p className="text-[10px] text-[#800000] leading-tight font-bold text-left">
                           To secure your balance, please enter your password
                         </p>
                       </div>
@@ -797,7 +797,7 @@ export default function SettingsPage() {
                       <div className="pt-2">
                         <Button
                           onClick={handleConfirmPasswordValidation}
-                          className="w-full bg-[#ff6b5a] hover:bg-[#ff6b5a]/90 text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
+                          className="w-full bg-gradient-to-r from-[#800000] to-[#b30000] hover:from-[#b30000] hover:to-[#800000] text-white font-extrabold py-5 rounded-full shadow-md text-xs transition-all active:scale-[0.98]"
                         >
                           Confirm
                         </Button>
@@ -863,7 +863,7 @@ export default function SettingsPage() {
                 </Button>
                 <Button 
                   onClick={handleUpdateNickname}
-                  className="flex-1 bg-[#ff6b5a] hover:bg-[#ff6b5a]/90 text-white font-extrabold py-5 rounded-full text-xs"
+                  className="flex-1 bg-gradient-to-r from-[#800000] to-[#b30000] hover:from-[#b30000] hover:to-[#800000] text-white font-extrabold py-5 rounded-full text-xs"
                 >
                   Save Nickname
                 </Button>

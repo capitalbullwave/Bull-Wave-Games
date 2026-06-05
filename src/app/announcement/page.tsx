@@ -66,7 +66,7 @@ export default function AnnouncementPage() {
             onClick={() => setActiveTab("notification")}
             className={`flex-1 py-2.5 text-sm font-semibold rounded-md transition-colors ${
               activeTab === "notification" 
-                ? "bg-[#ff4d4d] text-white" 
+                ? "bg-[#800000] text-white" 
                 : "bg-transparent text-slate-500 hover:bg-slate-50"
             }`}
           >
@@ -76,7 +76,7 @@ export default function AnnouncementPage() {
             onClick={() => setActiveTab("information")}
             className={`flex-1 py-2.5 text-sm font-semibold rounded-md transition-colors ${
               activeTab === "information" 
-                ? "bg-[#ff4d4d] text-white" 
+                ? "bg-[#800000] text-white" 
                 : "bg-transparent text-slate-500 hover:bg-slate-50"
             }`}
           >
@@ -120,7 +120,7 @@ export default function AnnouncementPage() {
             {informationList.map((info) => (
               <div key={info.id} className="bg-white rounded-xl p-4 shadow-sm border border-slate-100/50">
                 <div className="flex items-center gap-2 mb-3">
-                  <Megaphone size={18} className="text-[#ff4d4d] fill-[#ff4d4d]/20" />
+                  <Megaphone size={18} className="text-[#800000] fill-[#800000]/10" />
                   <span className="font-semibold text-slate-800 text-[15px]">{info.title}</span>
                 </div>
                 <p className="text-xs text-slate-500 leading-relaxed mb-3">

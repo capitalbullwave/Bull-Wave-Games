@@ -286,7 +286,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="w-full sm:w-[400px] h-screen bg-[#fafafb] text-slate-800 flex flex-col relative shadow-[0_0_50px_rgba(0,0,0,0.25)] border-x border-slate-300/30 overflow-hidden">
         
         {/* Top Navbar */}
-        {pathname !== "/about" && pathname !== "/tournaments" && pathname !== "/activity" && pathname !== "/dragon-assistant" && pathname !== "/profile/settings" && (
+        {pathname === "/lobby" && (
           <header className="h-14 bg-white flex items-center justify-between px-4 flex-shrink-0 z-30 border-b border-glass-border shadow-sm">
             <div className="flex items-center gap-1.5">
 
