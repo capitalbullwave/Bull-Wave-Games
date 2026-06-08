@@ -35,7 +35,7 @@ export default function GameDetailsPage({ params }: { params: Promise<{ id: stri
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="px-4 pt-5 pb-6 space-y-8 animate-in fade-in duration-500">
       
       {/* Back Button */}
       <Link href="/lobby" className="inline-flex items-center gap-2 text-slate-600 hover:text-[#800000] transition-colors">

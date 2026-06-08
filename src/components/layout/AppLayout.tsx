@@ -44,6 +44,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const mainRef = React.useRef<HTMLElement>(null);
 
   const [mounted, setMounted] = useState(false);
+  const [hasNewNotifications, setHasNewNotifications] = useState(false);
+
+  React.useEffect(() => {
+    const hasRead = localStorage.getItem("read_notifications_flag") === "true";
+    setHasNewNotifications(!hasRead);
+  }, [pathname]);
+
   React.useEffect(() => {
     setMounted(true);
   }, []);
@@ -308,12 +315,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
             <button 
               onClick={() => {
+                localStorage.setItem("read_notifications_flag", "true");
+                setHasNewNotifications(false);
                 router.push("/announcement");
               }}
               className="p-1.5 rounded-full hover:bg-black/5 text-[#800000] transition-colors relative"
             >
               <Bell size={20} />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
+              {hasNewNotifications && (
+                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
+              )}
             </button>
           </div>
         </header>

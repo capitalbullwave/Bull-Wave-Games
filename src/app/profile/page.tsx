@@ -21,6 +21,17 @@ export default function ProfilePage() {
   const { user, updateProfile, logout, language, setLanguage } = useAuthStore();
   const router = useRouter();
   
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+
+  useEffect(() => {
+    const hasRead = localStorage.getItem("read_notifications_flag") === "true";
+    if (!hasRead) {
+      setUnreadNotifications(2);
+    } else {
+      setUnreadNotifications(0);
+    }
+  }, []);
+
   // Profile Form States
   const [fullName, setFullName] = useState(user?.fullName || "Rohit Kumar");
   const [address, setAddress] = useState(user?.address || "Sector 62, Noida, India");
@@ -773,7 +784,11 @@ export default function ProfilePage() {
           
           {/* Notification */}
           <div 
-            onClick={() => router.push("/announcement")}
+            onClick={() => {
+              localStorage.setItem("read_notifications_flag", "true");
+              setUnreadNotifications(0);
+              router.push("/announcement");
+            }}
             className="flex items-center justify-between p-4 bg-gradient-to-r from-red-50 to-rose-100/30 border border-red-200/60 rounded-2xl cursor-pointer hover:from-red-100/50 hover:to-rose-100/20 transition-all shadow-sm group"
           >
             <div className="flex items-center gap-3.5">
@@ -783,7 +798,9 @@ export default function ProfilePage() {
               <span className="text-xs font-black text-slate-800">{t.notification}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center animate-pulse">2</span>
+              {unreadNotifications > 0 && (
+                <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center animate-pulse">{unreadNotifications}</span>
+              )}
               <ChevronRight size={16} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
             </div>
           </div>

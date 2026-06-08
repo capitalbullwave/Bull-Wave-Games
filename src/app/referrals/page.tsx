@@ -150,10 +150,7 @@ export default function ReferralPage() {
         >
           {/* Header */}
           <div className="bg-white px-4 py-3.5 flex items-center sticky top-0 z-50 shadow-sm border-b border-[#D4AF37]/20">
-            <button onClick={() => router.push("/lobby")} className="text-gray-600 active:scale-95 transition-transform">
-              <ChevronLeft size={22} />
-            </button>
-            <h1 className="text-[17px] flex-1 text-center text-[#800000] font-black pr-6">Agency</h1>
+            <h1 className="text-[17px] flex-1 text-center text-[#800000] font-black">Agency</h1>
           </div>
 
           <div className="bg-[#f0f3f7]">
