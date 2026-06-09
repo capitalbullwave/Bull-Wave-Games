@@ -428,10 +428,10 @@ export default function Dashboard() {
                         <span
                           key={led}
                           className={`w-1 h-1 rounded-full ${spinning
-                              ? (led % 2 === 0 ? 'bg-red-500 shadow-[0_0_4px_#ef4444]' : 'bg-yellow-400 shadow-[0_0_4px_#facc15]')
-                              : hasWon
-                                ? 'bg-[#D4AF37] shadow-[0_0_6px_#D4AF37]'
-                                : 'bg-amber-500/40'
+                            ? (led % 2 === 0 ? 'bg-red-500 shadow-[0_0_4px_#ef4444]' : 'bg-yellow-400 shadow-[0_0_4px_#facc15]')
+                            : hasWon
+                              ? 'bg-[#D4AF37] shadow-[0_0_6px_#D4AF37]'
+                              : 'bg-amber-500/40'
                             } transition-all duration-150`}
                         />
                       ))}
@@ -464,10 +464,10 @@ export default function Dashboard() {
                         <span
                           key={led}
                           className={`w-1 h-1 rounded-full ${spinning
-                              ? (led % 2 !== 0 ? 'bg-red-500 shadow-[0_0_4px_#ef4444]' : 'bg-yellow-400 shadow-[0_0_4px_#facc15]')
-                              : hasWon
-                                ? 'bg-[#D4AF37] shadow-[0_0_6px_#D4AF37]'
-                                : 'bg-amber-500/40'
+                            ? (led % 2 !== 0 ? 'bg-red-500 shadow-[0_0_4px_#ef4444]' : 'bg-yellow-400 shadow-[0_0_4px_#facc15]')
+                            : hasWon
+                              ? 'bg-[#D4AF37] shadow-[0_0_6px_#D4AF37]'
+                              : 'bg-amber-500/40'
                             } transition-all duration-150`}
                         />
                       ))}
@@ -749,8 +749,8 @@ export default function Dashboard() {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs font-black uppercase tracking-wider border transition-all cursor-pointer ${activeCategory === cat.id
-                      ? "bg-gradient-to-r from-[#800000] to-[#b30000] text-white border-transparent shadow-lg"
-                      : "bg-white text-slate-500 border-slate-200 hover:text-[#800000] hover:border-[#800000]"
+                    ? "bg-gradient-to-r from-[#800000] to-[#b30000] text-white border-transparent shadow-lg"
+                    : "bg-white text-slate-500 border-slate-200 hover:text-[#800000] hover:border-[#800000]"
                     }`}
                 >
                   <Icon size={14} />
@@ -920,7 +920,7 @@ export default function Dashboard() {
                     name: "Telegram",
                     icon: (
                       <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.98 1.25-5.59 3.69-.53.36-1 .54-1.42.52-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.36-.49.99-.75 3.88-1.69 6.46-2.8 7.74-3.32 3.68-1.5 4.44-1.76 4.94-1.77.11 0 .36.03.52.16.14.12.18.28.2.45.02.1.03.28.01.46z"/>
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.98 1.25-5.59 3.69-.53.36-1 .54-1.42.52-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.36-.49.99-.75 3.88-1.69 6.46-2.8 7.74-3.32 3.68-1.5 4.44-1.76 4.94-1.77.11 0 .36.03.52.16.14.12.18.28.2.45.02.1.03.28.01.46z" />
                       </svg>
                     )
                   },
@@ -938,7 +938,7 @@ export default function Dashboard() {
                     name: "Twitter/X",
                     icon: (
                       <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                       </svg>
                     )
                   },
@@ -946,12 +946,12 @@ export default function Dashboard() {
                     name: "YouTube",
                     icon: (
                       <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                        <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                       </svg>
                     )
                   }
                 ].map((social) => (
-                  <button 
+                  <button
                     key={social.name}
                     onClick={() => toast.info(`Connecting to our official ${social.name} channel...`)}
                     className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 hover:border-[#D4AF37] hover:text-[#D4AF37] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center text-slate-300 cursor-pointer"
