@@ -195,7 +195,7 @@ export default function Dashboard() {
             {navItems.map((item) => (
               <Link
                 key={item.name}
-                href={isAuthenticated ? item.path : item.hash}
+                href={item.hash}
                 className={`text-sm font-bold tracking-wide transition-colors ${scrolled ? "text-slate-700 hover:text-[#800000]" : "text-white/90 hover:text-[#D4AF37]"
                   }`}
               >
@@ -205,19 +205,30 @@ export default function Dashboard() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={() => router.push("/auth/login")}
-              className={`text-sm font-black uppercase tracking-wider transition-colors ${scrolled ? "text-[#800000]" : "text-white/90 hover:text-[#D4AF37]"
-                }`}
-            >
-              Log In
-            </button>
-            <button
-              onClick={() => router.push("/auth/signup")}
-              className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
-            >
-              Join Now
-            </button>
+            {isAuthenticated ? (
+              <button
+                onClick={() => router.push("/lobby")}
+                className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer"
+              >
+                Go to Lobby
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => router.push("/auth/login")}
+                  className={`text-sm font-black uppercase tracking-wider transition-colors cursor-pointer ${scrolled ? "text-slate-700 hover:text-[#800000]" : "text-white/90 hover:text-[#D4AF37]"
+                    }`}
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => router.push("/auth/signup")}
+                  className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer"
+                >
+                  Join Now
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile Nav Button */}
@@ -245,7 +256,7 @@ export default function Dashboard() {
               {navItems.map((item) => (
                 <Link
                   key={item.name}
-                  href={isAuthenticated ? item.path : item.hash}
+                  href={item.hash}
                   onClick={() => setMenuOpen(false)}
                   className="text-base font-extrabold text-slate-800 hover:text-[#800000]"
                 >
@@ -254,18 +265,29 @@ export default function Dashboard() {
               ))}
               <hr className="border-slate-100" />
               <div className="flex gap-4">
-                <button
-                  onClick={() => { setMenuOpen(false); router.push("/auth/login"); }}
-                  className="flex-1 border border-slate-200 text-slate-850 font-extrabold py-3 rounded-xl cursor-pointer"
-                >
-                  Log In
-                </button>
-                <button
-                  onClick={() => { setMenuOpen(false); router.push("/auth/signup"); }}
-                  className="flex-1 bg-gradient-to-r from-[#800000] to-[#b30000] text-white font-extrabold py-3 rounded-xl shadow-md cursor-pointer"
-                >
-                  Join Now
-                </button>
+                {isAuthenticated ? (
+                  <button
+                    onClick={() => { setMenuOpen(false); router.push("/lobby"); }}
+                    className="flex-1 bg-gradient-to-r from-[#800000] to-[#b30000] text-white font-extrabold py-3 rounded-xl shadow-md cursor-pointer text-center"
+                  >
+                    Go to Lobby
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => { setMenuOpen(false); router.push("/auth/login"); }}
+                      className="flex-1 border border-slate-200 text-slate-850 font-extrabold py-3 rounded-xl cursor-pointer"
+                    >
+                      Log In
+                    </button>
+                    <button
+                      onClick={() => { setMenuOpen(false); router.push("/auth/signup"); }}
+                      className="flex-1 bg-gradient-to-r from-[#800000] to-[#b30000] text-white font-extrabold py-3 rounded-xl shadow-md cursor-pointer"
+                    >
+                      Join Now
+                    </button>
+                  </>
+                )}
               </div>
             </motion.div>
           )}
@@ -301,18 +323,29 @@ export default function Dashboard() {
               Welcome to India's most trusted elite gaming destination. We provide a sophisticated environment for strategic gaming, high-stakes color prediction, and premium rewards.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button
-                onClick={() => router.push("/auth/signup")}
-                className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all text-center cursor-pointer"
-              >
-                Create Account
-              </button>
-              <button
-                onClick={() => router.push("/auth/login")}
-                className="bg-white/10 hover:bg-white/15 border border-white/20 px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest hover:-translate-y-0.5 active:translate-y-0 transition-all text-center cursor-pointer"
-              >
-                Member Login
-              </button>
+              {isAuthenticated ? (
+                <button
+                  onClick={() => router.push("/lobby")}
+                  className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all text-center cursor-pointer"
+                >
+                  Go to Lobby
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => router.push("/auth/signup")}
+                    className="bg-gradient-to-r from-[#800000] to-[#b30000] text-white hover:from-[#b30000] hover:to-[#800000] px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all text-center cursor-pointer"
+                  >
+                    Create Account
+                  </button>
+                  <button
+                    onClick={() => router.push("/auth/login")}
+                    className="bg-white/10 hover:bg-white/15 border border-white/20 px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-widest hover:-translate-y-0.5 active:translate-y-0 transition-all text-center cursor-pointer"
+                  >
+                    Member Login
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -712,7 +745,7 @@ export default function Dashboard() {
             <div className="pt-6">
               <button
                 type="button"
-                onClick={() => router.push("/auth/signup?invite=382757617365")}
+                onClick={() => router.push(isAuthenticated ? "/referrals" : "/auth/signup?invite=382757617365")}
                 className="group bg-gradient-to-r from-[#800000] via-[#a30000] to-[#800000] text-[#FCE38A] hover:text-white font-black px-12 py-4.5 rounded-2xl text-xs uppercase tracking-widest shadow-[0_8px_30px_rgba(128,0,0,0.15)] hover:shadow-[0_12px_40px_rgba(128,0,0,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer border border-[#D4AF37]/40 flex items-center gap-2 mx-auto"
               >
                 <span>Redeem Invitation Link</span>
@@ -802,7 +835,7 @@ export default function Dashboard() {
                     {/* Hover Play Button Overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-opacity duration-300">
                       <button
-                        onClick={() => router.push("/auth/signup")}
+                        onClick={() => router.push(isAuthenticated ? `/games/${game.id}` : "/auth/signup")}
                         className="bg-[#D4AF37] text-black font-black text-xs px-5 py-3 rounded-xl shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 uppercase tracking-widest cursor-pointer"
                       >
                         Play Now
@@ -838,7 +871,7 @@ export default function Dashboard() {
                         {(game.players / 1000).toFixed(1)}k Playing
                       </span>
                       <button
-                        onClick={() => router.push("/auth/signup")}
+                        onClick={() => router.push(isAuthenticated ? `/games/${game.id}` : "/auth/signup")}
                         className="text-[#800000] hover:text-[#b30000] flex items-center gap-0.5 text-[10px] uppercase font-black tracking-wider transition-colors cursor-pointer"
                       >
                         Play <ChevronRight size={12} />
@@ -968,17 +1001,14 @@ export default function Dashboard() {
               <h4 className="text-xs font-black uppercase tracking-wider text-[#D4AF37]">Platform</h4>
               <ul className="space-y-2 text-sm text-slate-400 font-semibold">
                 {[
-                  { name: "About Us", hash: "#about", path: "/about" },
-                  { name: "Lobby", hash: "#games", path: "/lobby" },
-                  { name: "Referrals", hash: "#partnership", path: "/referrals" },
-                  { name: "Create Account", hash: "/auth/signup", path: "/auth/signup" }
+                  { name: "About Us", hash: "#about" },
+                  { name: "Lobby", hash: "#games" },
+                  { name: "Referrals", hash: "#partnership" },
+                  { name: isAuthenticated ? "Go to Lobby" : "Create Account", hash: isAuthenticated ? "/lobby" : "/auth/signup" }
                 ].map((link) => {
-                  const href = (link.name === "Create Account")
-                    ? "/auth/signup"
-                    : (isAuthenticated ? link.path : link.hash);
                   return (
                     <li key={link.name}>
-                      <Link href={href} className="text-slate-400 hover:text-[#D4AF37] transition-colors">
+                      <Link href={link.hash} className="text-slate-400 hover:text-[#D4AF37] transition-colors">
                         {link.name}
                       </Link>
                     </li>
@@ -1004,15 +1034,14 @@ export default function Dashboard() {
               <h4 className="text-xs font-black uppercase tracking-wider text-[#D4AF37]">Support</h4>
               <ul className="space-y-2 text-sm text-slate-400 font-semibold">
                 {[
-                  { name: "Help Center", hash: "#support", path: "/support" },
-                  { name: "Contact Us", hash: "#support", path: "/support" },
-                  { name: "FAQs", hash: "#support", path: "/support" },
-                  { name: "Live Chat", hash: "#support", path: "/support" }
+                  { name: "Help Center", hash: "#support" },
+                  { name: "Contact Us", hash: "#support" },
+                  { name: "FAQs", hash: "#support" },
+                  { name: "Live Chat", hash: "#support" }
                 ].map((link) => {
-                  const href = isAuthenticated ? link.path : link.hash;
                   return (
                     <li key={link.name}>
-                      <Link href={href} className="text-slate-400 hover:text-[#D4AF37] transition-colors">
+                      <Link href={link.hash} className="text-slate-400 hover:text-[#D4AF37] transition-colors">
                         {link.name}
                       </Link>
                     </li>
@@ -1042,7 +1071,14 @@ export default function Dashboard() {
 
       {/* Floating Support Button */}
       <button
-        onClick={() => router.push("/support")}
+        onClick={() => {
+          const el = document.getElementById("support");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          } else {
+            router.push("/support");
+          }
+        }}
         className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-tr from-[#800000] to-[#b30000] hover:scale-105 active:scale-95 text-white rounded-full flex items-center justify-center shadow-2xl z-50 transition-all border border-amber-200/20 cursor-pointer"
       >
         <Headphones size={24} />
